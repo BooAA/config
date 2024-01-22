@@ -1,0 +1,3 @@
+clear mod3
+keycode 135 = Hyper_R
+add mod3 = Hyper_R

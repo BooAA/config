@@ -1,0 +1,4 @@
+[ELAN0672:00 04F3:3187 Touchpad]
+naturalScroll=true
+pointerAcceleration=0.4
+tapToClick=true
