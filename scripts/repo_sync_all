@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+echo "sync p21 tm-qpr-dev"; cd ~/Dev/p21/tm-qpr-dev; repo sync -c
+echo "sync p21 udc-qpr-dev"; cd ~/Dev/p21/udc-qpr-dev; repo sync -c
+echo "sync p22 tm-qpr-dev"; cd ~/Dev/p22/tm-qpr-dev; repo sync -c
+echo "sync p22 udc-qpr-dev"; cd ~/Dev/p22/udc-qpr-dev; repo sync -c
+echo "sync p23 udc-d1-dev"; cd ~/Dev/p23/udc-d1-dev; repo sync -c
+echo "sync p23 udc-qpr-dev"; cd ~/Dev/p23/udc-qpr-dev; repo sync -c

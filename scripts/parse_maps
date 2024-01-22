@@ -1,0 +1,28 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+    sum = 0
+    guard_vma = 0
+    cnts["shared_file"] = 0
+    cnts["private_file"] = 0
+    cnts["shared_anon"] = 0
+    cnts["private_anon"] = 0
+}
+
+{
+    sum++;
+
+    if ($5 != 0) {
+        if (substr($2, 4) == "s") cnts["shared_file"]++
+        else cnts["private_file"]++
+    } else {
+        if (substr($2, 4) == "s") cnts["shared_anon"]++
+        else cnts["private_anon"]++
+
+		if ($2 == "---p") guard_vma++;
+    }
+}
+
+END {
+    printf "%d %d %d %d %d %d", cnts["shared_file"], cnts["private_file"], cnts["shared_anon"], cnts["private_anon"], guard_vma, sum
+}

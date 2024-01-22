@@ -1,0 +1,79 @@
+#!/usr/bin/bash
+
+serial=""
+args=""
+
+if [[ -z $1 ]]
+then
+    if [[ $(adb devices | head -n-1 | tail -n+2 | wc -l) > 1 ]]
+    then
+        echo "more than 1 devices  are connected and no serial number is given" >& 2
+        exit 1
+    else
+        serial=$(adb devices | head -n-1 | tail -n+2 | awk '{print $1}')
+        args="-s $serial"
+    fi
+else
+    serial=$1
+    args="-s $serial"
+fi
+
+tmp=/tmp/parse_vmas_${serial}_$(date "+%F-%T")
+files=$(adb $args shell ls /proc/)
+
+mkdir $tmp
+
+pids=()
+
+for f in ${files[@]}
+do
+    path=/proc/$f/maps
+    if ! adb $args shell test -f $path; then
+        continue
+    fi
+
+    cnt=$(adb $args shell cat $path | wc -l)
+    if [ $cnt == "0" ]; then
+        continue
+    fi
+
+    adb $args pull $path $tmp/$f.maps > /dev/null
+    pids+=("$f")
+done
+
+total_process_cnt=$(adb $args shell ps -A | wc -l)
+
+echo "[cmdline] [shared_file] [private_file] [shared_anon] [private_anon] [guard_vma] [vma]"
+
+vma_cnt=0
+guard_vma_cnt=0
+vma_shared_file_cnt=0
+vma_private_file_cnt=0
+vma_shared_anon_cnt=0
+vma_private_anon_cnt=0
+
+for pid in ${pids[@]}
+do
+    cmdline=$(adb $args shell cat /proc/$pid/cmdline | tr -d '\0')
+    info=($(parse_maps $tmp/$pid.maps))
+    echo "$cmdline: ${info[0]}, ${info[1]}, ${info[2]}, ${info[3]}, ${info[4]}, ${info[5]}"
+
+    vma_shared_file_cnt=$(($vma_shared_file_cnt+${info[0]}))
+    vma_private_file_cnt=$(($vma_private_file_cnt+${info[1]}))
+    vma_shared_anon_cnt=$(($vma_shared_anon_cnt+${info[2]}))
+    vma_private_anon_cnt=$(($vma_private_anon_cnt+${info[3]}))
+    guard_vma_cnt=$(($guard_vma_cnt+${info[4]}))
+    vma_cnt=$(($vma_cnt+${info[5]}))
+done
+
+echo -e "\n========= Summary ================="
+echo "file_shared: $vma_shared_file_cnt"
+echo "file_private: $vma_private_file_cnt"
+echo "anon_shared: $vma_shared_anon_cnt"
+echo "anon_private: $vma_private_anon_cnt"
+echo "guard vma: $guard_vma_cnt"
+echo "vma: $vma_cnt"
+echo "process with maps: ${#pids[@]}"
+echo "total process: ${total_process_cnt}"
+echo -e "===================================\n"
+
