@@ -1,0 +1,61 @@
+# Configuration for alacritty
+
+import = ["~/.config/alacritty/zenburn.toml"]
+ipc_socket = true
+live_config_reload = true
+shell = "/usr/bin/bash"
+
+[bell]
+animation = "Linear"
+command = "None"
+duration = 0
+
+[colors]
+
+[cursor]
+style.blinking = "Never" # "Off" | "On" | "Always"
+style.shape = "Block" # "Block" | "Underline" | "Beam"
+thickness = 0.1
+unfocused_hollow = true
+vi_mode_style = "None"
+
+[debug]
+
+[env]
+TERM = "xterm-256color"
+WINIT_X11_SCALE_FACTOR = "1.0"
+
+[font]
+bold = { family = "hack", style = "Bold" }
+bold_italic = { family = "hack", style = "Bold Italic" }
+italic = { family = "hack", style = "Italic" }
+normal = { family = "hack", style = "Regular" }
+size = 12
+
+[hints]
+alphabet = "asdfghjkl;"
+
+[keyboard]
+
+[mouse]
+hide_when_typing = true
+
+[scrolling]
+history = 100000
+multiplier = 5
+
+[selection]
+save_to_clipboard = true
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+
+[terminal]
+osc52 = "CopyPaste"
+
+[window]
+class = { instance = "Alacritty", general = "Alacritty" }
+decorations = "None"
+decorations_theme_variant = "None" # Dark | Light | None
+dynamic_title = true
+# opacity = 0.95
+startup_mode = "Windowed" # Windowed | Maximized | Fullscreen
+title = "Alacritty"
