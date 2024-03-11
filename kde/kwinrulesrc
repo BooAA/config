@@ -1,7 +1,0 @@
-[$Version]
-update_info=kwinrules.upd:replace-placement-string-to-enum,kwinrules.upd:use-virtual-desktop-ids
-
-[226e7ea5-5e49-4586-8da1-ae8df164161b]
-Description=Enable minimum size 0
-minsizerule=2
-types=1

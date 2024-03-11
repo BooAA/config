@@ -3,45 +3,9 @@ case $- in
     *) return;;
 esac
 
-case $(hostname) in
-    liangjlee.c.googlers.com)
-	PS1="\[\e[30;43m\]\w\[\e[0m\] \[\e[01;33m\]λ \[\e[0m\]"
-	;;
-    liangjlee2.c.googlers.com)
-	PS1="\[\e[30;44m\]\w\[\e[0m\] \[\e[01;34m\]λ \[\e[0m\]"
-	;;
-    liangjlee3.c.googlers.com)
-	PS1="\[\e[30;41m\]\w\[\e[0m\] \[\e[01;31m\]λ \[\e[0m\]"
-	;;
-    liangjlee4.c.googlers.com)
-	PS1="\[\e[30;107m\]\w\[\e[0m\] \[\e[01;97m\]λ \[\e[0m\]"
-	;;
-    liangjlee-mail.c.googlers.com)
-        PS1="\[\033[01;33m\]\w @ \[\e[0m\]"
-        ;;
-    liangjlee-carbonv9-linux)
-        PS1="\[\033[01;33m\]\w λ \[\e[0m\]"
-        ;;
-    liangjlee-p620lin01.ntc.corp.google.com)
-        PS1="\[\033[01;33m\]\w Λ \[\e[0m\]"
-        ;;
-esac
-
-shopt -s checkwinsize
-shopt -s globstar
-shopt -s histappend
-shopt -s autocd
-
-HISTCONTROL=ignoreboth
-HISTTIMEFORMAT="%F %T  "
-HISTSIZE=10000000
-HISTFILESIZE=10000000
-PERSISTENT_HISTORY_LAST=''
-#PATH=$PATH:~/.local/bin
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
+if [[ -t 0 && $- = *i* ]]; then
+    stty -ixon
+fi 
 
 if ! shopt -oq posix; then
     if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -55,17 +19,100 @@ if command -v zoxide &> /dev/null; then
     eval "$(zoxide init --cmd j bash)"
 fi
 
-if [[ -t 0 && $- = *i* ]]; then
-    stty -ixon
-fi 
+shopt -s autocd
+shopt -s checkwinsize
+shopt -s globstar
+shopt -s histappend
 
-function up_dir() {
+HISTCONTROL=ignoreboth
+HISTFILESIZE=100000
+HISTSIZE=100000
+HISTTIMEFORMAT="%F %T  "
+PATH=$PATH:~/.local/bin
+PERSISTENT_HISTORY_LAST=''
+PROMPT_COMMAND="log_bash_persistent_history; $PROMPT_COMMAND"
+PS1="\[\033[01;33m\]\w λ \[\e[0m\]"
+
+git_blame_line() {
+    local l=$1 f=$2
+    git blame -L $l,$l -- $f
+}
+
+git_log_line() {
+    local l=$1 f=$2
+    git log -L $l,$l:$f
+}
+
+log_bash_persistent_history()
+{
+    [[
+        $(history 1) =~ ^\ *[0-9]+\ +([^\ ]+\ [^\ ]+)\ +(.*)$
+    ]]
+    local date_part="${BASH_REMATCH[1]}"
+    local command_part="${BASH_REMATCH[2]}"
+    if [ "$command_part" != "$PERSISTENT_HISTORY_LAST" ]
+    then
+        echo $date_part "|" "$command_part" >> ~/.persistent_history
+        export PERSISTENT_HISTORY_LAST="$command_part"
+    fi
+}
+
+up_dir() {
     local cnt=$1
     while (( $cnt > 0 )); do
 	cd ..
 	((cnt=cnt-1))
     done
 }
+
+alias a='adb devices'
+alias b='git branch'
+alias bl='git_blame_line'
+alias bls='git_log_line'
+alias c='clear'
+alias d='git diff'
+alias e='emacsclient -q -t -a nvim'
+alias f='fdfind -i --hidden'
+alias g='rg -i --hidden'
+alias h='cat ~/.persistent_history | rg '
+alias l='git log --oneline'
+alias m='make -j$(nproc)'
+alias q='exit'
+alias s='git status'
+alias z='tmux'
+alias za='tmux attach'
+alias zl='tmux ls'
+alias zk='screen -X quit -S'
+alias zK='screen -wipe'
+alias zz='screen -c ~/.screenrc_detach'
+
+alias diff='diff --color=auto'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
+alias fd='fdfind -i --hidden'
+alias rg='rg -i --hidden'
+
+alias vi='nvim'
+alias vim='nvim'
+
+alias gs='git status'
+alias gl='git log --oneline'
+alias ga='git add'
+alias gall='git add .'
+alias gb='git branch -a'
+alias gc='git commit -s'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gsh='git stash'
+
+alias rs='repo status'
+alias rsc='repo sync -c -j $(nproc)'
+alias rd='repo diff'
+
+for i in {1..10}; do
+    alias .${i}="up_dir $i"
+done
 
 declare -A pkgs=(
     # first party apps
@@ -126,20 +173,3 @@ declare -A intents=(
     # dummy apps to make others cached
     ["calculator"]="com.google.android.calculator/com.android.calculator2.Calculator"
 )
-
-function log_bash_persistent_history()
-{
-    [[
-        $(history 1) =~ ^\ *[0-9]+\ +([^\ ]+\ [^\ ]+)\ +(.*)$
-    ]]
-    local date_part="${BASH_REMATCH[1]}"
-    local command_part="${BASH_REMATCH[2]}"
-    if [ "$command_part" != "$PERSISTENT_HISTORY_LAST" ]
-    then
-        echo $date_part "|" "$command_part" >> ~/.persistent_history
-        export PERSISTENT_HISTORY_LAST="$command_part"
-    fi
-}
-
-PROMPT_COMMAND="log_bash_persistent_history; $PROMPT_COMMAND"
-. "$HOME/.cargo/env"

@@ -1040,7 +1040,7 @@
   numpad:microsoft		=	+numpad(microsoft)
   numpad:shift3			=	+numpad(shift3)
 
-// My customize rules.
+// My customized rules.
 
 ! option           = symbols
 emacs:filco        = +emacs(filco)

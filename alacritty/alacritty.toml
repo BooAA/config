@@ -1,6 +1,5 @@
 # Configuration for alacritty
 
-import = ["~/.config/alacritty/zenburn.toml"]
 ipc_socket = true
 live_config_reload = true
 shell = "/usr/bin/bash"
@@ -55,6 +54,6 @@ class = { instance = "Alacritty", general = "Alacritty" }
 decorations = "None"
 decorations_theme_variant = "None" # Dark | Light | None
 dynamic_title = true
-# opacity = 0.95
+opacity = 0.95
 startup_mode = "Windowed" # Windowed | Maximized | Fullscreen
 title = "Alacritty"

@@ -1,7 +1,0 @@
-#!/bin/sh
-
-SOURCE_DIR="$(dirname -- "$0")"
-AWRIT_LIB_PREFIX="@AWRIT_LIB_PREFIX@"
-AWRIT_BIN="@AWRIT_BIN@"
-
-exec "${AWRIT_LIB_PREFIX:=$SOURCE_DIR}/$AWRIT_BIN" "$@"
