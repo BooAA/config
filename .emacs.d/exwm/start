@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Set keyboard repeat rate.
+xset r rate 190 75
+
+# Set default cursor.
+xsetroot -cursor_name left_ptr
+
+# specify input method
+export XMODIFIERS=@im=fcitx
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+
+# export GDK_SCALE=2
+# export QT_SCALE_FACTOR=2
+# export QT_AUTO_SCREEN_SCALE_FACTOR=0
+
+# some useful trays and daemons
+fcitx5 &
+# blueman-tray &
+# nm-applet &
+# volumeicon &
+# xfce4-power-manager &
+# xmodmap /usr/local/google/home/liangjlee/.Xmodmap
+
+# Disable access control for the current user.
+xhost +SI:localuser:$USER
+
+# Make Java applications aware this is a non-reparenting window manager.
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+# pre-settings for different profile
+exwm_profile="/usr/local/google/home/liangjlee/.emacs.d/exwm/profile"
+for f in $exwm_profile/*/init.sh; do
+    sh $f
+done
+
+# launch emacs and enable exwm
+# LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH emacs --daemon --eval "(exwm-enable)"
+# exec emacsclient -c
+LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH emacs --eval "(progn (exwm-enable) (server-start))"

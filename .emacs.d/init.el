@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
-;;; package.el, use-package, and no-littering
+;;; Package management and init file benchmark
 
 (require 'package)
 (require 'use-package)
@@ -12,6 +12,7 @@
 
 (setopt package-selected-packages
         '(bash-completion
+          benchmark-init
           bluetooth
           bufferlo
           company
@@ -19,10 +20,8 @@
           consult-company
           consult-eglot
           coterm
-          crazy-theme
           crux
           debbugs
-          detached
           doom-themes
           easy-kill
           eat
@@ -41,21 +40,25 @@
           helm-company
           helm-gtags
           helm-themes
+          howdoyou
           ibuffer-vc
           insecure-lock
           keycast
+          lsp-mode
           magit
           marginalia
           md4rd
           move-dup
+          naysayer-theme
           no-littering
           notmuch
           orderless
+          org-gcal
+          osm
           pdf-tools
           project-shells
           projectile
           pulseaudio-control
-          scrot
           sly
           spacemacs-theme
           speed-type
@@ -63,16 +66,23 @@
           telega
           transmission
           urgrep
-          vertico          
+          vertico
           vterm
           wgrep
-          winum          
+          winum
           zenburn-theme))
 
+(dolist (p package-selected-packages)
+  (unless (package-installed-p p)
+   (package-install p)))
+
 (setopt use-package-always-defer t
-        use-package-always-ensure t
         use-package-compute-statistics t
         use-package-expand-minimally t)
+
+(use-package benchmark-init
+  :demand t
+  :hook (after-init . benchmark-init/deactivate))
 
 (use-package no-littering :demand t)
 
@@ -99,365 +109,47 @@
   (scroll-preserve-screen-position t)
   (use-short-answers t)
   (user-full-name "Jack Lee")
+  (visible-cursor nil)
 
   ;; startup.el
   (inhibit-startup-screen t)
-  (user-mail-address "liangjlee@google.com"))
+  (user-mail-address "liangjlee@google.com")
+  :bind
+  ("M-R" . raise-sexp))
 
-;;; Built-in packages
+;;; Configuration for each package
 
 (use-package apropos
-  :ensure nil
   :bind
   ("C-h /" . apropos)
   ("C-h u" . apropos-user-option))
 
 (use-package autorevert
-  :ensure nil
   :custom
   (auto-revert-verbose nil)
   (global-auto-revert-non-file-buffers t)
   :hook
   (after-init . global-auto-revert-mode))
 
+(use-package bash-completion
+  :hook (after-init . bash-completion-setup))
+
 (use-package battery
-  :ensure nil
-  :custom (battery-load-low 20)
-  :demand t)
+  :custom (battery-load-low 20))
+
+(use-package bluetooth
+  :custom (bluetooth-bluez-bus :system))
 
 (use-package browse-url
-  :ensure nil
-  :preface
-  (defun xwidget-webkit-browse-url-new-session (url &optional args)
-    (xwidget-webkit-browse-url url t))
   :custom
-  (browse-url-browser-function #'xwidget-webkit-browse-url-new-session)
+  (browse-url-browser-function #'browse-url-chrome)
+  (browse-url-chrome-arguments '("--new-window"))
   :bind
   ("C-c z ." . browse-url-at-point)
   ("C-c z b" . browse-url-of-buffer)
   ("C-c z r" . browse-url-of-region)
   ("C-c z u" . browse-url)
   ("C-c z v" . browse-url-of-file))
-
-(use-package c-ts-mode
-  :ensure nil
-  :custom
-  (c-ts-mode-indent-offset 8)
-  (c-ts-mode-indent-style 'linux)
-  :demand t
-  :config
-  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode)))
-
-(use-package cc-mode
-  :ensure nil
-  :custom
-  (c-default-style
-   '((c-mode . "linux")
-     (c++-mode . "stroustrup")
-     (java-mode . "java")
-     (awk-mode . "awk")
-     (other . "gnu"))))
-
-(use-package comint
-  :ensure nil
-  :init
-  (add-hook 'comint-output-filter-functions #'comint-osc-process-output))
-
-(use-package custom
-  :ensure nil
-  :init (setq custom--inhibit-theme-enable nil))
-
-(use-package delsel
-  :ensure nil
-  :hook (after-init . delete-selection-mode))
-
-(use-package dired
-  :ensure nil
-  :custom
-  (dired-auto-revert-buffer t)
-  (dired-dwim-target t)
-  (dired-recursive-copies 'always)
-  (dired-recursive-deletes 'always))
-
-(use-package eglot
-  :ensure nil
-  :custom
-  (eglot-autoshutdown t)
-  (eglot-connect-timeout 10)
-  (eglot-events-buffer-size 0)
-  (eglot-extend-to-xref t)
-  (eglot-ignored-server-capabilites '(:inlayHintProvider))
-  (eglot-sync-connect nil))
-
-(use-package eldoc
-  :ensure nil
-  :custom
-  (eldoc-echo-area-display-truncation-message nil)
-  (eldoc-echo-area-use-multiline-p nil))
-
-(use-package elec-pair
-  :ensure nil
-  :custom (electric-pair-open-newline-between-pairs t)
-  :hook (after-init . electric-pair-mode))
-
-(use-package eshell
-  :ensure nil
-  :custom
-  (eshell-prefer-lisp-functions t)
-  (eshell-prefer-lisp-variables t)
-  :config
-  (add-to-list 'eshell-modules-list 'eshell-tramp))
-
-(use-package eww
-  :ensure nil
-  :custom (eww-auto-rename-buffer 'title))
-
-(use-package files
-  :ensure nil
-  :custom
-  (auto-save-default nil)
-  (confirm-kill-emacs nil)
-  (confirm-kill-processes nil)
-  (make-backup-files nil))
-
-(use-package find-dired
-  :ensure nil
-  :bind (:map search-map ("f" . find-named-dired)))
-
-(use-package flymake
-  :ensure nil
-  :custom (flymake-wrap-around t)
-  :bind (:map flymake-mode-map
-              ("H-n" . flymake-goto-next-error)
-              ("H-p" . flymake-goto-prev-error)))
-
-(use-package frame
-  :ensure nil
-  :custom (blink-cursor-mode nil))
-
-(use-package gdb-mi
-  :ensure nil
-  :custom
-  (gdb-many-windows t)
-  (gdb-restore-window-configuration-after-quit t))
-
-(use-package gnus
-  :ensure nil
-  :custom
-  (gnus-select-method '(nnimap "imap.gmail.com"))
-  (gnus-secondary-select-methods
-   '((nntp "news.gmane.io")
-     (nntp "nntp.lore.kernel.org"))))
-
-(use-package grep
-  :ensure nil
-  :custom (grep-template "ugrep --color=always -0Iinr -e <R>")
-  :bind (:map search-map
-              ("g" . lgrep)
-              ("G" . rgrep)))
-
-(use-package help
-  :ensure nil
-  :custom (help-window-keep-selected t))
-
-(use-package hippie-exp
-  :ensure nil
-  :custom
-  (hippie-expand-try-functions-list '(try-complete-file-name
-                                      try-expand-dabbrev
-                                      try-expand-dabbrev-all-buffers
-                                      try-expand-dabbrev-from-kill
-                                      try-expand-line
-                                      try-expand-line-all-buffers
-                                      try-expand-whole-kill
-                                      try-complete-lisp-symbol
-                                      try-expand-list
-                                      try-expand-list-all-buffers))
-  (hippie-expand-verbose nil)
-  :bind ("M-/" . hippie-expand))
-
-(use-package ibuffer
-  :ensure nil
-  :custom
-  (ibuffer-default-sorting-mode 'major-mode)
-  (ibuffer-show-empty-filter-groups nil)
-  :bind ("C-x C-b" . ibuffer))
-
-(use-package isearch
-  :ensure nil
-  :custom
-  (lazy-highlight-initial-delay 0.1)
-  (isearch-lazy-count t)
-  (isearch-resume-in-command-history t)
-  (isearch-wrap-pause 'no))
-
-(use-package isearchb
-  :ensure nil
-  :bind ("C-." . isearchb-activate))
-
-(use-package lua-ts-mode
-  :ensure nil
-  :mode "\\.lua\\'")
-
-(use-package mb-depth
-  :ensure nil
-  :hook (after-init . minibuffer-depth-indicate-mode))
-
-(use-package midnight
-  :ensure nil
-  :hook (after-init . midnight-mode))
-
-(use-package minibuffer
-  :ensure nil
-  :custom
-  (completion-category-overrides '((eglot (styles basic flex))))
-  (completions-max-height (round (* (frame-height) 0.3)))
-  (read-file-name-completion-ignore-case t))
-
-(use-package misc
-  :ensure nil
-  :bind ("C-<return>" . duplicate-line))
-
-(use-package novice
-  :ensure nil
-  :init (setq disabled-command-function nil))
-
-(use-package pixel-scroll
-  :ensure nil
-  :hook (after-init . pixel-scroll-precision-mode))
-
-(use-package project
-  :ensure nil
-  :preface
-  (defun project-try-override (path)
-    "Search for .project file as project root"
-    (when-let ((root (locate-dominating-file path ".project")))
-      (cons 'transient (expand-file-name root))))
-  :config
-  (add-to-list 'project-find-functions #'project-try-override))
-
-(use-package recentf
-  :ensure nil
-  :custom (recentf-max-saved-items nil)
-  :bind ("C-c f" . recentf-open-files)
-  :hook (after-init . recentf-mode))
-
-(use-package repeat
-  :ensure nil
-  :hook (after-init . repeat-mode))
-
-(use-package replace
-  :ensure nil
-  :bind ("C-%" . replace-regexp))
-
-(use-package savehist
-  :ensure nil
-  :hook (after-init . savehist-mode))
-
-(use-package sendmail
-  :ensure nil
-  :custom (send-mail-function 'smtpmail-send-it))
-
-(use-package shell
-  :ensure nil
-  :custom
-  (explicit-shell-file-name "/bin/bash")
-  (shell-has-auto-cd nil))
-
-(use-package shr
-  :ensure nil
-  :custom
-  (shr-discard-aria-hidden t)
-  (shr-use-fonts nil)
-  (shr-use-xwidgets-for-media t))
-
-(use-package simple
-  :ensure nil
-  :custom
-  (indent-tabs-mode nil)
-  (backward-delete-char-untabify-method nil)
-  (completion-show-help nil)
-  :hook
-  (after-init . line-number-mode)
-  (after-init . column-number-mode))
-
-(use-package smtpmail
-  :ensure nil
-  :custom
-  (smtpmail-smtp-server "smtp.gmail.com")
-  (smtpmail-smtp-service 587))
-
-(use-package so-long
-  :ensure nil
-  :hook (after-init . global-so-long-mode))
-
-(use-package syntax
-  :ensure nil
-  :custom (syntax-wholeline-max 1000))
-
-(use-package tab-bar
-  :ensure nil
-  :custom
-  (tab-bar-close-button-show nil)
-  (tab-bar-new-button nil)
-  (tab-bar-new-tab-choice "*scratch*")
-  (tab-bar-select-tab-modifiers '(hyper))
-  (tab-bar-show nil)
-  :hook (after-init . tab-bar-mode))
-
-(use-package treesit
-  :ensure nil
-  :custom (treesit-font-lock-level 2))
-
-(use-package uniquify
-  :ensure nil
-  :custom
-  (uniquify-after-kill-buffer-p t)
-  (uniquify-buffer-name-style 'forward)
-  (uniquify-separator "/"))
-
-(use-package windmove
-  :ensure nil
-  :custom
-  (windmove-default-keybindings '([ignore] hyper))
-  (windmove-delete-default-keybindings '([?\H-x] shift))
-  (windmove-display-default-keybindings '([?\H-x]))
-  (windmove-swap-states-default-keybindings '([ignore] hyper shift))
-  (windmove-wrap-around t)
-  :hook
-  (after-init . windmove-mode))
-
-(use-package window
-  :ensure nil
-  :custom (switch-to-buffer-obey-display-actions t))
-
-(use-package window-divider
-  :ensure nil
-  :custom
-  (window-divider-default-bottom-width 4)
-  (window-divider-default-right-width 4)
-  :hook (after-init . window-divider-mode))
-
-(use-package winner
-  :ensure nil
-  :hook (after-init . winner-mode))
-
-(use-package xref
-  :ensure nil
-  :custom
-  (xref-after-jump-hook '(xref-pulse-momentarily))
-  (xref-search-program 'ripgrep)
-  (xref-truncation-width 100))
-
-;;; Third-party packages
-
-(use-package bash-completion
-  :hook (after-init . bash-completion-setup))
-
-(use-package bluetooth
-  :custom (bluetooth-bluez-bus :system))
 
 (use-package bufferlo
   :bind
@@ -467,6 +159,24 @@
   ("C-c b c" . bufferlo-clear)
   ("C-c b f" . bufferlo-find-buffer-switch)
   :hook (after-init . bufferlo-mode))
+
+(use-package c-ts-mode
+  :custom
+  (c-ts-mode-indent-offset 8)
+  (c-ts-mode-indent-style 'linux))
+
+(use-package cc-mode
+  :custom
+  (c-default-style
+   '((c-mode . "linux")
+     (c++-mode . "stroustrup")
+     (java-mode . "java")
+     (awk-mode . "awk")
+     (other . "gnu"))))
+
+(use-package comint
+  :init
+  (add-hook 'comint-output-filter-functions #'comint-osc-process-output))
 
 (use-package company
   :custom
@@ -523,12 +233,41 @@
   ("C-S-<return>" . crux-smart-open-line-above)
   ("S-<return>" . crux-smart-open-line))
 
+(use-package custom
+  :init (setq custom--inhibit-theme-enable nil))
+
 (use-package debbugs)
+
+(use-package delsel
+  :hook (after-init . delete-selection-mode))
+
+(use-package dired
+  :custom
+  (dired-auto-revert-buffer t)
+  (dired-dwim-target t)
+  (dired-recursive-copies 'always)
+  (dired-recursive-deletes 'always))
 
 (use-package doom-themes)
 
+(use-package eaf
+  :load-path "site-lisp/eaf"
+  :bind
+  ("C-c e /" . eaf-search-it)
+  ("C-c e s" . eaf-open-pyqterminal)
+  :config
+  (require 'eaf-browser)
+  (require 'eaf-pyqterminal)
+  (require 'eaf-video-player)
+  (require 'eaf-image-viewer)
+  (require 'eaf-markdown-previewer)
+  (require 'eaf-org-previewer)
+  (require 'eaf-system-monitor)
+
+  (setopt eaf-pyqterminal-font-size 11))
+
 (use-package easy-kill
-  :bind ([remap kill-region-save] . easy-kill))
+  :bind ([remap kill-ring-save] . easy-kill))
 
 (use-package eat)
 
@@ -536,30 +275,56 @@
   :custom
   (echo-bar-format '((:eval (ednc-top-notification)) " "
                      "[ "
-                     (:eval (battery-format "%b%p%%%" (battery-upower)))
-                     " | "
+                     ;; (:eval (battery-format "%b%p%%%" (battery-upower)))
+                     ;; " | "
                      (:eval (format-time-string "%a %b %d | %H:%M"))
                      " ]"))
   (echo-bar-minibuffer nil)
   (echo-bar-right-padding 1)
   (echo-bar-update-interval 2)
-  :hook
-  (after-init . echo-bar-mode))
+  :hook (after-init . echo-bar-mode))
 
 (use-package ednc
   :preface
   (defun ednc-top-notification ()
     (if-let ((notification (car (ednc-notifications))))
         (ednc-format-notification notification)
-      ""))  
+      ""))
   :hook
   (after-init . ednc-mode))
+
+(use-package edraw
+  :vc (:url "https://github.com/misohena/el-easydraw"))
+
+(use-package eglot
+  :custom
+  (eglot-autoshutdown t)
+  (eglot-connect-timeout 10)
+  (eglot-events-buffer-size 0)
+  (eglot-extend-to-xref t)
+  (eglot-ignored-server-capabilites '(:inlayHintProvider
+                                      :documentFormattingProvider
+                                      :documentRangeFormattingProvider
+                                      :documentOnTypeFormattingProvider))
+  (eglot-sync-connect nil))
+
+(use-package eglot-hierarchy
+  :vc (:url "https://github.com/dolmens/eglot-hierarchy"))
+
+(use-package eldoc
+  :custom
+  (eldoc-echo-area-display-truncation-message nil)
+  (eldoc-echo-area-use-multiline-p nil))
+
+(use-package elec-pair
+  :custom (electric-pair-open-newline-between-pairs t)
+  :hook (after-init . electric-pair-mode))
 
 (use-package elfeed
   :custom
   (elfeed-feeds '(("https://planet.lisp.org/rss20.xml" lisp)
-                           ("https://sachachua.com/blog/category/emacs-news/feed/" emacs)
-                           ("https://lwn.net/headlines/rss" linux)))
+                  ("https://sachachua.com/blog/category/emacs-news/feed/" emacs)
+                  ("https://lwn.net/headlines/rss" linux)))
   (elfeed-search-filter "@3days-ago +unread"))
 
 (use-package engine-mode
@@ -569,39 +334,39 @@
   (defengine google
     "https://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
     :keybinding "/")
-  
+
   (defengine moma
     "https://moma.corp.google.com/search?q=%s"
     :keybinding "m")
-  
+
   (defengine aosp
     "https://android-review.git.corp.google.com/q/%s"
     :keybinding "a o s p")
-  
+
   (defengine android
     "https://googleplex-android-review.git.corp.google.com/q/%s"
     :keybinding "a g")
-  
+
   (defengine partner-android
     "https://partner-android-review.git.corp.google.com/q/%s"
     :keybinding "p a")
-  
+
   (defengine buganizer
     "https://b.corp.google.com/issues?q=%s"
     :keybinding "b")
-  
+
   (defengine youtube
     "https://www.youtube.com/results?aq=f&oq=&search_query=%s"
     :keybinding "y")
-  
+
   (defengine stack-overflow
     "https://stackoverflow.com/search?q=%s"
     :keybinding "s")
-  
+
   (defengine wikipedia
   "https://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
   :keybinding "w")
-  
+
   (defengine github
     "https://github.com/search?ref=simplesearch&q=%s"
     :keybinding "g"))
@@ -609,32 +374,42 @@
 (use-package enwc
   :custom (enwc-default-backend 'nm))
 
+(use-package eshell
+  :custom
+  (eshell-prefer-lisp-functions t)
+  (eshell-prefer-lisp-variables t)
+  :config
+  (add-to-list 'eshell-modules-list 'eshell-tramp))
+
 (use-package evil
   :init (setq evil-disable-insert-state-bindings t))
+
+(use-package eww
+  :custom (eww-auto-rename-buffer 'title))
 
 (use-package exwm
   :preface
   (defun exwm-run-command-async (command)
     (interactive (list (read-shell-command "$ ")))
     (start-process-shell-command command nil command))
-  
+
   (defun exwm-rename-buffer-title ()
     (exwm-workspace-rename-buffer exwm-title))
   :commands exwm-enable
   :custom
   (exwm-input-global-keys
    `(([?\s-L] . insecure-lock-enter)
-     ([?\s-r] . exwm-run-command-async)
+     ([?\H-r] . exwm-run-command-async)
      ,@(mapcar (lambda (i)
-                 `(,(kbd (format "s-%d" i)) .
+                 `(,(kbd (format "H-%d" i)) .
                    (lambda ()
                      (interactive)
                      (tab-bar-select-tab ,i))))
                (number-sequence 1 8))
-     ([?\s-9] . tab-last)
-     ([s-f1] . pulseaudio-control-toggle-current-sink-mute)
-     ([s-f2] . pulseaudio-control-decrease-sink-volume)
-     ([s-f3] . pulseaudio-control-increase-sink-volume)
+     ([?\H-9] . tab-last)
+     ([H-f1] . pulseaudio-control-toggle-current-sink-mute)
+     ([H-f2] . pulseaudio-control-decrease-sink-volume)
+     ([H-f3] . pulseaudio-control-increase-sink-volume)
      ([S-s-f1] . pulseaudio-control-toggle-current-source-mute)
      ([S-s-f2] . pulseaudio-control-decrease-source-volume)
      ([S-s-f3] . pulseaudio-control-increase-source-volume)
@@ -648,13 +423,12 @@
                        `(,(kbd (format "s-x S-<%s>" dir)) .
                          ,(intern-soft (format "windmove-delete-%s" dir)))))
                '("up" "down" "left" "right"))
-     ([s-f5] . exwm-reset)
-     ([print] . scrot)))
+     ([H-f5] . exwm-reset)
+     ([H-print] . scrot)))
   :hook
   (exwm-update-title . exwm-rename-buffer-title))
 
 (use-package exwm-randr
-  :ensure nil
   :preface
   (defun exwm-change-screen-hook ()
     (let ((xrandr-output-regexp "\n\\([^ ]+\\) connected ")
@@ -671,13 +445,40 @@
            "xrandr" nil nil nil
            "--output" (match-string 1) "--primary" "--auto"
            "--output" default-output "--off")
-          (setq exwm-randr-workspace-monitor-plist (list 0 (match-string 1)))))))  
+          (setq exwm-randr-workspace-monitor-plist (list 0 (match-string 1)))))))
   :hook
   (after-init . exwm-randr-enable)
-  (exwm-randr-screen-change . exwm-change-screen-hook))
+  ;; (exwm-randr-screen-change . exwm-change-screen-hook)
+  )
+
+(use-package files
+  :custom
+  (auto-save-default nil)
+  (confirm-kill-emacs nil)
+  (confirm-kill-processes nil)
+  (make-backup-files nil))
+
+(use-package find-dired
+  :bind (:map search-map ("F" . find-name-dired)))
+
+(use-package flymake
+  :custom
+  (flymake-wrap-around t)
+  :bind
+  (:map flymake-mode-map
+        ("H-n" . flymake-goto-next-error)
+        ("H-p" . flymake-goto-prev-error)))
+
+(use-package frame
+  :custom (blink-cursor-mode nil))
 
 (use-package gcmh
   :hook (emacs-startup . gcmh-mode))
+
+(use-package gdb-mi
+  :custom
+  (gdb-many-windows t)
+  (gdb-restore-window-configuration-after-quit t))
 
 (use-package ggtags
   :custom
@@ -708,6 +509,20 @@
   :hook
   (c-mode . ggtags-mode))
 
+(use-package gnus
+  :custom
+  (gnus-select-method '(nnimap "imap.gmail.com"))
+  (gnus-secondary-select-methods
+   '((nntp "news.gmane.io")
+     (nntp "nntp.lore.kernel.org"))))
+
+(use-package google-sendgmr
+  :load-path
+  "/usr/share/emacs/site-lisp/emacs-google-config/devtools/editors/emacs/"
+  :custom
+  (send-mail-function #'google-sendgmr-send-it)
+  (message-send-mail-function #'google-sendgmr-send-it))
+
 (use-package google-translate
   :custom
   (google-translate-default-source-language "auto")
@@ -717,6 +532,12 @@
   ("C-c t q" . google-translate-query-translate)
   ("C-c t s" . google-translate-smooth-translate)
   ("C-c t ." . google-translate-at-point))
+
+;; (use-package grep
+;;   :custom (grep-template "ugrep --color=always -0Iinr -e <R>")
+;;   :bind (:map search-map
+;;               ("g" . lgrep)
+;;               ("G" . rgrep)))
 
 (use-package hackernews)
 
@@ -748,6 +569,36 @@
 
 (use-package helm-themes)
 
+(use-package help
+  :custom (help-window-keep-selected t))
+
+(use-package hippie-exp
+  :custom
+  (hippie-expand-try-functions-list '(try-complete-file-name
+                                      try-expand-dabbrev
+                                      try-expand-dabbrev-all-buffers
+                                      try-expand-dabbrev-from-kill
+                                      try-expand-line
+                                      try-expand-line-all-buffers
+                                      try-expand-whole-kill
+                                      try-complete-lisp-symbol
+                                      try-expand-list
+                                      try-expand-list-all-buffers))
+  (hippie-expand-verbose nil)
+  :bind ("M-/" . hippie-expand))
+
+(use-package howdoyou
+  :custom
+  (howdoyou-max-history 30)
+  (howdoyou-number-of-answers 5)
+  (howdoyou-switch-to-answer-buffer t))
+
+(use-package ibuffer
+  :custom
+  (ibuffer-default-sorting-mode 'major-mode)
+  (ibuffer-show-empty-filter-groups nil)
+  :bind ("C-x C-b" . ibuffer))
+
 (use-package ibuffer-vc
   :preface
   (defun ibuffer-vc-setup ()
@@ -761,12 +612,35 @@
 
 (use-package insecure-lock)
 
+(use-package isearch
+  :custom
+  (lazy-highlight-initial-delay 0.1)
+  (isearch-lazy-count t)
+  (isearch-resume-in-command-history t)
+  (isearch-wrap-pause 'no)
+  :bind
+  (:map isearch-mode-map
+        ("DEL" . isearch-del-char)
+        ("C-M-d" . isearch-delete-char)
+        ("C-g" . isearch-cancel)))
+
+(use-package isearchb
+  :bind ("C-." . isearchb-activate))
+
 (use-package keycast)
+
+(use-package lsp-mode)
+
+(use-package lua-ts-mode
+  :mode ("\\.lua\\'" . lua-ts-mode))
 
 (use-package magit)
 
 (use-package marginalia
   :bind (:map vertico-map ("M-A" . marginalia-cycle)))
+
+(use-package mb-depth
+  :hook (after-init . minibuffer-depth-indicate-mode))
 
 (use-package md4rd
   :custom
@@ -777,14 +651,25 @@
      lisp
      unixporn)))
 
+(use-package midnight
+  :hook (after-init . midnight-mode))
+
+(use-package minibuffer
+  :custom
+  (completion-category-overrides '((eglot (styles basic flex))))
+  (completions-max-height (round (* (frame-height) 0.3)))
+  (read-file-name-completion-ignore-case t))
+
+(use-package misc
+  :bind ("C-<return>" . duplicate-line))
+
 (use-package move-dup
   :bind
   ("M-<down>" . move-dup-move-lines-down)
   ("M-<up>" . move-dup-move-lines-up))
 
 (use-package mu4e
-  :ensure nil
-  :load-path "/usr/share/emacs/site-lisp/mu4e"
+  :load-path "/usr/local/share/emacs/site-lisp/mu4e"
   :custom
   (mu4e-completing-read-function 'completing-read)
   (mu4e-confirm-quit nil)
@@ -797,6 +682,8 @@
   (mu4e-use-fancy-chars t)
   :commands
   mu4e)
+
+(use-package naysayer-theme)
 
 (use-package notmuch
   :custom
@@ -813,9 +700,28 @@
   (notmuch-search-oldest-first nil)
   (notmuch-show-empty-saved-searches t))
 
+(use-package novice
+  :init (setq disabled-command-function nil))
+
 (use-package orderless)
 
+(use-package org-gcal)
+
+(use-package osm)
+
 (use-package pdf-tools)
+
+(use-package pixel-scroll
+  :hook (after-init . pixel-scroll-precision-mode))
+
+(use-package project
+  :preface
+  (defun project-try-override (path)
+    "Search for .project file as project root"
+    (when-let ((root (locate-dominating-file path ".project")))
+      (cons 'transient (expand-file-name root))))
+  :config
+  (add-to-list 'project-find-functions #'project-try-override))
 
 (use-package project-shells
   :custom
@@ -825,7 +731,7 @@
   :hook
   (after-init . global-project-shells-mode))
 
-(use-package projectile :demand t)
+(use-package projectile)
 
 (use-package pulseaudio-control
   :custom
@@ -834,14 +740,59 @@
   (after-init . pulseaudio-control-default-sink-mode)
   (after-init . pulseaudio-control-default-source-mode))
 
+(use-package recentf
+  :custom (recentf-max-saved-items nil)
+  :bind ("C-c f" . recentf-open-files)
+  :hook (after-init . recentf-mode))
+
+(use-package repeat
+  :hook (after-init . repeat-mode))
+
+(use-package replace
+  :bind ("C-%" . replace-regexp))
+
+(use-package savehist
+  :hook (after-init . savehist-mode))
+
 (use-package scrot
   :vc (:url "https://github.com/dakra/scrot.el.git")
   :custom
   (scrot-local-path "~/Pictures/Screenshots/")
   (scrot-upload-func nil))
 
+;; (use-package sendmail
+;;   :custom (send-mail-function 'smtpmail-send-it))
+
+(use-package shell
+  :custom
+  (explicit-shell-file-name "/bin/bash")
+  (shell-has-auto-cd nil))
+
+(use-package shr
+  :custom
+  (shr-discard-aria-hidden t)
+  (shr-use-fonts nil)
+  (shr-use-xwidgets-for-media t))
+
+(use-package simple
+  :custom
+  (indent-tabs-mode nil)
+  (backward-delete-char-untabify-method nil)
+  (completion-show-help nil)
+  :hook
+  (after-init . line-number-mode)
+  (after-init . column-number-mode))
+
 (use-package sly
   :custom (inferior-lisp-program "sbcl"))
+
+(use-package smtpmail
+  :custom
+  (smtpmail-smtp-server "smtp.gmail.com")
+  (smtpmail-smtp-service 587))
+
+(use-package so-long
+  :hook (after-init . global-so-long-mode))
 
 (use-package spacemacs-theme)
 
@@ -849,23 +800,41 @@
 
 (use-package sx)
 
+(use-package syntax
+  :custom (syntax-wholeline-max 1000))
+
+(use-package tab-bar
+  :custom
+  (tab-bar-close-button-show nil)
+  (tab-bar-new-button nil)
+  (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-select-tab-modifiers '(hyper))
+  (tab-bar-show nil)
+  :hook (after-init . tab-bar-mode))
+
 (use-package telega)
 
-(use-package tramp
-  :defer nil
-  :config
-  (setq tramp-default-remote-shell "/bin/bash"
-        tramp-ssh-controlmaster-options
-        "-o ControlPath=%%C -o ControlMaster=auto -o ControlPersist=yes"))
+;; (use-package tramp
+;;   :defer nil
+;;   :config
+;;   (setq tramp-default-remote-shell "/bin/bash"
+;;         tramp-ssh-controlmaster-options
+;;         "-o ControlPath=%%C -o ControlMaster=auto -o ControlPersist=yes"))
 
 (use-package transmission)
 
+(use-package uniquify
+  :custom
+  (uniquify-after-kill-buffer-p t)
+  (uniquify-buffer-name-style 'forward)
+  (uniquify-separator "/"))
+
 (use-package urgrep
   :custom
-  (urgrep-preferred-tools '(ripgrep))
+  (urgrep-preferred-tools '(ripgrep ugrep git-grep grep))
   (urgrep-search-regexp t)
   :bind
-  ("M-s u" . urgrep))
+  ("M-s G" . urgrep))
 
 (use-package vertico
   :preface
@@ -877,14 +846,13 @@
           (global-set-key (kbd "C-x c") 'consult-command-map))
       (marginalia-mode -1)
       (delq 'orderless completion-styles)
-      (global-set-key (kbd "C-x c") 'helm-command-prefix)))  
+      (global-set-key (kbd "C-x c") 'helm-command-prefix)))
   :custom
   (vertico-cycle t)
   :hook
   (vertico-mode . vertico-plugin-setup))
 
 (use-package vertico-multiform
-  :ensure nil
   :hook
   (vertico-mode . vertico-multiform-mode)
   :config
@@ -901,40 +869,51 @@
     (add-to-list 'vertico-multiform-commands `(,cmd buffer))))
 
 (use-package vterm
-  :custom (vterm-tramp-shells '(("sshx" "/bin/bash"))))
-
-(use-package webkit
-  :load-path "site-lisp/emacs-webkit/"
-  :commands webkit)
+  :custom
+  (vterm-clear-scrollback-when-clearing t)
+  (vterm-enable-manipulate-selection-data-by-osc52 t)
+  (vterm-max-scrollback 100000)
+  (vterm-timer-delay 0.01)
+  (vterm-tramp-shells '(("ssh" "/bin/bash"))))
 
 (use-package wgrep)
+
+(use-package windmove
+  :custom
+  (windmove-default-keybindings '([ignore] hyper))
+  (windmove-delete-default-keybindings '([?\H-x] shift))
+  (windmove-display-default-keybindings '([?\H-x]))
+  (windmove-swap-states-default-keybindings '([ignore] hyper shift))
+  (windmove-wrap-around t)
+  :hook
+  (after-init . windmove-mode))
+
+(use-package window
+  :custom (switch-to-buffer-obey-display-actions t))
+
+(use-package window-divider
+  :custom
+  (window-divider-default-bottom-width 4)
+  (window-divider-default-right-width 4)
+  :hook (after-init . window-divider-mode))
+
+(use-package winner
+  :hook (after-init . winner-mode))
 
 (use-package winum
   :hook (after-init . winum-mode))
 
-(use-package xwidget
-  :preface
-  (defun xwidget-webkit-zoom-4k ()
-    (when (= (display-pixel-width) 3840)
-      (xwidget-webkit-zoom (xwidget-webkit-current-session) 0.5)))
-  :bind
-  (:map xwidget-webkit-edit-mode-map
-        ("ESC" . xwidget-webkit-edit-mode))
-  :hook
-  (xwidget-webkit-mode . xwidget-webkit-zoom-4k))
-
-(use-package xwwp-ace
-  :load-path "site-lisp/xwwp"
-  :after xwidget
-  :bind (:map xwidget-webkit-mode-map ("t" . xwwp-ace-toggle)))
+(use-package xref
+  :custom
+  (xref-after-jump-hook '(xref-pulse-momentarily))
+  (xref-search-program 'ripgrep)
+  (xref-truncation-width 100))
 
 (use-package zenburn-theme
   :demand t
   :config (load-theme 'zenburn t))
 
-;;; Key bindings and aliases
-
-(global-set-key (kbd "M-R") #'raise-sexp)
+;; ;;; aliases
 
 (defalias 'ev  'emacs-version)
 (defalias 'eit 'emacs-init-time)

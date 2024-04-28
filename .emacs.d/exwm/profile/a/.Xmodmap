@@ -1,0 +1,29 @@
+!file ~/.Xmodmap
+
+! left  Ctrl becomes Super
+keycode 37  = Super_L
+
+! left  Alt  becomes Control 
+keycode 64  = Control_L
+
+! left  Win  becomes Alt
+keycode 133 = Alt_L Meta_L
+
+! right Alt  becomes Control 
+keycode 108 = Control_R
+
+! PrtSc becomes Alt
+keycode 107 = Alt_R Meta_R
+
+! right Ctrl becomes Super
+keycode 105 = Super_R
+
+clear control
+clear mod1
+clear mod3
+clear mod4
+
+add control = Control_L Control_R
+add mod1 = Alt_L Alt_R
+add mod3 = Hyper_L Hyper_R
+add mod4 = Super_L Super_R

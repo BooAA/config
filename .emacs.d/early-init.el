@@ -10,9 +10,9 @@
 
 (push '(fullscreen . maximized) initial-frame-alist)
 
-(set-face-attribute 'default nil
+(set-face-attribute 'default t
                     :family "hack"
-                    :height 110
+                    :height 90
                     :weight 'normal
                     :width 'normal)
 
