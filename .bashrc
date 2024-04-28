@@ -24,6 +24,7 @@ shopt -s checkwinsize
 shopt -s globstar
 shopt -s histappend
 
+CDPATH="${HOME}:${HOME}/Dev/code:${HOME}/Dev/utils:${HOME}/.config:${HOME}/Src"
 HISTCONTROL=ignoreboth
 HISTFILESIZE=100000
 HISTSIZE=100000
@@ -32,6 +33,15 @@ PATH=$PATH:~/.local/bin
 PERSISTENT_HISTORY_LAST=''
 PROMPT_COMMAND="log_bash_persistent_history; $PROMPT_COMMAND"
 PS1="\[\033[01;33m\]\w λ \[\e[0m\]"
+
+XDG_CONFIG_HOME="$HOME/.config"
+XDG_CACHE_HOME="$HOME/.cache"
+XDG_DATA_HOME="$HOME/.local/share"
+XDG_STATE_HOME="$HOME/.local/state"
+
+mkdir_cd() {
+    mkdir $1; cd $1
+}
 
 git_blame_line() {
     local l=$1 f=$2
@@ -57,6 +67,37 @@ log_bash_persistent_history()
     fi
 }
 
+vterm_printf() {
+    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ]); then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
+
+vterm_prompt_end(){
+    vterm_printf "51;A$(whoami)@$(hostname):$(pwd)"
+}
+
+emacs_comint_prompt () {
+    printf "\e]7;file://%s%s\e\\" "$HOSTNAME" "$PWD"
+}
+
+case $INSIDE_EMACS in
+    "vterm")
+        PS1=$PS1'\[$(vterm_prompt_end)\]'
+        ;;
+    "30.0.50,comint")
+        PROMPT_COMMAND="emacs_comint_prompt; $PROMPT_COMMAND"
+        ;;
+    *)
+        ;;
+esac
+
 up_dir() {
     local cnt=$1
     while (( $cnt > 0 )); do
@@ -65,7 +106,13 @@ up_dir() {
     done
 }
 
+clear() {
+    printf '\033[2J\033[3J\033[1;1H'
+}
+
 alias a='adb devices'
+alias ar='adb root'
+alias as='adb shell'
 alias b='git branch'
 alias bl='git_blame_line'
 alias bls='git_log_line'
@@ -76,7 +123,9 @@ alias f='fdfind -i --hidden'
 alias g='rg -i --hidden'
 alias h='cat ~/.persistent_history | rg '
 alias l='git log --oneline'
-alias m='make -j$(nproc)'
+alias m='mkdir'
+alias md='mkdir_cd'
+alias mk='make -j$(nproc)'
 alias q='exit'
 alias s='git status'
 alias z='tmux'
@@ -88,7 +137,7 @@ alias zz='screen -c ~/.screenrc_detach'
 
 alias diff='diff --color=auto'
 alias ls='ls --color=auto'
-alias grep='grep --color=auto'
+alias grep='grep --color=auto -i'
 
 alias fd='fdfind -i --hidden'
 alias rg='rg -i --hidden'
