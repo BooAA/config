@@ -1,0 +1,23 @@
+#!/usr/bin/bash
+
+args=""
+serial=""
+device_cnt=$(adb devices | head -n-1 | tail -n+2 | wc -l)
+
+if [[ ! -z $1 ]]
+then
+	serial=$1
+	args="-s $serial"
+elif [[ $device_cnt = 1 ]]
+then	
+	serial=$(adb devices | head -n-1 | tail -n+2 | awk '{print $1}')
+	args="-s $serial"
+else
+	echo "more than 1 devices and no serial number is give" &> 2
+	exit -1
+fi
+
+adb $args root
+adb $args shell locksettings set-disabled true
+adb $args shell am start -a com.android.setupwizard.FOUR_CORNER_EXIT
+adb $args shell settings put global stay_on_while_plugged_in 7

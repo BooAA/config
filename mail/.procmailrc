@@ -1,0 +1,5 @@
+VERBOSE=on
+DELIVERED=yes
+MAILDIR=$HOME/Mail/Gmail
+DEFAULT=inbox/
+LOGFILE=$HOME/Mail/procmail.log

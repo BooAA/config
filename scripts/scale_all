@@ -1,0 +1,16 @@
+#!/usr/bin/bash
+
+if [[ -z $1 ]]; then
+    echo "No argument is given to scall_all!" >& 2
+    exit 1
+fi
+
+scale=$1
+
+if [ $scale -ne 0 ]; then
+	sed -i "s/WINIT_X11_SCALE_FACTOR.*/WINIT_X11_SCALE_FACTOR: \"${scale}\"/" ~/.config/alacritty/alacritty.yml
+	sed -i "s/Xcursor.size.*/Xcursor.size: $((${scale}*24))/" ~/.Xresources
+	sed -i "s/FontSize=[0-9]*/FontSize=$((${scale}*12))/" ~/.config/fcitx/conf/fcitx-classic-ui.config
+        sed -i "s/GDK_SCALE=.*/GDK_SCALE=${scale}/" ~/.xsessionrc
+        sed -i "s/QT_SCALE_FACTOR=.*/QT_SCALE_FACTOR=${scale}/" ~/.xsessionrc
+fi

@@ -1,0 +1,34 @@
+* xft-fix
+** Description 
+
+The xft module for stumpwm is broken because it doesnt clear the
+cache. This is a fix that creates a timer that will clear that cache
+so it doesnt take up all the memory.
+
+** Usage
+
+Simply place into the modules directory, =load-module= it, then run
+=start-loop=. It will clear the cache every 10 minutes.
+	
+#+BEGIN_SRC lisp
+  (load-module "xft-fix")
+  (xft-fix:start-loop)
+#+END_SRC
+
+If you want to change the repeat timing simply change
+=*clear-font-repeat*= and then execute the start-loop again.
+
+#+BEGIN_SRC lisp
+  (setq xft-fix:*clear-font-repeat* 20)
+  (xft-fix:start-loop)
+#+END_SRC
+
+You can also insert a delay for the timer using =*clear-font-delay*=.
+	
+#+BEGIN_SRC lisp
+  (setq xft-fix:*clear-font-delay* 5)
+  (xft-fix:start-loop)
+#+END_SRC
+
+** License
+GPLv3

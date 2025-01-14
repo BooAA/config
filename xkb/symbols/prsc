@@ -1,0 +1,4 @@
+// Print Screen is mapped to right Alt
+xkb_symbols "alt" {
+    replace key <PRSC> { [ Alt_R ] };
+};

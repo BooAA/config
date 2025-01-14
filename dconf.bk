@@ -1,0 +1,369 @@
+[ca/desrt/dconf-editor]
+saved-pathbar-path='/org/gnome/mutter/experimental-features'
+saved-view='/org/gnome/mutter/experimental-features'
+show-warning=false
+window-height=436
+window-is-maximized=false
+window-width=858
+
+[org/blueman/general]
+window-properties=[1492, 862, 0, 0]
+
+[org/blueman/plugins/recentconns]
+recent-connections=[{'adapter': 'C0:3C:59:C2:40:CE', 'address': '60:F4:3A:F1:45:82', 'alias': 'EDIFIER Uni-Buds R', 'icon': 'audio-headset', 'name': 'Audio and input profiles', 'uuid': '00000000-0000-0000-0000-000000000000', 'time': '1734831054.6453714'}, {'adapter': 'C0:3C:59:C2:40:CE', 'address': '28:FA:19:D3:78:4F', 'alias': 'JBL Flip 5', 'icon': 'audio-card', 'name': 'Audio and input profiles', 'uuid': '00000000-0000-0000-0000-000000000000', 'time': '1735807671.2441232'}]
+
+[org/gnome/Connections]
+first-run=false
+
+[org/gnome/Console]
+audible-bell=false
+ignore-scrollback-limit=false
+last-window-maximised=true
+last-window-size=(838, 418)
+
+[org/gnome/Extensions]
+window-height=810
+window-maximized=false
+window-width=1440
+
+[org/gnome/Snapshot]
+is-maximized=false
+window-height=640
+window-width=800
+
+[org/gnome/calendar]
+active-view='month'
+window-maximized=false
+window-size=(1660, 934)
+
+[org/gnome/control-center]
+last-panel='keyboard'
+window-state=(1920, 971, false)
+
+[org/gnome/desktop/app-folders]
+folder-children=['Utilities', 'YaST', 'Pardus']
+
+[org/gnome/desktop/app-folders/folders/Pardus]
+categories=['X-Pardus-Apps']
+name='X-Pardus-Apps.directory'
+translate=true
+
+[org/gnome/desktop/app-folders/folders/Utilities]
+apps=['org.freedesktop.GnomeAbrt.desktop', 'nm-connection-editor.desktop', 'org.gnome.baobab.desktop', 'org.gnome.Connections.desktop', 'org.gnome.DejaDup.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.Evince.desktop', 'org.gnome.FileRoller.desktop', 'org.gnome.font-viewer.desktop', 'org.gnome.Loupe.desktop', 'org.gnome.seahorse.Application.desktop', 'org.gnome.tweaks.desktop', 'org.gnome.Usage.desktop']
+categories=['X-GNOME-Utilities']
+name='X-GNOME-Utilities.directory'
+translate=true
+
+[org/gnome/desktop/app-folders/folders/YaST]
+categories=['X-SuSE-YaST']
+name='suse-yast.directory'
+translate=true
+
+[org/gnome/desktop/input-sources]
+mru-sources=[('xkb', 'us')]
+sources=[('xkb', 'us')]
+xkb-options=@as []
+
+[org/gnome/desktop/interface]
+color-scheme='default'
+enable-animations=false
+enable-hot-corners=false
+menubar-accel=''
+show-battery-percentage=true
+
+[org/gnome/desktop/notifications]
+application-children=['org-gnome-settings', 'gnome-power-panel', 'org-gnome-console', 'google-chrome', 'org-telegram-desktop', 'firefox', 'org-gnome-nautilus', 'emacs', 'emacsclient', 'alacritty']
+
+[org/gnome/desktop/notifications/application/alacritty]
+application-id='Alacritty.desktop'
+
+[org/gnome/desktop/notifications/application/emacs]
+application-id='emacs.desktop'
+
+[org/gnome/desktop/notifications/application/emacsclient]
+application-id='emacsclient.desktop'
+
+[org/gnome/desktop/notifications/application/firefox]
+application-id='firefox.desktop'
+
+[org/gnome/desktop/notifications/application/gnome-power-panel]
+application-id='gnome-power-panel.desktop'
+
+[org/gnome/desktop/notifications/application/google-chrome]
+application-id='google-chrome.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-console]
+application-id='org.gnome.Console.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-nautilus]
+application-id='org.gnome.Nautilus.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-settings]
+application-id='org.gnome.Settings.desktop'
+
+[org/gnome/desktop/notifications/application/org-telegram-desktop]
+application-id='org.telegram.desktop.desktop'
+
+[org/gnome/desktop/peripherals/touchpad]
+two-finger-scrolling-enabled=true
+
+[org/gnome/desktop/search-providers]
+sort-order=['org.gnome.Settings.desktop', 'org.gnome.Contacts.desktop', 'org.gnome.Nautilus.desktop']
+
+[org/gnome/desktop/session]
+idle-delay=uint32 0
+
+[org/gnome/desktop/wm/keybindings]
+activate-window-menu=@as []
+begin-move=@as []
+begin-resize=@as []
+cycle-group=@as []
+cycle-group-backward=@as []
+cycle-panels=@as []
+cycle-panels-backward=@as []
+cycle-windows=@as []
+cycle-windows-backward=@as []
+maximize=@as []
+minimize=@as []
+move-to-monitor-down=['<Control><Hyper>Down']
+move-to-monitor-left=['<Control><Hyper>Left']
+move-to-monitor-right=['<Control><Hyper>Right']
+move-to-monitor-up=['<Control><Hyper>Up']
+move-to-workspace-1=['<Shift><Hyper>1']
+move-to-workspace-2=['<Shift><Hyper>2']
+move-to-workspace-3=['<Shift><Hyper>3']
+move-to-workspace-4=['<Shift><Hyper>4']
+move-to-workspace-down=@as []
+move-to-workspace-last=@as []
+move-to-workspace-left=@as []
+move-to-workspace-right=@as []
+move-to-workspace-up=@as []
+panel-run-dialog=['<Hyper>r']
+show-desktop=['<Hyper>d']
+switch-applications=@as []
+switch-applications-backward=@as []
+switch-group=@as []
+switch-group-backward=@as []
+switch-input-source=@as []
+switch-input-source-backward=@as []
+switch-panels=@as []
+switch-panels-backward=@as []
+switch-to-workspace-1=['<Hyper>1']
+switch-to-workspace-2=['<Hyper>2']
+switch-to-workspace-3=['<Hyper>3']
+switch-to-workspace-4=['<Hyper>4']
+switch-to-workspace-down=@as []
+switch-to-workspace-last=@as []
+switch-to-workspace-left=@as []
+switch-to-workspace-right=@as []
+switch-to-workspace-up=@as []
+switch-windows=['<Hyper>Tab']
+switch-windows-backward=['<Shift><Hyper>Tab']
+toggle-fullscreen=['<Hyper>F11']
+toggle-maximized=['<Hyper>F10']
+unmaximize=@as []
+
+[org/gnome/desktop/wm/preferences]
+action-right-click-titlebar='none'
+button-layout='appmenu:minimize,maximize,close'
+mouse-button-modifier=''
+
+[org/gnome/epiphany]
+ask-for-default=false
+
+[org/gnome/epiphany/state]
+is-maximized=false
+window-size=(1024, 768)
+
+[org/gnome/evolution-data-server]
+migrated=true
+
+[org/gnome/maps]
+last-viewed-location=[0.0, 0.0]
+map-type='MapsVectorSource'
+transportation-type='pedestrian'
+window-maximized=false
+window-size=[1064, 420]
+zoom-level=2
+
+[org/gnome/mutter]
+dynamic-workspaces=false
+locate-pointer-key=''
+overlay-key=''
+workspaces-only-on-primary=false
+
+[org/gnome/mutter/keybindings]
+toggle-tiled-left=['<Hyper>Left']
+toggle-tiled-right=['<Hyper>Right']
+
+[org/gnome/mutter/wayland/keybindings]
+restore-shortcuts=@as []
+
+[org/gnome/nautilus/preferences]
+default-folder-viewer='icon-view'
+migrated-gtk-settings=true
+search-filter-time-type='last_modified'
+
+[org/gnome/nautilus/window-state]
+initial-size=(1496, 778)
+initial-size-file-chooser=(890, 550)
+maximized=false
+
+[org/gnome/settings-daemon/plugins/color]
+night-light-last-coordinates=(24.981870037967834, 121.4643793)
+night-light-schedule-automatic=false
+
+[org/gnome/settings-daemon/plugins/media-keys]
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']
+help=@as []
+logout=@as []
+magnifier=@as []
+magnifier-zoom-in=@as []
+magnifier-zoom-out=@as []
+screenreader=@as []
+screensaver=@as []
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
+binding='<Shift><Hyper>z'
+command='systemctl suspend'
+name='suspend'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1]
+binding='<Hyper>Return'
+command='alacritty'
+name='alacritty'
+
+[org/gnome/settings-daemon/plugins/power]
+idle-dim=false
+power-button-action='nothing'
+sleep-inactive-ac-type='nothing'
+sleep-inactive-battery-type='nothing'
+
+[org/gnome/shell]
+command-history=['lg']
+disabled-extensions=['apps-menu@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'windowsNavigator@gnome-shell-extensions.gcampax.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'system-monitor@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com']
+enabled-extensions=['dash-to-panel@jderose9.github.com', 'hidetopbar@mathieu.bidon.ca', 'kimpanel@kde.org', 'switcher@landau.fi', 'run-or-raise@edvard.cz']
+favorite-apps=['google-chrome.desktop', 'Alacritty.desktop', 'emacs.desktop', 'org.gnome.Nautilus.desktop', 'org.telegram.desktop.desktop', 'org.gnome.Settings.desktop']
+welcome-dialog-last-shown-version='47.2'
+
+[org/gnome/shell/extensions/apps-menu]
+apps-menu-toggle-menu=@as []
+
+[org/gnome/shell/extensions/dash-to-panel]
+animate-appicon-hover-animation-extent={'RIPPLE': 4, 'PLANK': 4, 'SIMPLE': 1}
+appicon-margin=8
+appicon-padding=4
+available-monitors=[0, 1]
+dot-position='BOTTOM'
+hotkeys-overlay-combo='TEMPORARILY'
+intellihide=true
+leftbox-padding=-1
+multi-monitors=false
+panel-anchors='{"0":"MIDDLE","1":"MIDDLE"}'
+panel-element-positions='{"0":[{"element":"showAppsButton","visible":true,"position":"centered"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":false,"position":"stackedTL"},{"element":"taskbar","visible":true,"position":"centered"},{"element":"centerBox","visible":false,"position":"stackedBR"},{"element":"rightBox","visible":false,"position":"stackedBR"},{"element":"dateMenu","visible":false,"position":"stackedBR"},{"element":"systemMenu","visible":false,"position":"stackedBR"},{"element":"desktopButton","visible":false,"position":"stackedBR"}],"1":[{"element":"showAppsButton","visible":true,"position":"centered"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":false,"position":"stackedTL"},{"element":"taskbar","visible":true,"position":"centered"},{"element":"centerBox","visible":false,"position":"stackedBR"},{"element":"rightBox","visible":false,"position":"stackedBR"},{"element":"dateMenu","visible":false,"position":"stackedBR"},{"element":"systemMenu","visible":false,"position":"stackedBR"},{"element":"desktopButton","visible":false,"position":"stackedBR"}]}'
+panel-lengths='{"0":50,"1":50}'
+panel-sizes='{"0":48,"1":48}'
+primary-monitor=0
+scroll-icon-action='NOTHING'
+scroll-panel-action='NOTHING'
+shortcut=@as []
+shortcut-text=''
+show-apps-icon-file=''
+status-icon-padding=-1
+stockgs-keep-dash=false
+stockgs-keep-top-panel=true
+trans-bg-color='#5e5c64'
+trans-panel-opacity=0.0
+trans-use-custom-bg=false
+trans-use-custom-opacity=true
+trans-use-dynamic-opacity=false
+tray-padding=-1
+window-preview-title-position='TOP'
+
+[org/gnome/shell/extensions/hidetopbar]
+enable-active-window=false
+enable-intellihide=false
+mouse-sensitive=true
+show-in-overview=false
+
+[org/gnome/shell/extensions/run-or-raise]
+minimize-when-unfocused=true
+
+[org/gnome/shell/extensions/screenshot-window-sizer]
+cycle-screenshot-sizes=@as []
+cycle-screenshot-sizes-backward=@as []
+
+[org/gnome/shell/extensions/switcher]
+font-size=uint32 14
+icon-size=uint32 14
+launcher-stats='{"emacs.desktop":3,"org.gnome.Extensions.desktop":14,"gnome-mouse-panel.desktop":1,"org.gnome.tweaks.desktop":2,"gnome-keyboard-panel.desktop":8,"ca.desrt.dconf-editor.desktop":7,"org.gnome.Settings.desktop":2,"fcitx5-configtool.desktop":1,"firefox.desktop":3,"google-chrome.desktop":10,"org.gnome.Console.desktop":1,"org.wezfurlong.wezterm.desktop":1,"kitty.desktop":1,"Alacritty.desktop":2}'
+matching=uint32 1
+max-width-percentage=uint32 70
+ordering=uint32 1
+show-executables=true
+show-switcher=['<Hyper>s']
+
+[org/gnome/shell/keybindings]
+focus-active-notification=@as []
+open-new-window-application-1=@as []
+open-new-window-application-2=@as []
+open-new-window-application-3=@as []
+open-new-window-application-4=@as []
+open-new-window-application-5=@as []
+open-new-window-application-6=@as []
+open-new-window-application-7=@as []
+open-new-window-application-8=@as []
+open-new-window-application-9=@as []
+screenshot=['<Hyper>Print']
+screenshot-window=['<Control>Print']
+shift-overview-down=@as []
+shift-overview-up=@as []
+show-screen-recording-ui=['Pause']
+switch-to-application-1=@as []
+switch-to-application-2=@as []
+switch-to-application-3=@as []
+switch-to-application-4=@as []
+switch-to-application-5=@as []
+switch-to-application-6=@as []
+switch-to-application-7=@as []
+switch-to-application-8=@as []
+switch-to-application-9=@as []
+toggle-application-view=['<Hyper>a']
+toggle-message-tray=@as []
+toggle-overview=@as []
+toggle-quick-settings=@as []
+
+[org/gnome/shell/world-clocks]
+locations=@av []
+
+[org/gnome/software]
+check-timestamp=int64 1736050481
+first-run=false
+flatpak-purge-timestamp=int64 1736056837
+
+[org/gnome/system/location]
+enabled=true
+
+[org/gnome/tweaks]
+show-extensions-notice=false
+
+[org/gtk/gtk4/settings/color-chooser]
+selected-color=(true, 0.36862745881080627, 0.36078432202339172, 0.39215686917304993, 1.0)
+
+[org/gtk/gtk4/settings/file-chooser]
+show-hidden=false
+sort-directories-first=false
+
+[org/gtk/settings/file-chooser]
+date-format='regular'
+location-mode='path-bar'
+show-hidden=false
+show-size-column=true
+show-type-column=true
+sidebar-width=157
+sort-column='name'
+sort-directories-first=false
+sort-order='ascending'
+type-format='category'
+window-position=(1304, 65)
+window-size=(1231, 902)

@@ -1,0 +1,49 @@
+# Configuration file for GNU Screen
+
+# Settings
+altscreen on
+backtick 0 5 5 "/bin/date" '+%Y-%m-%d'
+backtick 1 5 5 "/bin/date" '+%H:%M'
+defscrollback 100000
+hardstatus off
+hardstatus alwayslastline '%{#00ff00}[ %H ][%{#ffffff}%= %{7}%?%-Lw%?%{1;0}%{1}(%{15}%n%f%t%?(%u)%?%{1;0}%{1})%{7}%?%+Lw%?%? %=%{#00ff00}][ %{#00a5ff}%{6}%0` %{#ffffff}%{7}%1`%{#00ff00} ]'
+ignorecase on
+maptimeout 200
+mousetrack on
+startup_message off
+truecolor on
+vbell off
+windowlist string "%4n %h%=%f"
+
+# Key bindings
+unbindall
+escape ^zz
+bind 0 remove
+bind 1 only
+bind 2 split
+bind 3 split -v
+bind : colon
+bind ? help
+bind ' ' copy
+bind ^b windows
+bind ^c quit
+bind b windowlist -b
+bind d detach
+bind f fit
+bind g lastmsg
+bind i info
+bind I dinfo
+bind k kill
+bind l redisplay
+bind n screen
+bind o focus next
+bind O focus prev
+bind r title
+bind t time
+bind w select
+bind y paste. 
+bindkey -m ' ' eval 'stuff \040' 'writebuf' 'exec sh -c "xsel --clipboard --input < /tmp/screen-exchange"'
+bindkey "^[[1;5D" focus left
+bindkey "^[[1;5C" focus right
+bindkey "^[[1;5A" focus up
+bindkey "^[[1;5B" focus down

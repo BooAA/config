@@ -1,0 +1,80 @@
+# Configuration for alacritty
+
+[general]
+ipc_socket = true
+live_config_reload = true
+
+[bell]
+animation = "Linear"
+command = "None"
+duration = 0
+
+[colors]
+
+[cursor]
+style.blinking = "Never"
+style.shape = "Block"
+thickness = 0.1
+unfocused_hollow = true
+vi_mode_style = "None"
+
+[debug]
+
+[env]
+TERM = "xterm-256color"
+# WINIT_X11_SCALE_FACTOR = "1.0"
+
+[font]
+bold = { family = "hack", style = "Bold" }
+bold_italic = { family = "hack", style = "Bold Italic" }
+italic = { family = "hack", style = "Italic" }
+normal = { family = "hack", style = "Regular" }
+size = 9
+
+[hints]
+alphabet = "asdfghjkl;"
+
+[keyboard]
+bindings = [
+{ key = "h", mods = "Control|Shift", chars = "\uE000" },
+{ key = "j", mods = "Control|Shift", chars = "\uE001" },
+{ key = "k", mods = "Control|Shift", chars = "\uE002" },
+{ key = "l", mods = "Control|Shift", chars = "\uE003" },
+
+{ key = "%", mods = "Control|Shift", chars = "\uE004" },
+{ key = "\"", mods = "Control|Shift", chars = "\uE005" },
+{ key = "Space", mods = "Control|Shift", chars = "\uE006" },
+
+{ key = "!", mods = "Control|Shift", chars = "\uE007" },
+{ key = "@", mods = "Control|Shift", chars = "\uE008" },
+{ key = "#", mods = "Control|Shift", chars = "\uE009" },
+{ key = "$", mods = "Control|Shift", chars = "\uE00a" },
+{ key = "%", mods = "Control|Shift", chars = "\uE00b" },
+{ key = "^", mods = "Control|Shift", chars = "\uE00c" },
+{ key = "&", mods = "Control|Shift", chars = "\uE00d" },
+{ key = "*", mods = "Control|Shift", chars = "\uE00e" },
+{ key = "(", mods = "Control|Shift", chars = "\uE00f" },
+]
+
+[mouse]
+
+[scrolling]
+history = 100000
+multiplier = 3
+
+[selection]
+save_to_clipboard = true
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+
+[terminal]
+osc52 = "CopyPaste"
+shell = "/usr/bin/bash"
+
+[window]
+class = { instance = "Alacritty", general = "Alacritty" }
+# decorations = "None"
+decorations_theme_variant = "None"
+dynamic_title = true
+opacity = 0.95
+startup_mode = "Windowed"
+title = "Alacritty"

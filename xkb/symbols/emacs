@@ -1,0 +1,57 @@
+partial modifier_keys
+xkb_symbols "filco" {
+    key <LALT> {[  Control_L,  Control_L  ]};
+    key <RALT> {[  Control_R,  Control_R  ], type[group1] = "TWO_LEVEL" };
+    key <LWIN> {[  Alt_L,  Meta_L  ]};
+    key <RWIN> {[  Alt_R,  Meta_R  ]};
+    key <MENU> {[  Hyper_R  ]};
+    key <CAPS> {[  Hyper_L  ]};
+    key <LCTL> {[  Super_L  ]};
+    key <RCTL> {[  Super_R  ]};
+    modifier_map Control { <RALT>, <LALT> };
+    modifier_map Mod1 { <LWIN>, <RWIN> };
+    modifier_map Mod3 { <MENU>, <CAPS> };
+    modifier_map Mod4 { <LCTL>, <RCTL> };
+};
+
+partial modifier_keys
+xkb_symbols "lenovo" {
+    replace key <LALT> {[  Control_L,  Control_L  ]};
+    replace key <RALT> {[  Control_R,  Control_R  ], type[group1] = "TWO_LEVEL" };
+    replace key <LWIN> {[  Alt_L,  Meta_L  ]};
+    replace key <PRSC> {[  Alt_R,  Meta_R  ]};
+    replace key <LCTL> {[  Super_L  ]};
+    replace key <RCTL> {[  Super_R  ]};
+    replace key <CAPS> {[  Hyper_L  ]};
+    replace key <HYPR> {[  Super_L, Super_L  ]};
+    replace key <PGUP> {[  Hyper_R  ]};
+    replace key <PGDN> {[  Hyper_R  ]};
+    replace key <INS> {[  Print  ]};
+    modifier_map Control { <RALT>, <LALT> };
+    modifier_map Mod1 { <LWIN>, <PRSC> };
+    modifier_map Mod3 { <CAPS>, <PGUP>, <PGDN> };
+    modifier_map Mod4 { <LCTL>, <RCTL> };
+};
+
+partial modifier_keys
+xkb_symbols "niz" {
+    replace key <HYPR> {[  Super_L, Super_L  ]};
+    replace key <MENU> {[  Hyper_R  ]};
+    modifier_map Mod3 { <MENU> };
+};
+
+partial modifier_keys
+xkb_symbols "keychron" {
+    replace key <HYPR> {[  Super_L, Super_L  ]};
+    replace key <MENU> {[  Hyper_R  ]};
+    modifier_map Mod3 { <MENU> };
+};
+
+partial modifier_keys
+xkb_symbols "dumang_dk6" {
+    replace key <HYPR> {[  Super_L, Super_L  ]};
+    replace key <FK17> {[  Hyper_R ]};
+    replace key <FK18> {[  Alt_R  ]};
+    modifier_map Mod2 { <FK18> };
+    modifier_map Mod3 { <FK17> };
+};

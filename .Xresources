@@ -1,0 +1,14 @@
+XTerm*cursorBlink: false
+XTerm*faceName: Monospace
+XTerm*faceSize: 12
+XTerm.termName: xterm-256color
+XTerm.vt100.saveLines: 100000
+XTerm.vt100.metaSendsEscape: true
+XTerm.vt100.backarrowKey: false
+XTerm.ttyModes: erase ^?
+XTerm*disallowedWindowOps: 20,21,SetXprop
+
+XTerm*selectToClipboard: true
+xterm*VT100.Translations: #override \
+        Ctrl Shift <Key>V: insert-selection(SELECT) \n\
+        Ctrl Shift <Key>C: copy-selection(SELECT)
