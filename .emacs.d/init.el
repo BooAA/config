@@ -119,12 +119,12 @@
   (ring-bell-function #'ignore)
   (scroll-preserve-screen-position t)
   (use-short-answers t)
-  (user-full-name "Jack Lee")
+  (user-full-name "BooAA")
   (visible-cursor nil)
 
   ;; startup.el
   (inhibit-startup-screen t)
-  (user-mail-address "liangjlee@google.com")
+  (user-mail-address "s930054123yaoyao@gmail.com")
   :bind
   ("M-R" . raise-sexp))
 
@@ -389,13 +389,13 @@
      ([H-f1] . pulseaudio-control-toggle-current-sink-mute)
      ([H-f2] . pulseaudio-control-decrease-sink-volume)
      ([H-f3] . pulseaudio-control-increase-sink-volume)
-     ([H-s-f1] . pulseaudio-control-toggle-current-source-mute)
-     ([H-s-f2] . pulseaudio-control-decrease-source-volume)
-     ([H-s-f3] . pulseaudio-control-increase-source-volume)
+     ([H-S-f1] . pulseaudio-control-toggle-current-source-mute)
+     ([H-S-f2] . pulseaudio-control-decrease-source-volume)
+     ([H-S-f3] . pulseaudio-control-increase-source-volume)
      ,@(mapcan (lambda (dir)
                  (list `(,(kbd (format "H-<%s>" dir)) .
                          ,(intern-soft (format "windmove-%s" dir)))
-                       `(,(kbd (format "H-s-<%s>" dir)) .
+                       `(,(kbd (format "H-S-<%s>" dir)) .
                          ,(intern-soft (format "windmove-swap-states-%s" dir)))
                        `(,(kbd (format "H-x <%s>" dir)) .
                          ,(intern-soft (format "windmove-display-%s" dir)))
@@ -428,13 +428,13 @@
      ([s-f1] . pulseaudio-control-toggle-current-sink-mute)
      ([s-f2] . pulseaudio-control-decrease-sink-volume)
      ([s-f3] . pulseaudio-control-increase-sink-volume)
-     ([s-s-f1] . pulseaudio-control-toggle-current-source-mute)
-     ([s-s-f2] . pulseaudio-control-decrease-source-volume)
-     ([s-s-f3] . pulseaudio-control-increase-source-volume)
+     ([s-S-f1] . pulseaudio-control-toggle-current-source-mute)
+     ([s-S-f2] . pulseaudio-control-decrease-source-volume)
+     ([s-S-f3] . pulseaudio-control-increase-source-volume)
      ,@(mapcan (lambda (dir)
                  (list `(,(kbd (format "s-<%s>" dir)) .
                          ,(intern-soft (format "windmove-%s" dir)))
-                       `(,(kbd (format "s-s-<%s>" dir)) .
+                       `(,(kbd (format "s-S-<%s>" dir)) .
                          ,(intern-soft (format "windmove-swap-states-%s" dir)))
                        `(,(kbd (format "s-x <%s>" dir)) .
                          ,(intern-soft (format "windmove-display-%s" dir)))
@@ -456,27 +456,27 @@
   :hook
   (exwm-update-title . exwm-rename-buffer-title))
 
-;; (use-package exwm-randr
-;;   :preface
-;;   (defun exwm-change-screen-hook ()
-;;     (let ((xrandr-output-regexp "\n\\([^ ]+\\) connected ")
-;;           default-output)
-;;       (with-temp-buffer
-;;         (call-process "xrandr" nil t nil)
-;;         (goto-char (point-min))
-;;         (re-search-forward xrandr-output-regexp nil 'noerror)
-;;         (setq default-output (match-string 1))
-;;         (forward-line)
-;;         (if (not (re-search-forward xrandr-output-regexp nil 'noerror))
-;;             (call-process "xrandr" nil nil nil "--output" default-output "--auto")
-;;           (call-process
-;;            "xrandr" nil nil nil
-;;            "--output" (match-string 1) "--primary" "--auto"
-;;            "--output" default-output "--off")
-;;           (setq exwm-randr-workspace-monitor-plist (list 0 (match-string 1)))))))
-;;   :hook
-;;   (after-init . exwm-randr-enable)
-;;   (exwm-randr-screen-change . exwm-change-screen-hook))
+(use-package exwm-randr
+  :preface
+  (defun exwm-change-screen-hook ()
+    (let ((xrandr-output-regexp "\n\\([^ ]+\\) connected ")
+          default-output)
+      (with-temp-buffer
+        (call-process "xrandr" nil t nil)
+        (goto-char (point-min))
+        (re-search-forward xrandr-output-regexp nil 'noerror)
+        (setq default-output (match-string 1))
+        (forward-line)
+        (if (not (re-search-forward xrandr-output-regexp nil 'noerror))
+            (call-process "xrandr" nil nil nil "--output" default-output "--auto")
+          (call-process
+           "xrandr" nil nil nil
+           "--output" (match-string 1) "--primary" "--auto"
+           "--output" default-output "--off")
+          (setq exwm-randr-workspace-monitor-plist (list 0 (match-string 1)))))))
+  :hook
+  (after-init . exwm-randr-enable)
+  (exwm-randr-screen-change . exwm-change-screen-hook))
 
 (use-package files
   :custom
@@ -633,7 +633,8 @@
 (use-package imenu-list
   :bind ("M-g I" . imenu-list))
 
-(use-package insecure-lock)
+(use-package insecure-lock
+  :custom (insecure-lock-require-password nil))
 
 (use-package isearch
   :custom
@@ -996,7 +997,7 @@
   :demand t
   :config (load-theme 'zenburn t))
 
-;; ;;; aliases
+;;; aliases
 
 (defalias 'ev  'emacs-version)
 (defalias 'eit 'emacs-init-time)
