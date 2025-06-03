@@ -12,13 +12,14 @@
 
 (set-face-attribute 'default t
                     :family "hack"
-                    :height 80
+                    :height 70
                     :weight 'normal
                     :width 'normal)
 
 (setopt custom-file (make-temp-file "emacs-custom-"))
 
-(setopt gc-cons-threshold most-positive-fixnum)
+(setopt gc-cons-threshold most-positive-fixnum
+        gc-cons-percentage 0.8)
 
 (setopt read-process-output-max (* 4 1024 1024)
         process-adaptive-read-buffering nil)

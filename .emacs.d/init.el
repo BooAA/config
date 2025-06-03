@@ -7,22 +7,14 @@
 
 (setopt package-archives
         '(("melpa" . "https://melpa.org/packages/")
-          ("gnu" . "https://elpa.gnu.org/packages/")
-          ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+          ("gnu-devel" . "https://elpa.gnu.org/devel/")
+          ("nongnu-devel" . "https://elpa.nongnu.org/nongnu-devel/")))
 
 (setopt package-selected-packages
         '(bash-completion
           benchmark-init
           bluetooth
-          company
-          consult
-          consult-company
-          consult-eglot
           coterm
-          crux
-          debbugs
-          devicetree-ts-mode
-          doom-themes
           dts-mode
           easy-kill
           easy-kill-extras
@@ -33,51 +25,32 @@
           engine-mode
           enwc
           evil
-          expand-region
           exwm
           gcmh
           ggtags
-          google-translate
-          hackernews
           helm
-          helm-company
           helm-gtags
           helm-themes
-          howdoyou
-          ibuffer-vc
+          ibuffer-project
           imenu-list
           insecure-lock
           keycast
           kkp
-          llm
-          lsp-mode
           magit
-          marginalia
-          md4rd
           move-dup
           no-littering
-          notmuch
-          orderless
-          org-gcal
-          osm
-          pdf-tools
-          pdfgrep
           project-shells
           projectile
           pulseaudio-control
-          repo
           rotate
           shell-command-x
           shx
           sly
           spacemacs-theme
-          speed-type
-          sx
           telega
           tldr
           transmission
           urgrep
-          vertico
           vterm
           wgrep
           winum
@@ -119,7 +92,7 @@
   (ring-bell-function #'ignore)
   (scroll-preserve-screen-position t)
   (use-short-answers t)
-  (user-full-name "BooAA")
+  (user-full-name "Jack Lee")
   (visible-cursor nil)
 
   ;; startup.el
@@ -181,67 +154,14 @@
   :init
   (add-hook 'comint-output-filter-functions #'comint-osc-process-output))
 
-(use-package company
-  :custom
-  (company-backends '(company-capf
-                      company-files
-                      (company-dabbrev-code company-keywords)
-                      company-dabbrev))
-  (company-dabbrev-code-everywhere t)
-  (company-dabbrev-downcase nil)
-  (company-dabbrev-ignore-case t)
-  (company-files-chop-trailing-slash nil)
-  (company-idle-delay nil)
-  (company-selection-wrap-around t)
-  (company-tooltip-align-annotation t)
-  :bind
-  ("C-M-/" . company-manual-begin)
-  :hook
-  (after-init . global-company-mode)
-  (company-mode . company-tng-mode))
-
-(use-package consult
-  :init
-  (define-prefix-command 'consult-command-map)
-  :bind
-  (:map consult-command-map
-        ("l" . consult-locate)
-        ("m" . consult-man)
-        ("/" . consult-find)
-        ("i" . consult-imenu)
-        ("I" . consult-imenu-multi)
-        ("C-x r b" . consult-bookmark)
-        ("M-y" . consult-yank-from-kill-ring)
-        ("M-x" . consult-mode-command)
-        ("M-s o" . consult-line)
-        ("M-g a" . consult-ripgrep)
-        ("C-c f" . consult-recentf)
-        ("C-x C-b" . consult-buffer)
-        ("C-x r i" . consult-register)
-        ("C-M-i" . consult-company)))
-
-(use-package consult-company
-  :bind (:map consult-command-map ("C-M-i" . consult-company)))
-
-(use-package consult-eglot)
-
 (use-package coterm
   :hook (after-init . coterm-mode))
-
-(use-package crux
-  :bind
-  ("C-S-<return>" . crux-smart-open-line-above)
-  ("S-<return>" . crux-smart-open-line))
 
 (use-package custom
   :init (setq custom--inhibit-theme-enable nil))
 
-(use-package debbugs)
-
 (use-package delsel
   :hook (after-init . delete-selection-mode))
-
-(use-package devicetree-ts-mode)
 
 (use-package dired
   :custom
@@ -249,8 +169,6 @@
   (dired-dwim-target t)
   (dired-recursive-copies 'always)
   (dired-recursive-deletes 'always))
-
-(use-package doom-themes)
 
 (use-package dts-mode)
 
@@ -266,18 +184,18 @@
   (echo-bar-format '((:eval (ednc-top-notification)) " "
                      "[ "
                      ;; (:eval (battery-format "%b%p%%%" (battery-upower)))
-                     ;; system-name
-                     ;; " | "
+                     system-name
+                     " | "
                      (:eval (format-time-string "%a %b %d | %H:%M"))
                      " ]"))
   (echo-bar-minibuffer nil)
   (echo-bar-right-padding 1)
-  (echo-bar-update-interval 2)
+  (echo-bar-update-interval 3)
   :hook (after-init . echo-bar-mode))
 
 (use-package ediff
   :custom
-  (ediff-window-setup-function #'ediff-setup-window-plain)
+  (ediff-window-setup-function #'ediff-setup-windows-plain)
   (ediff-split-window-function #'split-window-horizontally))
 
 (use-package ednc
@@ -292,7 +210,7 @@
 (use-package eglot
   :custom
   (eglot-autoshutdown t)
-  (eglot-connect-timeout 10)
+  (eglot-connect-timeout 15)
   (eglot-events-buffer-size 0)
   (eglot-extend-to-xref t)
   (eglot-ignored-server-capabilites
@@ -301,9 +219,6 @@
      :documentRangeFormattingProvider
      :documentOnTypeFormattingProvider))
   (eglot-sync-connect nil))
-
-(use-package eglot-hierarchy
-  :vc (:url "https://github.com/dolmens/eglot-hierarchy"))
 
 (use-package eldoc
   :custom
@@ -362,9 +277,6 @@
 (use-package eww
   :custom (eww-auto-rename-buffer 'title))
 
-(use-package expand-region
-  :bind ("C-=" . er/expand-region))
-
 (use-package exwm
   :preface
   (defun exwm-run-command-async (command)
@@ -377,43 +289,43 @@
   :custom
   (exwm-input-global-keys
    `(;; hyper as prefix
-     ([?\H-Z] . insecure-lock-enter)
-     ([?\H-r] . exwm-run-command-async)
-     ,@(mapcar (lambda (i)
-                 `(,(kbd (format "H-%d" i)) .
-                   (lambda ()
-                     (interactive)
-                     (tab-bar-select-tab ,i))))
-               (number-sequence 1 8))
-     ([?\H-9] . tab-last)
-     ([H-f1] . pulseaudio-control-toggle-current-sink-mute)
-     ([H-f2] . pulseaudio-control-decrease-sink-volume)
-     ([H-f3] . pulseaudio-control-increase-sink-volume)
-     ([H-S-f1] . pulseaudio-control-toggle-current-source-mute)
-     ([H-S-f2] . pulseaudio-control-decrease-source-volume)
-     ([H-S-f3] . pulseaudio-control-increase-source-volume)
-     ,@(mapcan (lambda (dir)
-                 (list `(,(kbd (format "H-<%s>" dir)) .
-                         ,(intern-soft (format "windmove-%s" dir)))
-                       `(,(kbd (format "H-S-<%s>" dir)) .
-                         ,(intern-soft (format "windmove-swap-states-%s" dir)))
-                       `(,(kbd (format "H-x <%s>" dir)) .
-                         ,(intern-soft (format "windmove-display-%s" dir)))
-                       `(,(kbd (format "H-x S-<%s>" dir)) .
-                         ,(intern-soft (format "windmove-delete-%s" dir)))))
-               '("up" "down" "left" "right"))
-     ,@(cl-mapcan (lambda (key dir)
-                    (list `(,(kbd (concat "H-" key)) .
-                            ,(intern-soft (concat "windmove-" dir)))
-                          `(,(kbd (concat "H-" (capitalize key))) .
-                            ,(intern-soft (concat "windmove-swap-states-" dir)))
-                          `(,(kbd (concat "H-x " key)) .
-                            ,(intern-soft (concat "windmove-display-" dir)))
-                          `(,(kbd (concat "H-x " (capitalize key))) .
-                            ,(intern-soft (concat "windmove-delete-" dir)))))
-                  '("h" "j" "k" "l") '("left" "down" "up" "right"))     
-     ([H-f5] . exwm-reset)
-     ([H-print] . scrot)
+     ;; ([?\H-Z] . insecure-lock-enter)
+     ;; ([?\H-r] . exwm-run-command-async)
+     ;; ,@(mapcar (lambda (i)
+     ;;             `(,(kbd (format "H-%d" i)) .
+     ;;               (lambda ()
+     ;;                 (interactive)
+     ;;                 (tab-bar-select-tab ,i))))
+     ;;           (number-sequence 1 8))
+     ;; ([?\H-9] . tab-last)
+     ;; ([H-f1] . pulseaudio-control-toggle-current-sink-mute)
+     ;; ([H-f2] . pulseaudio-control-decrease-sink-volume)
+     ;; ([H-f3] . pulseaudio-control-increase-sink-volume)
+     ;; ([H-s-f1] . pulseaudio-control-toggle-current-source-mute)
+     ;; ([H-s-f2] . pulseaudio-control-decrease-source-volume)
+     ;; ([H-s-f3] . pulseaudio-control-increase-source-volume)
+     ;; ,@(mapcan (lambda (dir)
+     ;;             (list `(,(kbd (format "H-<%s>" dir)) .
+     ;;                     ,(intern-soft (format "windmove-%s" dir)))
+     ;;                   `(,(kbd (format "H-s-<%s>" dir)) .
+     ;;                     ,(intern-soft (format "windmove-swap-states-%s" dir)))
+     ;;                   `(,(kbd (format "H-x <%s>" dir)) .
+     ;;                     ,(intern-soft (format "windmove-display-%s" dir)))
+     ;;                   `(,(kbd (format "H-x S-<%s>" dir)) .
+     ;;                     ,(intern-soft (format "windmove-delete-%s" dir)))))
+     ;;           '("up" "down" "left" "right"))
+     ;; ,@(cl-mapcan (lambda (key dir)
+     ;;                (list `(,(kbd (concat "H-" key)) .
+     ;;                        ,(intern-soft (concat "windmove-" dir)))
+     ;;                      `(,(kbd (concat "H-" (capitalize key))) .
+     ;;                        ,(intern-soft (concat "windmove-swap-states-" dir)))
+     ;;                      `(,(kbd (concat "H-x " key)) .
+     ;;                        ,(intern-soft (concat "windmove-display-" dir)))
+     ;;                      `(,(kbd (concat "H-x " (capitalize key))) .
+     ;;                        ,(intern-soft (concat "windmove-delete-" dir)))))
+     ;;              '("h" "j" "k" "l") '("left" "down" "up" "right"))     
+     ;; ([H-f5] . exwm-reset)
+     ;; ([H-print] . scrot)
 
      ;; super as prefix
      ([?\s-Z] . insecure-lock-enter)
@@ -428,13 +340,13 @@
      ([s-f1] . pulseaudio-control-toggle-current-sink-mute)
      ([s-f2] . pulseaudio-control-decrease-sink-volume)
      ([s-f3] . pulseaudio-control-increase-sink-volume)
-     ([s-S-f1] . pulseaudio-control-toggle-current-source-mute)
-     ([s-S-f2] . pulseaudio-control-decrease-source-volume)
-     ([s-S-f3] . pulseaudio-control-increase-source-volume)
+     ([s-s-f1] . pulseaudio-control-toggle-current-source-mute)
+     ([s-s-f2] . pulseaudio-control-decrease-source-volume)
+     ([s-s-f3] . pulseaudio-control-increase-source-volume)
      ,@(mapcan (lambda (dir)
                  (list `(,(kbd (format "s-<%s>" dir)) .
                          ,(intern-soft (format "windmove-%s" dir)))
-                       `(,(kbd (format "s-S-<%s>" dir)) .
+                       `(,(kbd (format "s-s-<%s>" dir)) .
                          ,(intern-soft (format "windmove-swap-states-%s" dir)))
                        `(,(kbd (format "s-x <%s>" dir)) .
                          ,(intern-soft (format "windmove-display-%s" dir)))
@@ -454,7 +366,15 @@
      ([s-f5] . exwm-reset)
      ([s-print] . scrot)))
   :hook
-  (exwm-update-title . exwm-rename-buffer-title))
+  (exwm-update-title . exwm-rename-buffer-title)
+  :config
+  (advice-add #'exwm-layout--hide
+              :after (lambda (id)
+                       (with-current-buffer (exwm--id->buffer id)
+                         (setq exwm--ewmh-state
+                               (delq xcb:Atom:_NET_WM_STATE_HIDDEN exwm--ewmh-state))
+                         (exwm-layout--set-ewmh-state id)
+                         (xcb:flush exwm--connection)))))
 
 (use-package exwm-randr
   :preface
@@ -475,7 +395,7 @@
            "--output" default-output "--off")
           (setq exwm-randr-workspace-monitor-plist (list 0 (match-string 1)))))))
   :hook
-  (after-init . exwm-randr-enable)
+  (after-init . exwm-randr-mode)
   (exwm-randr-screen-change . exwm-change-screen-hook))
 
 (use-package files
@@ -502,8 +422,7 @@
 (use-package frame
   :custom (blink-cursor-mode nil))
 
-(use-package gcmh
-  :hook (emacs-startup . gcmh-mode))
+(use-package gcmh)
 
 (use-package gdb-mi
   :custom
@@ -541,30 +460,16 @@
 
 (use-package gnus
   :custom
-  (gnus-select-method '(nnimap "imap.gmail.com"))
+  (gnus-select-method '(nnnil))
   (gnus-secondary-select-methods
-   '((nntp "news.gmane.io")
-     (nntp "nntp.lore.kernel.org"))))
-
-(use-package google-translate
-  :custom
-  (google-translate-default-source-language "auto")
-  (google-translate-default-target-language "zh-TW")
-  :bind
-  ("C-c t b" . google-translate-buffer)
-  ("C-c t q" . google-translate-query-translate)
-  ("C-c t s" . google-translate-smooth-translate)
-  ("C-c t ." . google-translate-at-point))
+   '((nntp "nntp.lore.kernel.org")
+     (nntp "news.gmane.io"))))
 
 (use-package grep
   :custom (grep-template "ugrep --color=always -0Iinr -e <R>"))
 
-(use-package hackernews)
-
 (use-package helm
   :custom
-  (helm-grep-ag-command
-   "rg --color=always --smart-case --no-heading --line-number %s %s %s")
   (helm-minibuffer-history-key nil)
   :bind
   (:map helm-map
@@ -574,10 +479,6 @@
    :map helm-command-map
    ("C-x b" . helm-mini))
   :defer 0.1)
-
-(use-package helm-company
-  :after helm
-  :bind (:map helm-command-map ("C-M-i" . helm-company)))
 
 (use-package helm-gtags
   :custom
@@ -607,34 +508,35 @@
   (hippie-expand-verbose nil)
   :bind ("M-/" . hippie-expand))
 
-(use-package howdoyou
-  :custom
-  (howdoyou-max-history 30)
-  (howdoyou-number-of-answers 5)
-  (howdoyou-switch-to-answer-buffer t))
-
 (use-package ibuffer
   :custom
   (ibuffer-default-sorting-mode 'major-mode)
   (ibuffer-show-empty-filter-groups nil)
   :bind ("C-x C-b" . ibuffer))
 
-(use-package ibuffer-vc
+(use-package ibuffer-project
   :preface
-  (defun ibuffer-vc-setup ()
-    (ibuffer-vc-set-filter-groups-by-vc-root)
-    (unless (eq ibuffer-sorting-mode 'alphabetic)
-      (ibuffer-do-sort-by-alphabetic)))
+  (defun ibuffer-project-setup ()
+    (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
+    (unless (eq ibuffer-sorting-mode 'project-file-relative)
+      (ibuffer-do-sort-by-project-file-relative)))
   :custom
-  (ibuffer-vc-skip-if-remote nil)
+  (ibuffer-project-use-cache t)
+  (ibuffer-formats
+   '((mark modified read-only locked " "
+           (name 18 18 :left :elide)
+           " "
+           (size 9 -1 :right)
+           " "
+           (mode 16 16 :left :elide)
+           " " project-file-relative)))
   :hook
-  (ibuffer . ibuffer-vc-setup))
+  (ibuffer . ibuffer-project-setup))
 
 (use-package imenu-list
   :bind ("M-g I" . imenu-list))
 
-(use-package insecure-lock
-  :custom (insecure-lock-require-password nil))
+(use-package insecure-lock)
 
 (use-package isearch
   :custom
@@ -643,39 +545,25 @@
   (isearch-resume-in-command-history t)
   (isearch-wrap-pause 'no)
   :bind
+  ("C-s" . isearch-forward-regexp)
+  ("C-r" . isearch-backward-regexp)
   (:map isearch-mode-map
         ("DEL" . isearch-del-char)
         ("C-M-d" . isearch-delete-char)
         ("C-g" . isearch-cancel)))
-
+  
 (use-package kkp
   :hook (after-init . global-kkp-mode))
 
 (use-package keycast)
-
-(use-package llm)
-
-(use-package lsp-mode)
 
 (use-package lua-ts-mode
   :mode ("\\.lua\\'" . lua-ts-mode))
 
 (use-package magit)
 
-(use-package marginalia
-  :bind (:map vertico-map ("M-A" . marginalia-cycle)))
-
 (use-package mb-depth
   :hook (after-init . minibuffer-depth-indicate-mode))
-
-(use-package md4rd
-  :custom
-  (md4rd-subs-active
-   '(Common_Lisp
-     emacs
-     linux
-     lisp
-     unixporn)))
 
 (use-package midnight
   :hook (after-init . midnight-mode))
@@ -694,48 +582,8 @@
   ("M-<down>" . move-dup-move-lines-down)
   ("M-<up>" . move-dup-move-lines-up))
 
-(use-package mu4e
-  :load-path "/usr/local/share/emacs/site-lisp/mu4e"
-  :custom
-  (mu4e-completing-read-function 'completing-read)
-  (mu4e-confirm-quit nil)
-  (mu4e-get-mail-command "mbsync --all")
-  (mu4e-headers-visible-columns (/ (frame-width) 2))
-  (mu4e-hide-index-messages t)
-  (mu4e-search-threads nil)
-  (mu4e-split-view 'vertical)
-  (mu4e-update-interval 100)
-  (mu4e-use-fancy-chars t)
-  :commands
-  mu4e)
-
-(use-package notmuch
-  :custom
-  (notmuch-column-control 0.25)
-  (notmuch-hello-sections
-   '(notmuch-hello-insert-header
-     notmuch-hello-insert-saved-searches
-     notmuch-hello-insert-search))
-  (notmuch-saved-searches
-   `((:name "draft" :query "tag:draft" :key ,(kbd "d")))
-   `((:name "inbox" :query "tag:inbox" :key ,(kbd "i")))
-   `((:name "sent" :query "tag:sent" :key ,(kbd "s")))
-   `((:name "unread" :query "tag:unread" :key ,(kbd "u"))))
-  (notmuch-search-oldest-first nil)
-  (notmuch-show-empty-saved-searches t))
-
 (use-package novice
   :init (setq disabled-command-function nil))
-
-(use-package orderless)
-
-(use-package org-gcal)
-
-(use-package osm)
-
-(use-package pdf-tools)
-
-(use-package pdfgrep)
 
 (use-package pixel-scroll
   :hook (after-init . pixel-scroll-precision-mode))
@@ -760,6 +608,7 @@
   (after-init . global-project-shells-mode))
 
 (use-package projectile
+  :demand t
   :custom (projectile-dirconfig-file ".project"))
 
 (use-package pulseaudio-control
@@ -779,8 +628,6 @@
 
 (use-package replace
   :bind ("C-%" . replace-regexp))
-
-(use-package repo)
 
 (use-package rotate
   :bind ("C-|" . rotate-layout))
@@ -802,7 +649,8 @@
   (explicit-shell-file-name "/bin/bash")
   (shell-has-auto-cd nil))
 
-(use-package shell-command-x)
+(use-package shell-command-x
+  :hook (after-init . shell-command-x-mode))
 
 (use-package shr
   :custom
@@ -810,7 +658,8 @@
   (shr-use-fonts nil)
   (shr-use-xwidgets-for-media t))
 
-(use-package shx)
+(use-package shx
+  :hook (shell-mode . shx-mode))
 
 (use-package simple
   :custom
@@ -835,10 +684,6 @@
 
 (use-package spacemacs-theme)
 
-(use-package speed-type)
-
-(use-package sx)
-
 (use-package syntax
   :custom (syntax-wholeline-max 1000))
 
@@ -857,13 +702,6 @@
 
 (use-package tldr)
 
-;; (use-package tramp
-;;   :defer nil
-;;   :config
-;;   (setq tramp-default-remote-shell "/bin/bash"
-;;         tramp-ssh-controlmaster-options
-;;         "-o ControlPath=%%C -o ControlMaster=auto -o ControlPersist=yes"))
-
 (use-package transmission)
 
 (use-package uniquify
@@ -877,39 +715,9 @@
   (urgrep-preferred-tools '(ripgrep ugrep git-grep grep))
   (urgrep-search-regexp t)
   :bind
-  (:map search-map ("g" . urgrep)))
-
-(use-package vertico
-  :preface
-  (defun vertico-plugin-setup ()
-    (if vertico-mode
-        (progn
-          (marginalia-mode)
-          (add-to-list 'completion-styles 'orderless t)
-          (global-set-key (kbd "C-x c") 'consult-command-map))
-      (marginalia-mode -1)
-      (delq 'orderless completion-styles)
-      (global-set-key (kbd "C-x c") 'helm-command-prefix)))
-  :custom
-  (vertico-cycle t)
-  :hook
-  (vertico-mode . vertico-plugin-setup))
-
-(use-package vertico-multiform
-  :hook
-  (vertico-mode . vertico-multiform-mode)
-  :config
-  (add-to-list 'vertico-multiform-commands '(t unobtrusive))
-
-  (dolist (cmd '(consult-bookmark consult-buffer consult-company
-                 consult-complex-command consult-eglot-symbols
-                 consult-find consult-git-grep consult-grep
-                 consult-history consult-imenu consult-imenu-multi
-                 consult-info consult-line consult-locate consult-man
-                 consult-mode-command consult-project-buffer
-                 consult-recentf consult-register consult-ripgrep
-                 consult-theme consult-yank-from-kill-ring))
-    (add-to-list 'vertico-multiform-commands `(,cmd buffer))))
+  (:map search-map
+        ("g" . urgrep)
+        ("G" . urgrep-run-command)))
 
 (use-package vterm
   :custom
@@ -955,12 +763,17 @@
                        (intern-soft (concat "windmove-display-" dir)))
            (define-key windmove-mode-map
                        (kbd (concat "s-" (capitalize key)))
-                       (intern-soft (concat "windmove-swap-states-" dir)))))
+                       (intern-soft (concat "windmove-swap-states-" dir))))
+  :bind
+  (:map windmove-mode-map
+        ("C-S-j" . windmove-down)
+        ("C-S-k" . windmove-up)
+        ("C-S-l" . windmove-right)
+        ("C-S-h" . windmove-left)))
 
 (use-package window
   :custom
-  (switch-to-buffer-obey-display-actions t)
-  (split-height-threshold nil))
+  (switch-to-buffer-obey-display-actions t))
 
 (use-package window-divider
   :custom
@@ -969,21 +782,18 @@
   :hook
   (after-init . window-divider-mode))
 
-;; (use-package winner
-;;   :hook (after-init . winner-mode))
-
 (use-package winum
   :bind
   (:map winum-keymap
-        ("C-<f1>" . winum-select-window-1)
-        ("C-<f2>" . winum-select-window-2)
-        ("C-<f3>" . winum-select-window-3)
-        ("C-<f4>" . winum-select-window-4)
-        ("C-<f5>" . winum-select-window-5)
-        ("C-<f6>" . winum-select-window-6)
-        ("C-<f7>" . winum-select-window-7)
-        ("C-<f8>" . winum-select-window-8)
-        ("C-<f9>" . winum-select-window-9))
+        ("C-1" . winum-select-window-1)
+        ("C-2" . num-select-window-2)
+        ("C-3" . winum-select-window-3)
+        ("C-4" . winum-select-window-4)
+        ("C-5" . winum-select-window-5)
+        ("C-6" . winum-select-window-6)
+        ("C-7" . winum-select-window-7)
+        ("C-8" . winum-select-window-8)
+        ("C-9" . winum-select-window-9))
   :hook
   (after-init . winum-mode))
 
@@ -997,7 +807,7 @@
   :demand t
   :config (load-theme 'zenburn t))
 
-;;; aliases
+;; ;;; aliases
 
 (defalias 'ev  'emacs-version)
 (defalias 'eit 'emacs-init-time)
