@@ -1,0 +1,66 @@
+#!/bin/bash
+
+while getopts "m:r:d:f:k:" opt; do
+    case $opt in
+        m)
+            monitor="${OPTARG}"
+            echo "Monitor: ${monitor}"
+            ;;
+        r)
+            resolution="${OPTARG}"
+            echo "Resolution: ${resolution}"
+            ;;
+        d)
+            dpi="${OPTARG}"
+            echo "DPI: ${dpi}"
+            ;;
+        f)
+            font_size="${OPTARG}"
+            echo "Font size: ${font_size}"
+            ;;
+        k)
+            keyboard="${OPTARG}"
+            echo "Keyboard: ${keyboard}"
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG"
+            exit 1            
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument."
+            exit 1
+            ;;
+    esac
+done
+
+if [[ ! "${monitor}" ]]; then
+    echo "Monitor is not given!"
+    exit 1
+fi
+
+if [[ ! "${resolution}" ]]; then
+    echo "Resolution is not given!"
+    exit 1
+fi
+
+if [[ ! "${dpi}" ]]; then
+    echo "DPI is not given!"
+    exit 1
+fi
+
+if [[ ! "${font_size}" ]]; then
+    echo "Font size is not given!"
+    exit 1
+fi
+
+if [[ ! "${keyboard}" ]]; then
+    echo "Keyboard is not given!"
+    exit 1
+fi
+
+xrandr --output ${monitor} --mode ${resolution} --primary
+setxkbmap
+xmodmap .Xmodmap_${keyboard}
+echo "Xft.dpi: $dpi" | xrdb -merge -
+kill -9 $(pgrep -a chrome | grep -v chrome-remote-desktop | awk '{print $1}') # cleanup chrome process with old dpi
+emacsclient --eval "(internal-set-lisp-face-attribute 'default :font (font-spec :size $font_size :dpi $dpi) 0)"

@@ -21,7 +21,6 @@ fcitx5 &
 # nm-applet &
 # volumeicon &
 # xfce4-power-manager &
-# xmodmap /usr/local/google/home/liangjlee/.Xmodmap
 
 # Disable access control for the current user.
 xhost +SI:localuser:$USER
@@ -29,13 +28,11 @@ xhost +SI:localuser:$USER
 # Make Java applications aware this is a non-reparenting window manager.
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-# pre-settings for different profile
-exwm_profile="/usr/local/google/home/liangjlee/.emacs.d/exwm/profile"
-for f in $exwm_profile/*/init.sh; do
-    sh $f
-done
+xrandr --newmode 3840x2160 60 3840 0 0 0 2160 0 0 0
+xrandr --newmode 3840x2400 60 3840 0 0 0 2400 0 0 0
+xrandr --addmode DUMMY0 3840x2160
+xrandr --addmode DUMMY0 3840x2400
 
 # launch emacs and enable exwm
-# LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH emacs --daemon --eval "(exwm-enable)"
 # exec emacsclient -c
-LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH emacs --eval "(progn (exwm-enable) (server-start))"
+emacs --eval "(progn (exwm-enable) (server-start))"
