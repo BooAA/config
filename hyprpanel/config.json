@@ -1,0 +1,42 @@
+{
+  "bar.customModules.storage.paths": [
+    "/"
+  ],
+  "bar.autoHide": "never",
+  "menus.power.lowBatteryNotification": true,
+  "bar.layouts": {
+    "*": {
+      "left": [
+        "dashboard",
+        "workspaces",
+        "windowtitle"
+      ],
+      "middle": [
+        "clock"
+      ],
+      "right": [
+        "systray",
+        "network",
+        "bluetooth",
+        "volume",
+        "battery",
+        "notifications"
+      ]
+    }
+  },
+  "theme.bar.floating": false,
+  "theme.bar.enableShadow": false,
+  "menus.clock.time.military": true,
+  "menus.clock.time.hideSeconds": true,
+  "menus.clock.weather.enabled": false,
+  "bar.clock.format": "%a %b %d  %H:%M",
+  "bar.clock.showIcon": true,
+  "bar.clock.showTime": true,
+  "bar.network.showWifiInfo": false,
+  "bar.customModules.ram.label": true,
+  "bar.customModules.cpu.label": true,
+  "menus.dashboard.shortcuts.enabled": false,
+  "menus.dashboard.stats.enabled": false,
+  "theme.bar.scaling": 100,
+  "theme.font.size": "1.2rem"
+}
