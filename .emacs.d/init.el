@@ -18,7 +18,6 @@
           dts-mode
           easy-kill
           easy-kill-extras
-          eat
           echo-bar
           ednc
           elfeed
@@ -32,27 +31,25 @@
           helm-gtags
           helm-themes
           ibuffer-project
-          imenu-list
           insecure-lock
           keycast
           kkp
           magit
           move-dup
+          naysayer-theme
           no-littering
           project-shells
           projectile
           pulseaudio-control
+          request
           rotate
           shell-command-x
           shx
           sly
           spacemacs-theme
           telega
-          tldr
-          transmission
           urgrep
           vterm
-          wgrep
           winum
           zenburn-theme))
 
@@ -177,13 +174,12 @@
 
 (use-package easy-kill-extra)
 
-(use-package eat)
-
 (use-package echo-bar
   :custom
   (echo-bar-format '((:eval (ednc-top-notification)) " "
                      "[ "
                      ;; (:eval (battery-format "%b%p%%%" (battery-upower)))
+                     ;; " | "
                      system-name
                      " | "
                      (:eval (format-time-string "%a %b %d | %H:%M"))
@@ -285,47 +281,85 @@
 
   (defun exwm-rename-buffer-title ()
     (exwm-workspace-rename-buffer exwm-title))
-  :commands exwm-enable
+
+  (defun exwm-chrome-set-simulation-key ()
+    (when (and exwm-class-name
+               (string= exwm-class-name "Google-chrome"))
+      (exwm-input-set-local-simulation-keys
+       `(;; Navigation
+         ([?\M-<] . [C-home])
+         ([?\M->] . [C-end])
+         ([?\C-a] . [home])
+         ([?\C-e] . [end])
+         ([?\C-v] . [next])
+         ([?\M-v] . [prior])
+
+         ([?\C-b] . [left])
+         ([?\C-f] . [right])
+         ([?\C-p] . [up])
+         ([?\C-n] . [down])
+
+         ([?\M-b] . [C-left])
+         ([?\M-f] . [C-right])
+         ([?\M-n] . [M-right])
+         ([?\M-p] . [M-left])
+
+         ;; Copy/Paste
+         ([?\C-w] . [?\C-x])
+         ([?\M-w] . [?\C-c])
+         ([?\C-y] . [?\C-v])
+         ([?\C-s] . [?\C-f])
+         ([?\C-\/] . [?\C-z])
+
+         ;; Other
+         ([?\C-d] . [delete])
+         ([?\M-d] . [C-delete])
+         (,(kbd "M-DEL") . [C-backspace])
+         ([?\C-k] . [S-end delete])
+         ([?\C-g] . [escape])))))
   :custom
   (exwm-input-global-keys
    `(;; hyper as prefix
-     ;; ([?\H-Z] . insecure-lock-enter)
-     ;; ([?\H-r] . exwm-run-command-async)
-     ;; ,@(mapcar (lambda (i)
-     ;;             `(,(kbd (format "H-%d" i)) .
-     ;;               (lambda ()
-     ;;                 (interactive)
-     ;;                 (tab-bar-select-tab ,i))))
-     ;;           (number-sequence 1 8))
-     ;; ([?\H-9] . tab-last)
-     ;; ([H-f1] . pulseaudio-control-toggle-current-sink-mute)
-     ;; ([H-f2] . pulseaudio-control-decrease-sink-volume)
-     ;; ([H-f3] . pulseaudio-control-increase-sink-volume)
-     ;; ([H-s-f1] . pulseaudio-control-toggle-current-source-mute)
-     ;; ([H-s-f2] . pulseaudio-control-decrease-source-volume)
-     ;; ([H-s-f3] . pulseaudio-control-increase-source-volume)
-     ;; ,@(mapcan (lambda (dir)
-     ;;             (list `(,(kbd (format "H-<%s>" dir)) .
-     ;;                     ,(intern-soft (format "windmove-%s" dir)))
-     ;;                   `(,(kbd (format "H-s-<%s>" dir)) .
-     ;;                     ,(intern-soft (format "windmove-swap-states-%s" dir)))
-     ;;                   `(,(kbd (format "H-x <%s>" dir)) .
-     ;;                     ,(intern-soft (format "windmove-display-%s" dir)))
-     ;;                   `(,(kbd (format "H-x S-<%s>" dir)) .
-     ;;                     ,(intern-soft (format "windmove-delete-%s" dir)))))
-     ;;           '("up" "down" "left" "right"))
-     ;; ,@(cl-mapcan (lambda (key dir)
-     ;;                (list `(,(kbd (concat "H-" key)) .
-     ;;                        ,(intern-soft (concat "windmove-" dir)))
-     ;;                      `(,(kbd (concat "H-" (capitalize key))) .
-     ;;                        ,(intern-soft (concat "windmove-swap-states-" dir)))
-     ;;                      `(,(kbd (concat "H-x " key)) .
-     ;;                        ,(intern-soft (concat "windmove-display-" dir)))
-     ;;                      `(,(kbd (concat "H-x " (capitalize key))) .
-     ;;                        ,(intern-soft (concat "windmove-delete-" dir)))))
-     ;;              '("h" "j" "k" "l") '("left" "down" "up" "right"))     
-     ;; ([H-f5] . exwm-reset)
-     ;; ([H-print] . scrot)
+     ([?\H-Z] . insecure-lock-enter)
+     ([?\H-r] . exwm-run-command-async)
+     ,@(mapcar (lambda (i)
+                 `(,(kbd (format "H-%d" i)) .
+                   (lambda ()
+                     (interactive)
+                     (tab-bar-select-tab ,i))))
+               (number-sequence 1 8))
+     ([?\H-9] . tab-last)
+     ([XF86AudioMute] . pulseaudio-control-toggle-current-sink-mute)
+     ([XF86AudioLowerVolume] . pulseaudio-control-decrease-sink-volume)
+     ([XF86AudioRaiseVolume] . pulseaudio-control-increase-sink-volume)
+     ([H-f1] . pulseaudio-control-toggle-current-sink-mute)
+     ([H-f2] . pulseaudio-control-decrease-sink-volume)
+     ([H-f3] . pulseaudio-control-increase-sink-volume)
+     ([H-s-f1] . pulseaudio-control-toggle-current-source-mute)
+     ([H-s-f2] . pulseaudio-control-decrease-source-volume)
+     ([H-s-f3] . pulseaudio-control-increase-source-volume)
+     ,@(mapcan (lambda (dir)
+                 (list `(,(kbd (format "H-<%s>" dir)) .
+                         ,(intern-soft (format "windmove-%s" dir)))
+                       `(,(kbd (format "H-s-<%s>" dir)) .
+                         ,(intern-soft (format "windmove-swap-states-%s" dir)))
+                       `(,(kbd (format "H-x <%s>" dir)) .
+                         ,(intern-soft (format "windmove-display-%s" dir)))
+                       `(,(kbd (format "H-x S-<%s>" dir)) .
+                         ,(intern-soft (format "windmove-delete-%s" dir)))))
+               '("up" "down" "left" "right"))
+     ,@(cl-mapcan (lambda (key dir)
+                    (list `(,(kbd (concat "H-" key)) .
+                            ,(intern-soft (concat "windmove-" dir)))
+                          `(,(kbd (concat "H-" (capitalize key))) .
+                            ,(intern-soft (concat "windmove-swap-states-" dir)))
+                          `(,(kbd (concat "H-x " key)) .
+                            ,(intern-soft (concat "windmove-display-" dir)))
+                          `(,(kbd (concat "H-x " (capitalize key))) .
+                            ,(intern-soft (concat "windmove-delete-" dir)))))
+                  '("h" "j" "k" "l") '("left" "down" "up" "right"))     
+     ([H-f5] . exwm-reset)
+     ([H-print] . scrot)
 
      ;; super as prefix
      ([?\s-Z] . insecure-lock-enter)
@@ -367,6 +401,7 @@
      ([s-print] . scrot)))
   :hook
   (exwm-update-title . exwm-rename-buffer-title)
+  (exwm-manage-finish . exwm-chrome-set-simulation-key)
   :config
   (advice-add #'exwm-layout--hide
               :after (lambda (id)
@@ -533,9 +568,6 @@
   :hook
   (ibuffer . ibuffer-project-setup))
 
-(use-package imenu-list
-  :bind ("M-g I" . imenu-list))
-
 (use-package insecure-lock)
 
 (use-package isearch
@@ -581,6 +613,10 @@
   :bind
   ("M-<down>" . move-dup-move-lines-down)
   ("M-<up>" . move-dup-move-lines-up))
+
+(use-package naysayer-theme
+  :demand t
+  :config (load-theme 'naysayer t))
 
 (use-package novice
   :init (setq disabled-command-function nil))
@@ -700,10 +736,6 @@
 
 (use-package telega)
 
-(use-package tldr)
-
-(use-package transmission)
-
 (use-package uniquify
   :custom
   (uniquify-after-kill-buffer-p t)
@@ -731,8 +763,6 @@
 
 (use-package warning
   :custom (warning-minimum-level :error))
-
-(use-package wgrep)
 
 (use-package which-function
   :hook (after-init . which-function-mode))
@@ -786,7 +816,7 @@
   :bind
   (:map winum-keymap
         ("C-1" . winum-select-window-1)
-        ("C-2" . num-select-window-2)
+        ("C-2" . winum-select-window-2)
         ("C-3" . winum-select-window-3)
         ("C-4" . winum-select-window-4)
         ("C-5" . winum-select-window-5)
@@ -804,10 +834,9 @@
   (xref-truncation-width 100))
 
 (use-package zenburn-theme
-  :demand t
   :config (load-theme 'zenburn t))
 
-;; ;;; aliases
+;;; aliases
 
 (defalias 'ev  'emacs-version)
 (defalias 'eit 'emacs-init-time)
