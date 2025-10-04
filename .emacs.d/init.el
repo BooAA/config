@@ -29,10 +29,7 @@
           ggtags
           helm
           helm-gtags
-          helm-themes
           ibuffer-project
-          insecure-lock
-          keycast
           kkp
           magit
           move-dup
@@ -46,7 +43,6 @@
           shell-command-x
           shx
           sly
-          spacemacs-theme
           telega
           urgrep
           vterm
@@ -117,10 +113,10 @@
   :hook (after-init . bash-completion-setup))
 
 (use-package battery
+  :autoload battery-format
   :custom (battery-load-low 20))
 
-(use-package bluetooth
-  :custom (bluetooth-bluez-bus :system))
+(use-package bluetooth)
 
 (use-package browse-url
   :custom
@@ -176,10 +172,9 @@
 
 (use-package echo-bar
   :custom
-  (echo-bar-format '((:eval (ednc-top-notification)) " "
-                     "[ "
-                     ;; (:eval (battery-format "%b%p%%%" (battery-upower)))
-                     ;; " | "
+  (echo-bar-format '("[ "
+                     (:eval (battery-format "%b%p%%%" (battery-upower)))
+                     " | "
                      system-name
                      " | "
                      (:eval (format-time-string "%a %b %d | %H:%M"))
@@ -187,7 +182,8 @@
   (echo-bar-minibuffer nil)
   (echo-bar-right-padding 1)
   (echo-bar-update-interval 3)
-  :hook (after-init . echo-bar-mode))
+  :hook
+  (after-init . echo-bar-mode))
 
 (use-package ediff
   :custom
@@ -199,9 +195,7 @@
   (defun ednc-top-notification ()
     (if-let ((notification (car (ednc-notifications))))
         (ednc-format-notification notification)
-      ""))
-  :hook
-  (after-init . ednc-mode))
+      "")))
 
 (use-package eglot
   :custom
@@ -320,7 +314,6 @@
   :custom
   (exwm-input-global-keys
    `(;; hyper as prefix
-     ([?\H-Z] . insecure-lock-enter)
      ([?\H-r] . exwm-run-command-async)
      ,@(mapcar (lambda (i)
                  `(,(kbd (format "H-%d" i)) .
@@ -335,13 +328,13 @@
      ([H-f1] . pulseaudio-control-toggle-current-sink-mute)
      ([H-f2] . pulseaudio-control-decrease-sink-volume)
      ([H-f3] . pulseaudio-control-increase-sink-volume)
-     ([H-s-f1] . pulseaudio-control-toggle-current-source-mute)
-     ([H-s-f2] . pulseaudio-control-decrease-source-volume)
-     ([H-s-f3] . pulseaudio-control-increase-source-volume)
+     ([H-S-f1] . pulseaudio-control-toggle-current-source-mute)
+     ([H-S-f2] . pulseaudio-control-decrease-source-volume)
+     ([H-S-f3] . pulseaudio-control-increase-source-volume)
      ,@(mapcan (lambda (dir)
                  (list `(,(kbd (format "H-<%s>" dir)) .
                          ,(intern-soft (format "windmove-%s" dir)))
-                       `(,(kbd (format "H-s-<%s>" dir)) .
+                       `(,(kbd (format "H-S-<%s>" dir)) .
                          ,(intern-soft (format "windmove-swap-states-%s" dir)))
                        `(,(kbd (format "H-x <%s>" dir)) .
                          ,(intern-soft (format "windmove-display-%s" dir)))
@@ -362,7 +355,6 @@
      ([H-print] . scrot)
 
      ;; super as prefix
-     ([?\s-Z] . insecure-lock-enter)
      ([?\s-r] . exwm-run-command-async)
      ,@(mapcar (lambda (i)
                  `(,(kbd (format "s-%d" i)) .
@@ -374,13 +366,13 @@
      ([s-f1] . pulseaudio-control-toggle-current-sink-mute)
      ([s-f2] . pulseaudio-control-decrease-sink-volume)
      ([s-f3] . pulseaudio-control-increase-sink-volume)
-     ([s-s-f1] . pulseaudio-control-toggle-current-source-mute)
-     ([s-s-f2] . pulseaudio-control-decrease-source-volume)
-     ([s-s-f3] . pulseaudio-control-increase-source-volume)
+     ([s-S-f1] . pulseaudio-control-toggle-current-source-mute)
+     ([s-S-f2] . pulseaudio-control-decrease-source-volume)
+     ([s-S-f3] . pulseaudio-control-increase-source-volume)
      ,@(mapcan (lambda (dir)
                  (list `(,(kbd (format "s-<%s>" dir)) .
                          ,(intern-soft (format "windmove-%s" dir)))
-                       `(,(kbd (format "s-s-<%s>" dir)) .
+                       `(,(kbd (format "s-S-<%s>" dir)) .
                          ,(intern-soft (format "windmove-swap-states-%s" dir)))
                        `(,(kbd (format "s-x <%s>" dir)) .
                          ,(intern-soft (format "windmove-display-%s" dir)))
@@ -409,7 +401,12 @@
                          (setq exwm--ewmh-state
                                (delq xcb:Atom:_NET_WM_STATE_HIDDEN exwm--ewmh-state))
                          (exwm-layout--set-ewmh-state id)
-                         (xcb:flush exwm--connection)))))
+                         (xcb:flush exwm--connection))))
+  (exwm-randr-mode)
+  (ednc-mode)
+  (setopt echo-bar-format
+          (append '((:eval (ednc-top-notification)) " ")
+                  echo-bar-format)))
 
 (use-package exwm-randr
   :preface
@@ -430,7 +427,6 @@
            "--output" default-output "--off")
           (setq exwm-randr-workspace-monitor-plist (list 0 (match-string 1)))))))
   :hook
-  (after-init . exwm-randr-mode)
   (exwm-randr-screen-change . exwm-change-screen-hook))
 
 (use-package files
@@ -439,9 +435,6 @@
   (confirm-kill-emacs nil)
   (confirm-kill-processes nil)
   (make-backup-files nil))
-
-(use-package filesets
-  :hook (after-init . filesets-init))
 
 (use-package find-dired
   :bind (:map search-map ("f" . find-name-dired)))
@@ -523,8 +516,6 @@
   :hook
   (c-mode . helm-gtags-mode))
 
-(use-package helm-themes)
-
 (use-package help
   :custom (help-window-keep-selected t))
 
@@ -568,8 +559,6 @@
   :hook
   (ibuffer . ibuffer-project-setup))
 
-(use-package insecure-lock)
-
 (use-package isearch
   :custom
   (lazy-highlight-initial-delay 0.1)
@@ -586,8 +575,6 @@
   
 (use-package kkp
   :hook (after-init . global-kkp-mode))
-
-(use-package keycast)
 
 (use-package lua-ts-mode
   :mode ("\\.lua\\'" . lua-ts-mode))
@@ -620,6 +607,12 @@
 
 (use-package novice
   :init (setq disabled-command-function nil))
+
+(use-package ns-win
+  :if (and (display-graphic-p) (eq system-type 'darwin))
+  :custom
+  (mac-command-modifier 'control)
+  (mac-control-modifier 'super))
 
 (use-package pixel-scroll
   :hook (after-init . pixel-scroll-precision-mode))
@@ -717,8 +710,6 @@
 
 (use-package so-long
   :hook (after-init . global-so-long-mode))
-
-(use-package spacemacs-theme)
 
 (use-package syntax
   :custom (syntax-wholeline-max 1000))
