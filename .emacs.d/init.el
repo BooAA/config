@@ -725,6 +725,10 @@
   (after-init . tab-bar-mode)
   (after-init . tab-bar-history-mode))
 
+(use-package tab-sets
+  :vc (:url "https://github.com/localauthor/tab-sets")
+  :custom (tab-sets-data-file "~/.emacs.d/var/tab-sets.eld"))
+
 (use-package telega)
 
 (use-package uniquify
