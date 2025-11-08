@@ -1,0 +1,6 @@
+configuration {
+ modi: "window,run,combi";
+ font: "hack 20";
+ combi-modi: "window,run";
+}
+@theme "/usr/share/rofi/themes/gruvbox-dark-soft.rasi"

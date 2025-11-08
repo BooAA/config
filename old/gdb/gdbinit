@@ -1,0 +1,5 @@
+set auto-load safe-path /
+set history save on
+set pretty print on
+set pagination off
+set confirmation off
