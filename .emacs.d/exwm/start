@@ -35,4 +35,4 @@ xrandr --addmode DUMMY0 3840x2400
 
 # launch emacs and enable exwm
 # exec emacsclient -c
-emacs --eval "(progn (exwm-enable) (server-start))"
+emacs --eval "(progn (exwm-wm-mode) (server-start))"
