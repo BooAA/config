@@ -599,6 +599,7 @@
   ("M-<up>" . move-dup-move-lines-up))
 
 (use-package naysayer-theme
+  :demand t
   :config (load-theme 'naysayer t))
 
 (use-package novice
@@ -825,7 +826,6 @@
   (xref-truncation-width 100))
 
 (use-package zenburn-theme
-  :demand t
   :config (load-theme 'zenburn t))
 
 ;;; aliases

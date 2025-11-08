@@ -1,0 +1,99 @@
+#!/bin/bash
+
+export JACK_DESKTOP_SESSION=$DESKTOP_SESSION
+export JACK_SCREEN
+export JACK_RESOLUTION
+export JACK_SCALE
+export JACK_FONT_SIZE
+export JACK_CURSOR_SIZE
+
+init_plasma() {
+    export GDK_SCALE=1
+    export QT_SCALE_FACTOR=1
+    export QT_AUTO_SCREEN_SCALE_FACTOR=0
+    export PLASMA_USE_QT_SCALING=1
+}
+
+init_devices() {
+    xinput set-prop "ELAN0672:00 04F3:3187 Touchpad" "libinput Tapping Enabled" 1
+    xinput set-prop "ELAN0672:00 04F3:3187 Touchpad" "libinput Natural Scrolling Enabled" 1
+    xinput set-prop "ELAN0672:00 04F3:3187 Touchpad" "libinput Accel Speed" 0.6
+}
+
+# (screen, resolution, scale, font, cursor)
+orders=(
+    "DP-2 1920x1080 1 10 24"
+    "eDP-1 3840x2400 2 20 48"
+)
+
+init_xrandr() {
+    local xrandr_output=$(xrandr)
+    local screens=($(echo "$xrandr_output" | grep -w connected | awk '{print $1}'))
+    local screen res scale font cursor
+    local arr
+
+    for try in "${orders[@]}"; do
+        arr=($try)
+        screen=${arr[0]} res=${arr[1]}
+        scale=${arr[2]} font=${arr[3]} cursor=${arr[4]}
+
+        if ! echo "$xrandr_output" | grep -w "$screen connected" >> /dev/null; then
+            continue
+        fi
+
+        JACK_SCREEN=$screen
+        JACK_RESOLUTION=$res
+        JACK_SCALE=$scale
+        JACK_FONT_SIZE=$font
+        JACK_CURSOR_SIZE=$cursor
+
+        # xrandr
+        cmd="xrandr --output $screen --mode $res"
+        for s in ${screens[@]}; do
+            if [[ $s != $screen ]]; then
+                cmd+=" --output $s --off"
+            fi
+        done
+        echo $cmd > ~/.stumpwm.d/xrandr_cmd.log
+        eval $cmd
+        break
+    done
+}
+
+init_scale() {
+    local scale=$JACK_SCALE
+    local font=$JACK_FONT_SIZE
+    local cursor=$JACK_CURSOR_SIZE
+
+    # GTK, QT scaling
+    export GDK_SCALE=$scale
+    export QT_SCALE_FACTOR=$scale
+    export QT_AUTO_SCREEN_SCALE_FACTOR=0
+    sed -i "s/gtk-cursor-theme-size=[0-9][0-9]/gtk-cursor-theme-size=$cursor/" ~/.config/gtk-3.0/settings.ini
+    sed -i "s/gtk-cursor-theme-size=[0-9][0-9]/gtk-cursor-theme-size=$cursor/" ~/.config/gtk-4.0/settings.ini
+
+    # Xresources cursor & dpi
+    sed -i "s/Xcursor.size.*/Xcursor.size: $cursor/" ~/.Xresources
+    xrdb -merge /home/liangjlee/.Xresources
+    xsetroot -cursor_name left_ptr
+
+    # apps handling
+    # sed -i "s/WINIT_X11_SCALE_FACTOR.*/WINIT_X11_SCALE_FACTOR: \"$scale\"/" ~/.config/alacritty/alacritty.yml
+    sed -i "s/ [0-9][0-9]/ $font/" ~/.config/fcitx5/conf/classicui.conf
+    sed -i "s/[0-9][0-9]/$font/" ~/.config/rofi/config.rasi
+}
+
+init_stumpwm() {
+    init_xrandr
+    init_scale
+    init_devices
+}
+
+case $DESKTOP_SESSION in
+    plasma)
+        init_plasma
+        ;;
+    stumpwm)
+        init_stumpwm
+        ;;
+esac
