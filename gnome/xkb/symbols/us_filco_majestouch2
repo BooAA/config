@@ -1,0 +1,18 @@
+ppartial alphanumeric_keys modifier_keys
+xkb_symbols "filco" {
+    include "us(basic)"
+    name[Group1]= "Filco Majestouch 2 (US)";
+    key <LALT> {[  Control_L,  Control_L  ]};
+    key <RALT> {[  Control_R,  Control_R  ], type[group1] = "TWO_LEVEL" };
+    key <LWIN> {[  Alt_L,  Meta_L  ]};
+    key <RWIN> {[  Alt_R,  Meta_R  ]};
+    key <MENU> {[  Hyper_R  ]};
+    key <CAPS> {[  Hyper_L  ]};
+    key <LCTL> {[  Super_L  ]};
+    key <RCTL> {[  Super_R  ]};
+    modifier_map Control { <RALT>, <LALT> };
+    modifier_map Mod1 { <LWIN>, <RWIN> };
+    modifier_map Mod3 { <MENU>, <CAPS> };
+    modifier_map Mod4 { <LCTL>, <RCTL> };
+};
+

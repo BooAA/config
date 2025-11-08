@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xkbConfigRegistry SYSTEM "xkb.dtd">
+<xkbConfigRegistry version="1.1">
+  <layoutList>
+    <layout>
+      <configItem>
+        <name>us_filco_majestouch2</name>
+        <shortDescription>English (US, filco_majestouch2)</shortDescription>
+        <description>English (US, filco_majestouch2)</description>
+      </configItem>
+    </layout>
+    <layout>
+      <configItem>
+        <name>us_keychron_q3_pro</name>
+        <shortDescription>English (US, keychron_q3_pro)</shortDescription>
+        <description>English (US, keychron_q3_pro)</description>
+      </configItem>
+    </layout>
+    <layout>
+      <configItem>
+        <name>us_lenovo_carbon_x1</name>
+        <shortDescription>English (US, lenovo_carbon_x1)</shortDescription>
+        <description>English (US, lenovo_carbon_x1)</description>
+      </configItem>
+    </layout>
+    <layout>
+      <configItem>
+        <name>us_lenovo_niz_micro48</name>
+        <shortDescription>English (US, lenovo_niz_micro84)</shortDescription>
+        <description>English (US, lenovo_niz_micro84)</description>
+      </configItem>
+    </layout>
+  </layoutList>
+</xkbConfigRegistry>

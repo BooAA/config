@@ -1,0 +1,8 @@
+partial alphanumeric_keys modifier_keys
+xkb_symbols "niz" {
+    include "us(basic)"
+    name[Group1]= "Niz Micro84 (US)";
+    replace key <HYPR> {[  Super_L, Super_L  ]};
+    replace key <MENU> {[  Hyper_R  ]};
+    modifier_map Mod3 { <MENU> };
+};

@@ -1,0 +1,21 @@
+partial alphanumeric_keys modifier_keys
+xkb_symbols "lenovo" {
+    include "us(basic)"
+    name[Group1]= "Lenovo Carbon X1 (US)";
+    replace key <LALT> {[  Control_L,  Control_L  ]};
+    replace key <RALT> {[  Control_R,  Control_R  ], type[group1] = "TWO_LEVEL" };
+    replace key <LWIN> {[  Alt_L,  Meta_L  ]};
+    replace key <PRSC> {[  Alt_R,  Meta_R  ]};
+    replace key <LCTL> {[  Super_L  ]};
+    replace key <RCTL> {[  Super_R  ]};
+    replace key <CAPS> {[  Hyper_L  ]};
+    replace key <HYPR> {[  Super_L, Super_L  ]};
+    replace key <PGUP> { [ Hyper_R ] };
+    replace key <PGDN> { [ Hyper_R ] };
+    replace key <INS> { [ Print ] };
+    modifier_map Control { <RALT>, <LALT> };
+    modifier_map Mod1 { <LWIN>, <PRSC> };
+    modifier_map Mod3 { <CAPS>, <PGUP>, <PGDN> };
+    modifier_map Mod4 { <LCTL>, <RCTL> };
+};
+
