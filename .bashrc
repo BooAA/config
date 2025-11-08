@@ -15,6 +15,10 @@ if ! shopt -oq posix; then
     fi
 fi
 
+if [ -f $HOME/Src/LS_COLORS/lscolors.sh ]; then
+    . $HOME/Src/LS_COLORS/lscolors.sh
+fi
+
 if command -v zoxide &> /dev/null; then
     eval "$(zoxide init --cmd j bash)"
 fi
@@ -118,13 +122,15 @@ alias bls='git_log_line'
 alias c='clear'
 alias d='git diff'
 alias e='emacsclient -q -t -a nvim'
-alias f='fdfind -i --hidden'
+alias f='fastboot devices'
 alias g='rg -i --hidden'
-alias h='cat ~/.persistent_history | rg '
+alias h='cat ~/.persistent_history | rg'
 alias l='git log --oneline'
 alias m='mkdir'
 alias md='mkdir_cd'
 alias mk='make -j$(nproc)'
+alias p='git log -p'
+alias pg='ps aux | rg'
 alias q='exit'
 alias s='git status'
 alias z='tmux'
@@ -157,6 +163,8 @@ alias gsh='git stash'
 alias rs='repo status'
 alias rsc='repo sync -c -j $(nproc)'
 alias rd='repo diff'
+
+alias hn='hostname'
 
 for i in {1..10}; do
     alias .${i}="up_dir $i"

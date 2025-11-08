@@ -14,6 +14,7 @@
         '(bash-completion
           benchmark-init
           bluetooth
+          clipetty
           coterm
           dts-mode
           easy-kill
@@ -143,6 +144,9 @@
      (awk-mode . "awk")
      (other . "gnu"))))
 
+(use-package clipetty
+  :hook (after-init . global-clipetty-mode))
+
 (use-package comint
   :init
   (add-hook 'comint-output-filter-functions #'comint-osc-process-output))
@@ -236,19 +240,7 @@
 
   (defengine youtube
     "https://www.youtube.com/results?aq=f&oq=&search_query=%s"
-    :keybinding "y")
-
-  (defengine stack-overflow
-    "https://stackoverflow.com/search?q=%s"
-    :keybinding "s")
-
-  (defengine wikipedia
-  "https://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
-  :keybinding "w")
-
-  (defengine github
-    "https://github.com/search?ref=simplesearch&q=%s"
-    :keybinding "g"))
+    :keybinding "y"))
 
 (use-package enwc
   :custom (enwc-default-backend 'nm))
@@ -448,7 +440,8 @@
         ("s-p" . flymake-goto-prev-error)))
 
 (use-package frame
-  :custom (blink-cursor-mode nil))
+  :custom (blink-cursor-mode nil)
+  :bind ("C-z" . nil))
 
 (use-package gcmh)
 
@@ -499,13 +492,17 @@
 (use-package helm
   :custom
   (helm-minibuffer-history-key nil)
+  (helm-mini-default-sources
+   '(helm-source-grep-ag
+     helm-source-findutils
+     helm-source-buffers-list))
   :bind
   (:map helm-map
    ("C-s" . nil)
    ("C-t" . nil)
    ("C-|" . helm-toggle-resplit-window)
    :map helm-command-map
-   ("C-x b" . helm-mini))
+   ("g" . helm-mini))
   :defer 0.1)
 
 (use-package helm-gtags
@@ -602,7 +599,6 @@
   ("M-<up>" . move-dup-move-lines-up))
 
 (use-package naysayer-theme
-  :demand t
   :config (load-theme 'naysayer t))
 
 (use-package novice
@@ -632,7 +628,7 @@
   :custom
   (project-shells-eshell-keys nil)
   (project-shells-term-keys nil)
-  (project-shells-vterm-keys '("9" "0" "-" "="))
+  (project-shells-vterm-keys '("1" "2" "3" "4" "5" "6" "7" "8" "9" "0"))
   :hook
   (after-init . global-project-shells-mode))
 
@@ -810,15 +806,15 @@
 (use-package winum
   :bind
   (:map winum-keymap
-        ("C-1" . winum-select-window-1)
-        ("C-2" . winum-select-window-2)
-        ("C-3" . winum-select-window-3)
-        ("C-4" . winum-select-window-4)
-        ("C-5" . winum-select-window-5)
-        ("C-6" . winum-select-window-6)
-        ("C-7" . winum-select-window-7)
-        ("C-8" . winum-select-window-8)
-        ("C-9" . winum-select-window-9))
+        ("M-1" . winum-select-window-1)
+        ("M-2" . winum-select-window-2)
+        ("M-3" . winum-select-window-3)
+        ("M-4" . winum-select-window-4)
+        ("M-5" . winum-select-window-5)
+        ("M-6" . winum-select-window-6)
+        ("M-7" . winum-select-window-7)
+        ("M-8" . winum-select-window-8)
+        ("M-9" . winum-select-window-9))
   :hook
   (after-init . winum-mode))
 
@@ -829,6 +825,7 @@
   (xref-truncation-width 100))
 
 (use-package zenburn-theme
+  :demand t
   :config (load-theme 'zenburn t))
 
 ;;; aliases
