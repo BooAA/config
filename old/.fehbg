@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --no-fehbg --bg-scale '/usr/local/google/home/liangjlee/Pictures/wallpapers/blackhole.jpg' 
