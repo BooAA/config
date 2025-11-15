@@ -1,0 +1,6 @@
+[submodule ".stumpwm.d/modules/stumpwm-contrib"]
+	path = .stumpwm.d/modules/stumpwm-contrib
+	url = https://github.com/stumpwm/stumpwm-contrib
+[submodule ".stumpwm.d/modules/pamixer"]
+	path = .stumpwm.d/modules/pamixer
+	url = https://github.com/Junker/stumpwm-pamixer

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+xsetroot -cursor_name left_ptr
+
+export XMODIFIERS=@im=fcitx
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+
+xhost +SI:localuser:$USER
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+export SBCL_HOME="/usr/lib/sbcl"
+exec stumpwm

@@ -1,0 +1,24 @@
+("quicklisp" .
+ (:class qlot/source/dist:source-dist
+  :initargs (:distribution "https://beta.quicklisp.org/dist/quicklisp.txt" :%version :latest)
+  :version "2025-06-22"))
+("clx-truetype" .
+ (:class qlot/source/github:source-github
+  :initargs (:repos "goose121/clx-truetype" :ref nil :branch nil :tag nil)
+  :version "github-4ac0f524a4c2f000441960d6960f9cfb173fc8a5"))
+("dbus" .
+ (:class qlot/source/ql:source-ql
+  :initargs (:%version :latest)
+  :version "ql-2024-10-12"))
+("sly" .
+ (:class qlot/source/ql:source-ql
+  :initargs (:%version :latest)
+  :version "ql-2025-06-22"))
+("xml-emitter" .
+ (:class qlot/source/ql:source-ql
+  :initargs (:%version :latest)
+  :version "ql-2024-10-12"))
+("zpng" .
+ (:class qlot/source/ql:source-ql
+  :initargs (:%version :latest)
+  :version "ql-2015-04-07"))
