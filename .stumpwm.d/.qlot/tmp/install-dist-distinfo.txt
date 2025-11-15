@@ -1,0 +1,6 @@
+name: zpng
+version: ql-2015-04-07
+distinfo-subscription-url: qlot://localhost/zpng.txt
+canonical-distinfo-url: qlot://localhost/zpng.txt
+release-index-url: qlot://localhost/zpng/ql-2015-04-07/releases.txt
+system-index-url: qlot://localhost/zpng/ql-2015-04-07/systems.txt

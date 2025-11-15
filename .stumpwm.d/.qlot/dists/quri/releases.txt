@@ -1,0 +1,2 @@
+# project url size file-md5 content-sha1 prefix [system-file1..system-fileN]
+quri http://beta.quicklisp.org/archive/quri/2024-10-12/quri-20241012-git.tgz 72071 cf07b214f7320a3047c343adb599188d 5c541088da24684d499b802410078b1f08ae93e2 quri-20241012-git quri-test.asd quri.asd

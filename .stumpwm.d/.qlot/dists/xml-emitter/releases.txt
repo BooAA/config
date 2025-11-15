@@ -1,0 +1,2 @@
+# project url size file-md5 content-sha1 prefix [system-file1..system-fileN]
+xml-emitter http://beta.quicklisp.org/archive/xml-emitter/2024-10-12/xml-emitter-20241012-git.tgz 8014 46c0ea09a3fee18085dfff43c72f4b37 b1070c549b992b6b430e849f61fcc919582f9fc6 xml-emitter-20241012-git xml-emitter.asd

@@ -1,0 +1,6 @@
+name: dbus
+version: ql-2024-10-12
+distinfo-subscription-url: qlot://localhost/dbus.txt
+canonical-distinfo-url: qlot://localhost/dbus.txt
+release-index-url: qlot://localhost/dbus/ql-2024-10-12/releases.txt
+system-index-url: qlot://localhost/dbus/ql-2024-10-12/systems.txt

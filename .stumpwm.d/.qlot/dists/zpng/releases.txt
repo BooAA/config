@@ -1,0 +1,2 @@
+# project url size file-md5 content-sha1 prefix [system-file1..system-fileN]
+zpng http://beta.quicklisp.org/archive/zpng/2015-04-07/zpng-1.2.2.tgz 40141 0a208f4ce0087ef578d477341d5f4078 0374a5e03f266152dea01c6fff9839798725697c zpng-1.2.2 zpng.asd

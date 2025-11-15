@@ -1,0 +1,6 @@
+name: quri
+version: ql-2024-10-12
+distinfo-subscription-url: qlot://localhost/quri.txt
+canonical-distinfo-url: qlot://localhost/quri.txt
+release-index-url: qlot://localhost/quri/ql-2024-10-12/releases.txt
+system-index-url: qlot://localhost/quri/ql-2024-10-12/systems.txt

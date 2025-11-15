@@ -1,0 +1,1 @@
+dists/clx-truetype/software/clx-truetype-4ac0f524a4c2f000441960d6960f9cfb173fc8a5/clx-truetype.asd

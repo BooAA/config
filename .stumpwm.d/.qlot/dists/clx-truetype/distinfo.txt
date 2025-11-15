@@ -1,0 +1,6 @@
+name: clx-truetype
+version: github-4ac0f524a4c2f000441960d6960f9cfb173fc8a5
+distinfo-subscription-url: qlot://localhost/clx-truetype.txt
+canonical-distinfo-url: qlot://localhost/clx-truetype.txt
+release-index-url: qlot://localhost/clx-truetype/github-4ac0f524a4c2f000441960d6960f9cfb173fc8a5/releases.txt
+system-index-url: qlot://localhost/clx-truetype/github-4ac0f524a4c2f000441960d6960f9cfb173fc8a5/systems.txt

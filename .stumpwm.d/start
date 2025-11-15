@@ -2,6 +2,12 @@
 
 xsetroot -cursor_name left_ptr
 
+echo "Xft.dpi: 192" | xrdb -merge -
+xset r rate 190 75
+xinput set-prop "ELAN0672:00 04F3:3187 Touchpad" "libinput Tapping Enabled" 1
+xinput set-prop "ELAN0672:00 04F3:3187 Touchpad" "libinput Accel Speed" 0.5
+xinput set-prop "ELAN0672:00 04F3:3187 Touchpad" "libinput Natural Scrolling Enabled" 1
+
 export XMODIFIERS=@im=fcitx
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
