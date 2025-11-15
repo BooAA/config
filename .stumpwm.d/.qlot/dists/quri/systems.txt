@@ -1,3 +1,0 @@
-# project system-file system-name [dependency1..dependencyN]
-quri quri quri alexandria asdf babel cl-utilities idna split-sequence
-quri quri-test quri-test asdf prove prove-asdf quri

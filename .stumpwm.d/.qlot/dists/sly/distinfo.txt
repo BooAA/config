@@ -1,6 +1,0 @@
-name: sly
-version: ql-2025-06-22
-distinfo-subscription-url: qlot://localhost/sly.txt
-canonical-distinfo-url: qlot://localhost/sly.txt
-release-index-url: qlot://localhost/sly/ql-2025-06-22/releases.txt
-system-index-url: qlot://localhost/sly/ql-2025-06-22/systems.txt

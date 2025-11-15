@@ -1,2 +1,0 @@
-# project url size file-md5 content-sha1 prefix [system-file1..system-fileN]
-dbus http://beta.quicklisp.org/archive/dbus/2024-10-12/dbus-20241012-git.tgz 24550 3d942da7c3e312ddd14173c4fb80cdce 85850947ae423a44bbb178ce679254c4a756f777 dbus-20241012-git dbus.asd

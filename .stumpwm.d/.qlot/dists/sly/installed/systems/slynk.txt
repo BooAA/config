@@ -1,1 +1,0 @@
-dists/sly/software/sly-20250622-git/slynk/slynk.asd

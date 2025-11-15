@@ -1,3 +1,0 @@
-# project system-file system-name [dependency1..dependencyN]
-xml-emitter xml-emitter xml-emitter asdf cl-utilities
-xml-emitter xml-emitter xml-emitter/tests 1am xml-emitter

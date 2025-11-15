@@ -1,6 +1,0 @@
-name: xml-emitter
-version: ql-2024-10-12
-distinfo-subscription-url: qlot://localhost/xml-emitter.txt
-canonical-distinfo-url: qlot://localhost/xml-emitter.txt
-release-index-url: qlot://localhost/xml-emitter/ql-2024-10-12/releases.txt
-system-index-url: qlot://localhost/xml-emitter/ql-2024-10-12/systems.txt

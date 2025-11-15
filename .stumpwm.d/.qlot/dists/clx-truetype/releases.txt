@@ -1,2 +1,0 @@
-# project url size file-md5 content-sha1 prefix [system-file1..system-fileN]
-clx-truetype qlot://localhost/clx-truetype/github-4ac0f524a4c2f000441960d6960f9cfb173fc8a5/archive.tar.gz 378834 a190783d1f566ef926cd22f93b06e740 1bf5bd618537a8f19a2da0ec71de10c5093297bc clx-truetype-4ac0f524a4c2f000441960d6960f9cfb173fc8a5 clx-truetype.asd

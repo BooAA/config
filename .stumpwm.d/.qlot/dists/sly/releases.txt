@@ -1,2 +1,0 @@
-# project url size file-md5 content-sha1 prefix [system-file1..system-fileN]
-sly http://beta.quicklisp.org/archive/sly/2025-06-22/sly-20250622-git.tgz 1839388 be4ad730b33d454d852ebf98f12e9d4b b8a066a1917f398bfed0d12864499b79843ae601 sly-20250622-git slynk/slynk.asd
