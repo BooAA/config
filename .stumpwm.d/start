@@ -15,7 +15,7 @@ export QT_IM_MODULE=fcitx
 xhost +SI:localuser:$USER
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-feh --bg-scale ~/Pictures/wallpapers/blackhole.jpg &
+feh --bg-scale ~/Pictures/wallpapers/mountain_4k.jpg &
 picom --backend glx --glx-no-stencil --vsync &
 fcitx5 &
 autorandr --change &
