@@ -242,7 +242,3 @@
  "gnewbg 2"
  "gnewbg 3"
  "gnewbg 4")
-
-(run-shell-command "feh --bg-scale ~/Pictures/wallpapers/blackhole.jpg")
-(run-shell-command "picom")
-(run-shell-command "fcitx5")
