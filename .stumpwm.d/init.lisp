@@ -135,7 +135,7 @@
 (define-key *top-map* (kbd "H-S-Right") "move-window right")
 
 (define-key *top-map* (kbd "H-r") "exec")
-(define-key *top-map* (kbd "H-s") "exec rofi -show combi window,drun,run -font \"hack 20\"")
+(define-key *top-map* (kbd "H-s") "exec rofi -show combi -combi-modi \"window,drun,run\" -font \"hack 20\"")
 (define-key *top-map* (kbd "H-;") "colon")
 (define-key *top-map* (kbd "H-:") "eval")
 (define-key *top-map* (kbd "H-.") "curframe")
