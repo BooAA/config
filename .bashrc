@@ -94,7 +94,7 @@ case $INSIDE_EMACS in
     "vterm")
         PS1=$PS1'\[$(vterm_prompt_end)\]'
         ;;
-    "31.0.50,comint")
+    "32.0.50,comint"|"31.0.50,comint")
         PROMPT_COMMAND="emacs_comint_prompt; $PROMPT_COMMAND"
         ;;
     *)
@@ -133,12 +133,6 @@ alias p='git log -p'
 alias pg='ps aux | rg'
 alias q='exit'
 alias s='git status'
-alias z='tmux'
-alias za='tmux attach'
-alias zl='tmux ls'
-alias zk='screen -X quit -S'
-alias zK='screen -wipe'
-alias zz='screen -c ~/.screenrc_detach'
 
 alias diff='diff --color=auto'
 alias ls='ls --color=auto'
@@ -149,6 +143,7 @@ alias rg='rg -i --hidden'
 
 alias vi='nvim'
 alias vim='nvim'
+alias v2='nvim -O2'
 
 alias gs='git status'
 alias gl='git log --oneline'

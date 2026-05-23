@@ -15,6 +15,7 @@
           benchmark-init
           bluetooth
           clipetty
+          consult
           coterm
           dts-mode
           easy-kill
@@ -28,6 +29,7 @@
           exwm
           gcmh
           ggtags
+          ghostel
           helm
           helm-gtags
           ibuffer-project
@@ -36,8 +38,6 @@
           move-dup
           naysayer-theme
           no-littering
-          project-shells
-          projectile
           pulseaudio-control
           request
           rotate
@@ -46,7 +46,8 @@
           sly
           telega
           urgrep
-          vterm
+          vertico
+          w3m
           winum
           zenburn-theme))
 
@@ -69,9 +70,11 @@
 (use-package emacs
   :custom
   ;; C source
-  (bidi-display-reordering nil)
+  (bidi-display-reordering 'left-to-right)
+  (bidi-paragraph-direction 'left-to-right)
   (bidi-inhibit-bpa t)
   (completion-ignore-case t)
+  (cursor-in-non-selected-windows nil)
   (delete-by-moving-to-trash t)
   (enable-recursive-minibuffers t)
   (fast-but-imprecise-scrolling t)
@@ -83,11 +86,13 @@
                       mode-line-buffer-identification "  "
                       mode-line-position))
   (read-buffer-completion-ignore-case t)
+  (redisplay-skip-fontification-on-input t)
   (ring-bell-function #'ignore)
   (scroll-preserve-screen-position t)
   (use-short-answers t)
   (user-full-name "Jack Lee")
   (visible-cursor nil)
+  (window-combination-resize t)
 
   ;; startup.el
   (inhibit-startup-screen t)
@@ -151,6 +156,48 @@
   :init
   (add-hook 'comint-output-filter-functions #'comint-osc-process-output))
 
+(use-package consult)
+
+(use-package consult-omni
+  :init
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni")
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/sources")
+
+  (require 'consult-omni)
+  (require 'consult-omni-fd)
+  (require 'consult-omni-ripgrep)
+
+  :preface
+  (defun consult-omni-project ()
+    (interactive)
+    (unwind-protect
+        (progn
+          (setopt consult-project-function nil)
+          (vertico-mode 1)
+          (let ((default-directory (project-root (project-current t))))
+            (call-interactively #'consult-omni-multi)))
+      (setopt consult-project-function #'consult--default-project-function)
+      (vertico-mode -1)))
+
+  (defun consult-omni-default-directory ()
+    (interactive)
+    (unwind-protect
+        (progn
+          (setopt consult-project-function nil)
+          (vertico-mode 1)
+          (let ((default-directory default-directory))
+            (call-interactively #'consult-omni-multi)))
+      (setopt consult-project-function #'consult--default-project-function)
+      (vertico-mode -1)))
+  :custom
+  (consult-omni-multi-sources '("ripgrep" "fd"))
+  (consult-omni-highlight-matches-in-file nil)
+  :bind
+  (:map search-map
+        ("/" . consult-omni-default-directory)
+   :map project-prefix-map
+        ("/" . consult-omni-project)))
+
 (use-package coterm
   :hook (after-init . coterm-mode))
 
@@ -177,6 +224,8 @@
 (use-package echo-bar
   :custom
   (echo-bar-format '("[ "
+                     (:eval (format "%d" (1+ (tab-bar--current-tab-index))))
+                     " | "
                      (:eval (battery-format "%b%p%%%" (battery-upower)))
                      " | "
                      system-name
@@ -211,7 +260,8 @@
    '(:inlayHintProvider
      :documentFormattingProvider
      :documentRangeFormattingProvider
-     :documentOnTypeFormattingProvider))
+     :documentOnTypeFormattingProvider
+     :semanticTokensProvider))
   (eglot-sync-connect nil))
 
 (use-package eldoc
@@ -225,9 +275,10 @@
 
 (use-package elfeed
   :custom
-  (elfeed-feeds '(("https://planet.lisp.org/rss20.xml" lisp)
+  (elfeed-feeds '(("https://chipsandcheese.com/feed/" chip)
                   ("https://sachachua.com/blog/category/emacs-news/feed/" emacs)
-                  ("https://lwn.net/headlines/rss" linux)))
+                  ("https://lwn.net/headlines/rss" linux)
+                  ("https://planet.lisp.org/rss20.xml" lisp)))
   (elfeed-search-filter "@3days-ago +unread"))
 
 (use-package engine-mode
@@ -459,7 +510,7 @@
         ("C-M-." . nil)
         ("M-." . nil)
         ("M-]" . nil)
-        :map ggtags-mode-prefix-map
+   :map ggtags-mode-prefix-map
         ("." . ggtags-find-tag-dwim)
         ("/" . ggtags-view-search-history)
         ("?" . ggtags-find-reference)
@@ -479,6 +530,29 @@
   :hook
   (c-mode . ggtags-mode))
 
+(use-package ghostel
+  :preface
+  (defmacro ghostel-num (num)
+    (let ((fn-name (intern (format "ghostel-%d" num))))
+      `(defun ,fn-name ()
+         (interactive)
+         (ghostel ,num))))
+
+  (dolist (i (number-sequence 1 9))
+    (eval `(ghostel-num ,i)))
+  :bind
+  (("C-M-1" . ghostel-1)
+   ("C-M-2" . ghostel-2)
+   ("C-M-3" . ghostel-3)
+   ("C-M-4" . ghostel-4)
+   ("C-M-5" . ghostel-5)
+   ("C-M-6" . ghostel-6)
+   ("C-M-7" . ghostel-7)
+   ("C-M-8" . ghostel-8)
+   ("C-M-9" . ghostel-9)
+   :map project-prefix-map
+   ("t" . ghostel-project)))
+
 (use-package gnus
   :custom
   (gnus-select-method '(nnnil))
@@ -492,17 +566,11 @@
 (use-package helm
   :custom
   (helm-minibuffer-history-key nil)
-  (helm-mini-default-sources
-   '(helm-source-grep-ag
-     helm-source-findutils
-     helm-source-buffers-list))
   :bind
   (:map helm-map
-   ("C-s" . nil)
-   ("C-t" . nil)
-   ("C-|" . helm-toggle-resplit-window)
-   :map helm-command-map
-   ("g" . helm-mini))
+        ("C-s" . nil)
+        ("C-t" . nil)
+        ("C-|" . helm-toggle-resplit-window))
   :defer 0.1)
 
 (use-package helm-gtags
@@ -514,7 +582,9 @@
   (c-mode . helm-gtags-mode))
 
 (use-package help
-  :custom (help-window-keep-selected t))
+  :custom
+  (help-window-select t)
+  (help-window-keep-selected t))
 
 (use-package hippie-exp
   :custom
@@ -599,7 +669,6 @@
   ("M-<up>" . move-dup-move-lines-up))
 
 (use-package naysayer-theme
-  :demand t
   :config (load-theme 'naysayer t))
 
 (use-package novice
@@ -625,18 +694,6 @@
   :config
   (add-to-list 'project-find-functions #'project-try-override))
 
-(use-package project-shells
-  :custom
-  (project-shells-eshell-keys nil)
-  (project-shells-term-keys nil)
-  (project-shells-vterm-keys '("1" "2" "3" "4" "5" "6" "7" "8" "9" "0"))
-  :hook
-  (after-init . global-project-shells-mode))
-
-(use-package projectile
-  :demand t
-  :custom (projectile-dirconfig-file ".project"))
-
 (use-package pulseaudio-control
   :custom
   (pulseaudio-control-volume-step "2%")
@@ -654,6 +711,9 @@
 
 (use-package replace
   :bind ("C-%" . replace-regexp))
+
+(use-package repo
+  :vc (:url "https://github.com/snogge/repo-el"))
 
 (use-package rotate
   :bind ("C-|" . rotate-layout))
@@ -693,6 +753,9 @@
   (backward-delete-char-untabify-method nil)
   (completion-show-help nil)
   (kill-region-dwim 'emacs-word)
+  (kill-do-not-save-duplicates t)
+  (save-interprogram-paste-before-kill t)
+  (set-mark-command-repeat-pop t)
   :hook
   (after-init . line-number-mode)
   (after-init . column-number-mode))
@@ -722,10 +785,6 @@
   (after-init . tab-bar-mode)
   (after-init . tab-bar-history-mode))
 
-(use-package tab-sets
-  :vc (:url "https://github.com/localauthor/tab-sets")
-  :custom (tab-sets-data-file "~/.emacs.d/var/tab-sets.eld"))
-
 (use-package telega)
 
 (use-package uniquify
@@ -743,15 +802,11 @@
         ("g" . urgrep)
         ("G" . urgrep-run-command)))
 
-(use-package vterm
-  :custom
-  (vterm-clear-scrollback-when-clearing t)
-  (vterm-enable-manipulate-selection-data-by-osc52 t)
-  (vterm-max-scrollback 100000)
-  (vterm-timer-delay 0.01)
-  (vterm-tramp-shells '(("ssh" "/bin/bash")))
-  :bind
-  (:map vterm-mode-map ("C-S-SPC" . vterm-copy-mode)))
+(use-package vertico
+  :hook (after-init . vertico-buffer-mode))
+
+(use-package w3m
+  :custom (w3m-search-default-engine "duckduckgo"))
 
 (use-package warning
   :custom (warning-minimum-level :error))
@@ -826,6 +881,7 @@
   (xref-truncation-width 100))
 
 (use-package zenburn-theme
+  :demand t
   :config (load-theme 'zenburn t))
 
 ;;; aliases

@@ -8,7 +8,7 @@
 (push '(left-fringe . 2) default-frame-alist)
 (push '(right-fringe . 2) default-frame-alist)
 
-;; (push '(fullscreen . maximized) initial-frame-alist)
+(push '(fullscreen . maximized) initial-frame-alist)
 
 (set-face-attribute 'default t
                     :family "hack"
@@ -29,7 +29,5 @@
 (setopt native-comp-async-report-warnings-errors 'silent)
 
 (setopt use-package-enable-imenu-support t)
-
-(setopt native-comp-speed -1)
 
 (provide 'early-init)

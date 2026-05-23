@@ -1,0 +1,10 @@
+partial alphanumeric_keys modifier_keys
+xkb_symbols "dumang_dk6" {
+    include "us(basic)"
+    name[Group1]= "Dumang DK6 (US)";
+    replace key <HYPR> {[  Super_L, Super_L  ]};
+    replace key <FK17> {[  Hyper_R  ]};
+    replace key <FK18> {[  ALt_R  ]};
+    modifier_map Mod2 { <FK18> };
+    modifier_map Mod3 { <FK17> };
+};

@@ -1,8 +1,8 @@
 # Configuration for alacritty
 
+[general]
 ipc_socket = true
 live_config_reload = true
-shell = "/usr/bin/bash"
 
 [bell]
 animation = "Linear"
@@ -48,10 +48,11 @@ semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
 
 [terminal]
 osc52 = "CopyPaste"
+shell = "/usr/bin/bash"
 
 [window]
 class = { instance = "Alacritty", general = "Alacritty" }
-decorations = "None"
+# decorations = "None"
 decorations_theme_variant = "None"
 dynamic_title = true
 # opacity = 0.95 
