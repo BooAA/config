@@ -137,8 +137,7 @@ alias s='git status'
 alias diff='diff --color=auto'
 alias ls='ls --color=auto'
 alias grep='grep --color=auto -i'
-
-alias fd='fdfind -i --hidden'
+if command -v fdfind &> /dev/null; then alias fd='fdfind -i --hidden'; fi
 alias rg='rg -i --hidden'
 
 alias vi='nvim'

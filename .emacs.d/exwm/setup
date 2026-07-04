@@ -33,34 +33,28 @@ while getopts "m:r:d:f:k:" opt; do
     esac
 done
 
-if [[ ! "${monitor}" ]]; then
-    echo "Monitor is not given!"
-    exit 1
+if [[ -n "${monitor}" && -n "${resolution}" ]]; then
+    xrandr --output ${monitor} --mode ${resolution} --primary
+else
+    echo "monitor or resolution is not given, skip xrandr setup"
 fi
 
-if [[ ! "${resolution}" ]]; then
-    echo "Resolution is not given!"
-    exit 1
+if [[ -n "${dpi}" ]]; then
+    echo "Xft.dpi: $dpi" | xrdb -merge -
+    kill -9 $(pgrep -a chrome | grep -v chrome-remote-desktop | awk '{print $1}') # cleanup chrome process with old dpi
+else
+    echo "dpi is not given, skip xrdb setup"
 fi
 
-if [[ ! "${dpi}" ]]; then
-    echo "DPI is not given!"
-    exit 1
+if [[ -n "${font_size}" ]]; then
+    emacsclient --eval "(internal-set-lisp-face-attribute 'default :font (font-spec :size $font_size :dpi $dpi) 0)"
+else
+    echo "font_size is not given, skip emacs font setup"
 fi
 
-if [[ ! "${font_size}" ]]; then
-    echo "Font size is not given!"
-    exit 1
+if [[ -n "${keyboard}" ]]; then
+    setxkbmap
+    xmodmap .Xmodmap_${keyboard}
+else
+    echo "keyboard is not given, skip xmodmap setup"
 fi
-
-if [[ ! "${keyboard}" ]]; then
-    echo "Keyboard is not given!"
-    exit 1
-fi
-
-xrandr --output ${monitor} --mode ${resolution} --primary
-setxkbmap
-xmodmap .Xmodmap_${keyboard}
-echo "Xft.dpi: $dpi" | xrdb -merge -
-kill -9 $(pgrep -a chrome | grep -v chrome-remote-desktop | awk '{print $1}') # cleanup chrome process with old dpi
-emacsclient --eval "(internal-set-lisp-face-attribute 'default :font (font-spec :size $font_size :dpi $dpi) 0)"
