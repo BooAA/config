@@ -123,7 +123,6 @@ alias c='clear'
 alias d='git diff'
 alias e='emacsclient -q -t -a nvim'
 alias f='fastboot devices'
-alias g='rg -i --hidden'
 alias h='cat ~/.persistent_history | rg'
 alias l='git log --oneline'
 alias m='mkdir'
@@ -163,3 +162,7 @@ alias hn='hostname'
 for i in {1..10}; do
     alias .${i}="up_dir $i"
 done
+
+if [ -f "$HOME/.bashrc_private" ]; then
+    . "$HOME/.bashrc_private"
+fi
