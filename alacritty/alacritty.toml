@@ -35,6 +35,9 @@ size = 7
 alphabet = "asdfghjkl;"
 
 [keyboard]
+bindings = [
+{ key = "Backslash", mods = "Control", chars = "\u001c" },
+]
 
 [mouse]
 
