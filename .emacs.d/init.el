@@ -159,6 +159,11 @@
 (use-package consult)
 
 (use-package consult-omni
+  :init
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/")
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/sources")
+  :commands
+  (consult-omni-multi)
   :preface
   (defun consult-omni-project ()
     (interactive)

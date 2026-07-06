@@ -126,7 +126,7 @@ booaa_setup() {
     ln -s $config/.emacs.d/init.el ~/.emacs.d/init.el
     ln -s $config/.emacs.d/early-init.el ~/.emacs.d/early-init.el
     ln -s $config/.emacs.d/exwm ~/.emacs.d/exwm
-    ln -s $config/.emacs.d/user-lisp ~/.emacs.d/user-lisp
+    ln -s $config/.emacs.d/site-lisp ~/.emacs.d/site-lisp
     ln -s $config/.emacs.d/tree-sitter ~/.emacs.d/tree-sitter
 }
 
@@ -146,12 +146,14 @@ alias d='git diff'
 alias e='emacsclient -q -t -a nvim'
 alias f='fastboot devices'
 alias h='cat ~/.persistent_history | rg'
+alias k='kill -9'
 alias l='git log --oneline'
 alias m='mkdir'
 alias md='mkdir_cd'
 alias mk='make -j$(nproc)'
 alias p='git log -p'
 alias pg='ps aux | rg'
+alias pk='pkill'
 alias q='exit'
 alias s='git status'
 
