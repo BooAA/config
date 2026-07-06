@@ -115,19 +115,19 @@ clear() {
 
 booaa_setup() {
     local config=$1
-    ln -s $config/.bashrc ~/.bashrc 
-    ln -s $config/.inputrc ~/.inputrc 
+    ln -s $config/.bashrc ~/.bashrc
+    ln -s $config/.inputrc ~/.inputrc
     ln -s $config/alacritty ~/.config/alacritty
 
     mkdir ~/.config/tmux
-    ln -s $config/tmux/tmux.conf ~/.config/tmux/tmux.conf 
+    ln -s $config/tmux/tmux.conf ~/.config/tmux/tmux.conf
 
     mkdir ~/.emacs.d
     ln -s $config/.emacs.d/init.el ~/.emacs.d/init.el
-    ln -s $config/.emacs.d/early-init.el ~/.emacs.d/early-init.el 
-    ln -s $config/.emacs.d/exwm ~/.emacs.d/exwm 
-    ln -s $config/.emacs.d/user-lisp ~/.emacs.d/user-lisp 
-    ln -s $config/.emacs.d/tree-sitter ~/.emacs.d/tree-sitter 
+    ln -s $config/.emacs.d/early-init.el ~/.emacs.d/early-init.el
+    ln -s $config/.emacs.d/exwm ~/.emacs.d/exwm
+    ln -s $config/.emacs.d/user-lisp ~/.emacs.d/user-lisp
+    ln -s $config/.emacs.d/tree-sitter ~/.emacs.d/tree-sitter
 }
 
 booaa_reset() {
