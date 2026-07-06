@@ -113,6 +113,28 @@ clear() {
     printf '\033[2J\033[3J\033[1;1H'
 }
 
+booaa_setup() {
+    local config=$1
+    ln -s $config/.bashrc ~/.bashrc 
+    ln -s $config/.inputrc ~/.inputrc 
+    ln -s $config/alacritty ~/.config/alacritty
+
+    mkdir ~/.config/tmux
+    ln -s $config/tmux/tmux.conf ~/.config/tmux/tmux.conf 
+
+    mkdir ~/.emacs.d
+    ln -s $config/.emacs.d/init.el ~/.emacs.d/init.el
+    ln -s $config/.emacs.d/early-init.el ~/.emacs.d/early-init.el 
+    ln -s $config/.emacs.d/exwm ~/.emacs.d/exwm 
+    ln -s $config/.emacs.d/user-lisp ~/.emacs.d/user-lisp 
+    ln -s $config/.emacs.d/tree-sitter ~/.emacs.d/tree-sitter 
+}
+
+booaa_reset() {
+    rm ~/.bashrc ~/.inputrc
+    rm -rf ~/.config/alacritty ~/.config/tmux/ ~/.emacs.d
+}
+
 alias a='adb devices'
 alias ar='adb root'
 alias as='adb shell'
