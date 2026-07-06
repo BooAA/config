@@ -127,7 +127,7 @@
 (use-package browse-url
   :custom
   (browse-url-browser-function #'browse-url-chrome)
-  (browse-url-chrome-arguments '("--new-window"))
+  (browse-url-chrome-arguments '("--new-window --ozone-platform-hint=auto"))
   :bind
   ("C-c z ." . browse-url-at-point)
   ("C-c z b" . browse-url-of-buffer)
@@ -159,14 +159,6 @@
 (use-package consult)
 
 (use-package consult-omni
-  :init
-  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni")
-  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/sources")
-
-  (require 'consult-omni)
-  (require 'consult-omni-fd)
-  (require 'consult-omni-ripgrep)
-
   :preface
   (defun consult-omni-project ()
     (interactive)
@@ -196,7 +188,10 @@
   (:map search-map
         ("/" . consult-omni-default-directory)
    :map project-prefix-map
-        ("/" . consult-omni-project)))
+        ("/" . consult-omni-project))
+  :config
+  (require 'consult-omni-fd)
+  (require 'consult-omni-ripgrep))
 
 (use-package coterm
   :hook (after-init . coterm-mode))
@@ -226,8 +221,8 @@
   (echo-bar-format '("[ "
                      (:eval (format "%d" (1+ (tab-bar--current-tab-index))))
                      " | "
-                     (:eval (battery-format "%b%p%%%" (battery-upower)))
-                     " | "
+                     ;; (:eval (battery-format "%b%p%%%" (battery-upower)))
+                     ;; " | "
                      system-name
                      " | "
                      (:eval (format-time-string "%a %b %d | %H:%M"))

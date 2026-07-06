@@ -1,6 +1,9 @@
 [submodule ".stumpwm.d/modules/stumpwm-contrib"]
-	path = .stumpwm.d/modules/stumpwm-contrib
+	path = old/.stumpwm.d/modules/stumpwm-contrib
 	url = https://github.com/stumpwm/stumpwm-contrib
 [submodule ".stumpwm.d/modules/pamixer"]
-	path = .stumpwm.d/modules/pamixer
+	path = old/.stumpwm.d/modules/pamixer
 	url = https://github.com/Junker/stumpwm-pamixer
+[submodule ".emacs.d/user-lisp/consult-omni"]
+	path = .emacs.d/user-lisp/consult-omni
+	url = https://github.com/armindarvish/consult-omni.git
