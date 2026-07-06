@@ -156,6 +156,7 @@ alias pg='ps aux | rg'
 alias pk='pkill'
 alias q='exit'
 alias s='git status'
+alias v='nvim'
 
 alias diff='diff --color=auto'
 alias ls='ls --color=auto'
