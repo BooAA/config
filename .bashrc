@@ -42,10 +42,6 @@ XDG_CACHE_HOME="$HOME/.cache"
 XDG_DATA_HOME="$HOME/.local/share"
 XDG_STATE_HOME="$HOME/.local/state"
 
-mkdir_cd() {
-    mkdir $1; cd $1
-}
-
 git_blame_line() {
     local l=$1 f=$2
     git blame -L $l,$l -- $f
@@ -135,23 +131,32 @@ booaa_reset() {
     rm -rf ~/.config/alacritty ~/.config/tmux/ ~/.emacs.d
 }
 
+persistent_history_search_10() {
+    cat ~/.persistent_history | rg $1 | tail -n10
+}
+
+persistent_history_search_20() {
+    cat ~/.persistent_history | rg $1 | tail -n20
+}
+
 alias a='adb devices'
 alias am='git commit --amend --no-edit'
 alias ar='adb root'
 alias as='adb shell'
 alias b='git branch'
-alias bl='git_blame_line'
-alias bls='git_log_line'
+alias bl='git blame'
 alias c='clear'
 alias cm='git commit -s'
 alias d='git diff'
+alias dc='git diff --cached'
 alias e='emacsclient -q -t -a nvim'
 alias f='fastboot devices'
 alias h='cat ~/.persistent_history | rg'
+alias h1='persistent_history_search_10'
+alias h2='persistent_history_search_20'
 alias k='pkill --full'
 alias l='git log --oneline'
-alias m='mkdir'
-alias md='mkdir_cd'
+alias md='mkdir'
 alias mk='make -j$(nproc)'
 alias n='git switch'
 alias nc='git switch -c'
@@ -160,16 +165,16 @@ alias pg='ps aux | rg'
 alias q='exit'
 alias s='git status'
 alias t='git stash'
-alias ta='git stash apply'
-alias tl='git stash list'
 alias tp='git stash show -p'
-alias v='nvim'
+alias v='less -i'
 
 alias diff='diff --color=auto'
 alias ls='ls --color=auto'
 alias ll='ls -al'
 alias grep='grep --color=auto -i'
-if command -v fdfind &> /dev/null; then alias fd='fdfind -i --hidden'; fi
+if command -v fdfind &> /dev/null; then
+    alias fd='fdfind -i --hidden'
+fi
 alias rg='rg -i --hidden'
 
 alias vi='nvim'
@@ -181,11 +186,14 @@ alias gl='git log --oneline'
 alias ga='git add'
 alias gall='git add .'
 alias gb='git branch -a'
+alias gbl='git_blame_line'
+alias gll='git_log_line'
 alias gc='git commit -s'
 alias gam='git commit --amend'
+alias gp='git push'
 alias gd='git diff'
 alias gdc='git diff --cached'
-alias gsh='git stash'
+alias gst='git stash'
 
 alias rs='repo status'
 alias rsc='repo sync -c -j $(nproc)'
