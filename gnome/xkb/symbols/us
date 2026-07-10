@@ -1,4 +1,4 @@
-partial alphanumeric_keys modifier_keys
+default partial alphanumeric_keys modifier_keys
 xkb_symbols "dumang_dk6" {
     include "us(basic)"
     name[Group1]= "Dumang DK6 (US)";
