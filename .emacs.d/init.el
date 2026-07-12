@@ -127,7 +127,7 @@
 (use-package browse-url
   :custom
   (browse-url-browser-function #'browse-url-chrome)
-  (browse-url-chrome-arguments '("--new-window --ozone-platform-hint=auto"))
+  (browse-url-chrome-arguments '("--new-window" "--ozone-platform-hint=auto"))
   :bind
   ("C-c z ." . browse-url-at-point)
   ("C-c z b" . browse-url-of-buffer)
