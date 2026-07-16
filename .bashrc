@@ -123,7 +123,6 @@ booaa_setup() {
     ln -s $config/.emacs.d/early-init.el ~/.emacs.d/early-init.el
     ln -s $config/.emacs.d/exwm ~/.emacs.d/exwm
     ln -s $config/.emacs.d/site-lisp ~/.emacs.d/site-lisp
-    ln -s $config/.emacs.d/tree-sitter ~/.emacs.d/tree-sitter
 }
 
 booaa_reset() {

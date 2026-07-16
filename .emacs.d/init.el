@@ -135,11 +135,6 @@
   ("C-c z u" . browse-url)
   ("C-c z v" . browse-url-of-file))
 
-(use-package c-ts-mode
-  :custom
-  (c-ts-mode-indent-offset 8)
-  (c-ts-mode-indent-style 'linux))
-
 (use-package cc-mode
   :custom
   (c-default-style
@@ -300,7 +295,8 @@
   :custom
   (eshell-prefer-lisp-functions nil)
   (eshell-prefer-lisp-variables nil)
-  (eshell-command-aliases-list '(("c" "clear 1")))
+  :hook
+  (eshell-first-time-mode . (lambda () (eshell/alias "c" "clear 1")))
   :config
   (add-to-list 'eshell-modules-list 'eshell-tramp))
 
@@ -643,9 +639,6 @@
 (use-package kkp
   :hook (after-init . global-kkp-mode))
 
-(use-package lua-ts-mode
-  :mode ("\\.lua\\'" . lua-ts-mode))
-
 (use-package magit)
 
 (use-package mb-depth
@@ -905,6 +898,7 @@
 (defalias 'lt 'load-theme)
 (defalias 'dt 'disable-theme)
 
+(defalias 'rd 'redraw-display)
 (defalias 'sb 'scratch-buffer)
 
 (provide 'init)
