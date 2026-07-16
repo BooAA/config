@@ -675,6 +675,7 @@
     "Search for .project file as project root"
     (when-let ((root (locate-dominating-file path ".project")))
       (cons 'transient (expand-file-name root))))
+  :autoload project-root
   :custom
   (project-compilation-buffer-name-function
    #'project-prefixed-buffer-name)
@@ -779,7 +780,7 @@
         ("G" . urgrep-run-command)))
 
 (use-package vertico
-  :hook (after-init . vertico-buffer-mode))
+  :config (vertico-buffer-mode))
 
 (use-package w3m
   :custom (w3m-search-default-engine "duckduckgo"))
