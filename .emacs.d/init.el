@@ -56,8 +56,8 @@
         use-package-expand-minimally t)
 
 ;; (use-package benchmark-init
-;;   :demand t
-;;   :hook (after-init . benchmark-init/deactivate))
+;;   :hook (after-init . benchmark-init/deactivate)
+;;   :demand t)
 
 (use-package no-littering :demand t)
 
@@ -527,14 +527,14 @@
   :custom (grep-template "ugrep --color=always -0Iinr -e <R>"))
 
 (use-package helm
-  :defer 0.1
   :custom
   (helm-minibuffer-history-key nil)
   :bind
   (:map helm-map
         ("C-s" . nil)
         ("C-t" . nil)
-        ("C-|" . helm-toggle-resplit-window)))
+        ("C-|" . helm-toggle-resplit-window))
+  :defer 0.1)
 
 (use-package help
   :custom
