@@ -27,11 +27,9 @@
           enwc
           evil
           exwm
-          gcmh
           ggtags
           ghostel
           helm
-          helm-gtags
           ibuffer-project
           kkp
           magit
@@ -491,8 +489,6 @@
   :custom (blink-cursor-mode nil)
   :bind ("C-z" . nil))
 
-(use-package gcmh)
-
 (use-package gdb-mi
   :custom
   (gdb-many-windows t)
@@ -569,14 +565,6 @@
         ("C-t" . nil)
         ("C-|" . helm-toggle-resplit-window))
   :defer 0.1)
-
-(use-package helm-gtags
-  :custom
-  (helm-gtags-cache-select-result t)
-  (helm-gtags-direct-helm-completing t)
-  (helm-gtags-ignore-case t)
-  :hook
-  (c-mode . helm-gtags-mode))
 
 (use-package help
   :custom
@@ -695,19 +683,11 @@
   (after-init . pulseaudio-control-default-sink-mode)
   (after-init . pulseaudio-control-default-source-mode))
 
-(use-package recentf
-  :custom (recentf-max-saved-items nil)
-  :bind ("C-c f" . recentf-open-files)
-  :hook (after-init . recentf-mode))
-
 (use-package repeat
   :hook (after-init . repeat-mode))
 
 (use-package replace
   :bind ("C-%" . replace-regexp))
-
-(use-package repo
-  :vc (:url "https://github.com/snogge/repo-el"))
 
 (use-package rotate
   :bind ("C-|" . rotate-layout))
