@@ -40,7 +40,6 @@
           request
           rotate
           shell-command-x
-          shx
           sly
           telega
           urgrep
@@ -717,9 +716,6 @@
   (shr-discard-aria-hidden t)
   (shr-use-fonts nil)
   (shr-use-xwidgets-for-media t))
-
-(use-package shx
-  :hook (shell-mode . shx-mode))
 
 (use-package simple
   :custom
