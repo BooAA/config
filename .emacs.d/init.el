@@ -101,8 +101,7 @@
 ;;; Configuration for each package
 
 (use-package apropos
-  :bind
-  ("C-h /" . apropos))
+  :bind ("C-h /" . apropos))
 
 (use-package autorevert
   :custom
@@ -124,7 +123,8 @@
 (use-package browse-url
   :custom
   (browse-url-browser-function #'browse-url-chrome)
-  (browse-url-chrome-arguments '("--new-window" "--ozone-platform-hint=auto"))
+  (browse-url-chrome-arguments
+   '("--new-window" "--ozone-platform-hint=auto"))
   :bind
   ("C-c z ." . browse-url-at-point)
   ("C-c z b" . browse-url-of-buffer)
@@ -151,11 +151,6 @@
 (use-package consult)
 
 (use-package consult-omni
-  :init
-  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/")
-  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/sources")
-  :commands
-  (consult-omni-multi)
   :preface
   (defun consult-omni-project ()
     (interactive)
@@ -165,7 +160,8 @@
           (vertico-mode 1)
           (let ((default-directory (project-root (project-current t))))
             (call-interactively #'consult-omni-multi)))
-      (setopt consult-project-function #'consult--default-project-function)
+      (setopt consult-project-function
+              #'consult--default-project-function)
       (vertico-mode -1)))
 
   (defun consult-omni-default-directory ()
@@ -176,8 +172,14 @@
           (vertico-mode 1)
           (let ((default-directory default-directory))
             (call-interactively #'consult-omni-multi)))
-      (setopt consult-project-function #'consult--default-project-function)
+      (setopt consult-project-function
+              #'consult--default-project-function)
       (vertico-mode -1)))
+  :init
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/")
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/sources")
+  :commands
+  (consult-omni-multi)
   :custom
   (consult-omni-multi-sources '("ripgrep" "fd"))
   (consult-omni-highlight-matches-in-file nil)
@@ -215,15 +217,16 @@
 
 (use-package echo-bar
   :custom
-  (echo-bar-format '("[ "
-                     (:eval (format "%d" (1+ (tab-bar--current-tab-index))))
-                     " | "
-                     ;; (:eval (battery-format "%b%p%%%" (battery-upower)))
-                     ;; " | "
-                     system-name
-                     " | "
-                     (:eval (format-time-string "%a %b %d | %H:%M"))
-                     " ]"))
+  (echo-bar-format
+   '("[ "
+     (:eval (format "%d" (1+ (tab-bar--current-tab-index))))
+     " | "
+     ;; (:eval (battery-format "%b%p%%%" (battery-upower)))
+     ;; " | "
+     system-name
+     " | "
+     (:eval (format-time-string "%a %b %d | %H:%M"))
+     " ]"))
   (echo-bar-minibuffer nil)
   (echo-bar-right-padding 1)
   (echo-bar-update-interval 3)
@@ -267,10 +270,11 @@
 
 (use-package elfeed
   :custom
-  (elfeed-feeds '(("https://chipsandcheese.com/feed/" chip)
-                  ("https://sachachua.com/blog/category/emacs-news/feed/" emacs)
-                  ("https://lwn.net/headlines/rss" linux)
-                  ("https://planet.lisp.org/rss20.xml" lisp)))
+  (elfeed-feeds
+   '(("https://chipsandcheese.com/feed/" chip)
+     ("https://sachachua.com/blog/category/emacs-news/feed/" emacs)
+     ("https://lwn.net/headlines/rss" linux)
+     ("https://planet.lisp.org/rss20.xml" lisp)))
   (elfeed-search-filter "@3days-ago +unread"))
 
 (use-package engine-mode
@@ -288,20 +292,8 @@
 (use-package enwc
   :custom (enwc-default-backend 'nm))
 
-(use-package eshell
-  :custom
-  (eshell-prefer-lisp-functions nil)
-  (eshell-prefer-lisp-variables nil)
-  :hook
-  (eshell-first-time-mode . (lambda () (eshell/alias "c" "clear 1")))
-  :config
-  (add-to-list 'eshell-modules-list 'eshell-tramp))
-
 (use-package evil
   :init (setq evil-disable-insert-state-bindings t))
-
-(use-package eww
-  :custom (eww-auto-rename-buffer 'title))
 
 (use-package exwm
   :preface
@@ -367,26 +359,28 @@
      ([H-S-f1] . pulseaudio-control-toggle-current-source-mute)
      ([H-S-f2] . pulseaudio-control-decrease-source-volume)
      ([H-S-f3] . pulseaudio-control-increase-source-volume)
-     ,@(mapcan (lambda (dir)
-                 (list `(,(kbd (format "H-<%s>" dir)) .
-                         ,(intern-soft (format "windmove-%s" dir)))
-                       `(,(kbd (format "H-S-<%s>" dir)) .
-                         ,(intern-soft (format "windmove-swap-states-%s" dir)))
-                       `(,(kbd (format "H-x <%s>" dir)) .
-                         ,(intern-soft (format "windmove-display-%s" dir)))
-                       `(,(kbd (format "H-x S-<%s>" dir)) .
-                         ,(intern-soft (format "windmove-delete-%s" dir)))))
-               '("up" "down" "left" "right"))
-     ,@(cl-mapcan (lambda (key dir)
-                    (list `(,(kbd (concat "H-" key)) .
-                            ,(intern-soft (concat "windmove-" dir)))
-                          `(,(kbd (concat "H-" (capitalize key))) .
-                            ,(intern-soft (concat "windmove-swap-states-" dir)))
-                          `(,(kbd (concat "H-x " key)) .
-                            ,(intern-soft (concat "windmove-display-" dir)))
-                          `(,(kbd (concat "H-x " (capitalize key))) .
-                            ,(intern-soft (concat "windmove-delete-" dir)))))
-                  '("h" "j" "k" "l") '("left" "down" "up" "right"))     
+     ,@(mapcan
+        (lambda (dir)
+          (list `(,(kbd (format "H-<%s>" dir)) .
+                  ,(intern-soft (format "windmove-%s" dir)))
+                `(,(kbd (format "H-S-<%s>" dir)) .
+                  ,(intern-soft (format "windmove-swap-states-%s" dir)))
+                `(,(kbd (format "H-x <%s>" dir)) .
+                  ,(intern-soft (format "windmove-display-%s" dir)))
+                `(,(kbd (format "H-x S-<%s>" dir)) .
+                  ,(intern-soft (format "windmove-delete-%s" dir)))))
+        '("up" "down" "left" "right"))
+     ,@(cl-mapcan
+        (lambda (key dir)
+          (list `(,(kbd (concat "H-" key)) .
+                  ,(intern-soft (concat "windmove-" dir)))
+                `(,(kbd (concat "H-" (capitalize key))) .
+                  ,(intern-soft (concat "windmove-swap-states-" dir)))
+                `(,(kbd (concat "H-x " key)) .
+                  ,(intern-soft (concat "windmove-display-" dir)))
+                `(,(kbd (concat "H-x " (capitalize key))) .
+                  ,(intern-soft (concat "windmove-delete-" dir)))))
+        '("h" "j" "k" "l") '("left" "down" "up" "right"))
      ([H-f5] . exwm-reset)
      ([H-print] . scrot)
 
@@ -405,26 +399,28 @@
      ([s-S-f1] . pulseaudio-control-toggle-current-source-mute)
      ([s-S-f2] . pulseaudio-control-decrease-source-volume)
      ([s-S-f3] . pulseaudio-control-increase-source-volume)
-     ,@(mapcan (lambda (dir)
-                 (list `(,(kbd (format "s-<%s>" dir)) .
-                         ,(intern-soft (format "windmove-%s" dir)))
-                       `(,(kbd (format "s-S-<%s>" dir)) .
-                         ,(intern-soft (format "windmove-swap-states-%s" dir)))
-                       `(,(kbd (format "s-x <%s>" dir)) .
-                         ,(intern-soft (format "windmove-display-%s" dir)))
-                       `(,(kbd (format "s-x S-<%s>" dir)) .
-                         ,(intern-soft (format "windmove-delete-%s" dir)))))
-               '("up" "down" "left" "right"))
-     ,@(cl-mapcan (lambda (key dir)
-                    (list `(,(kbd (concat "s-" key)) .
-                            ,(intern-soft (concat "windmove-" dir)))
-                          `(,(kbd (concat "s-" (capitalize key))) .
-                            ,(intern-soft (concat "windmove-swap-states-" dir)))
-                          `(,(kbd (concat "s-x " key)) .
-                            ,(intern-soft (concat "windmove-display-" dir)))
-                          `(,(kbd (concat "s-x " (capitalize key))) .
-                            ,(intern-soft (concat "windmove-delete-" dir)))))
-                  '("h" "j" "k" "l") '("left" "down" "up" "right"))     
+     ,@(mapcan
+        (lambda (dir)
+          (list `(,(kbd (format "s-<%s>" dir)) .
+                  ,(intern-soft (format "windmove-%s" dir)))
+                `(,(kbd (format "s-S-<%s>" dir)) .
+                  ,(intern-soft (format "windmove-swap-states-%s" dir)))
+                `(,(kbd (format "s-x <%s>" dir)) .
+                  ,(intern-soft (format "windmove-display-%s" dir)))
+                `(,(kbd (format "s-x S-<%s>" dir)) .
+                  ,(intern-soft (format "windmove-delete-%s" dir)))))
+        '("up" "down" "left" "right"))
+     ,@(cl-mapcan
+        (lambda (key dir)
+          (list `(,(kbd (concat "s-" key)) .
+                  ,(intern-soft (concat "windmove-" dir)))
+                `(,(kbd (concat "s-" (capitalize key))) .
+                  ,(intern-soft (concat "windmove-swap-states-" dir)))
+                `(,(kbd (concat "s-x " key)) .
+                  ,(intern-soft (concat "windmove-display-" dir)))
+                `(,(kbd (concat "s-x " (capitalize key))) .
+                  ,(intern-soft (concat "windmove-delete-" dir)))))
+        '("h" "j" "k" "l") '("left" "down" "up" "right"))
      ([s-f5] . exwm-reset)
      ([s-print] . scrot)))
   :hook
@@ -435,7 +431,8 @@
               :after (lambda (id)
                        (with-current-buffer (exwm--id->buffer id)
                          (setq exwm--ewmh-state
-                               (delq xcb:Atom:_NET_WM_STATE_HIDDEN exwm--ewmh-state))
+                               (delq xcb:Atom:_NET_WM_STATE_HIDDEN
+                                     exwm--ewmh-state))
                          (exwm-layout--set-ewmh-state id)
                          (xcb:flush exwm--connection))))
   (exwm-randr-mode)
@@ -456,12 +453,15 @@
         (setq default-output (match-string 1))
         (forward-line)
         (if (not (re-search-forward xrandr-output-regexp nil 'noerror))
-            (call-process "xrandr" nil nil nil "--output" default-output "--auto")
+            (call-process
+             "xrandr" nil nil nil
+             "--output" default-output "--auto")
           (call-process
            "xrandr" nil nil nil
            "--output" (match-string 1) "--primary" "--auto"
            "--output" default-output "--off")
-          (setq exwm-randr-workspace-monitor-plist (list 0 (match-string 1)))))))
+          (setq exwm-randr-workspace-monitor-plist
+                (list 0 (match-string 1)))))))
   :hook
   (exwm-randr-screen-change . exwm-change-screen-hook))
 
@@ -534,17 +534,17 @@
   :custom
   (ghostel-buffer-name-function nil)
   :bind
-  (("C-M-1" . ghostel-1)
-   ("C-M-2" . ghostel-2)
-   ("C-M-3" . ghostel-3)
-   ("C-M-4" . ghostel-4)
-   ("C-M-5" . ghostel-5)
-   ("C-M-6" . ghostel-6)
-   ("C-M-7" . ghostel-7)
-   ("C-M-8" . ghostel-8)
-   ("C-M-9" . ghostel-9)
-   :map project-prefix-map
-   ("t" . ghostel-project)))
+  ("C-M-1" . ghostel-1)
+  ("C-M-2" . ghostel-2)
+  ("C-M-3" . ghostel-3)
+  ("C-M-4" . ghostel-4)
+  ("C-M-5" . ghostel-5)
+  ("C-M-6" . ghostel-6)
+  ("C-M-7" . ghostel-7)
+  ("C-M-8" . ghostel-8)
+  ("C-M-9" . ghostel-9)
+  (:map project-prefix-map
+        ("t" . ghostel-project)))
 
 (use-package gnus
   :custom
@@ -573,16 +573,17 @@
 
 (use-package hippie-exp
   :custom
-  (hippie-expand-try-functions-list '(try-complete-file-name
-                                      try-expand-dabbrev
-                                      try-expand-dabbrev-all-buffers
-                                      try-expand-dabbrev-from-kill
-                                      try-expand-line
-                                      try-expand-line-all-buffers
-                                      try-expand-whole-kill
-                                      try-complete-lisp-symbol
-                                      try-expand-list
-                                      try-expand-list-all-buffers))
+  (hippie-expand-try-functions-list
+   '(try-complete-file-name
+     try-expand-dabbrev
+     try-expand-dabbrev-all-buffers
+     try-expand-dabbrev-from-kill
+     try-expand-line
+     try-expand-line-all-buffers
+     try-expand-whole-kill
+     try-complete-lisp-symbol
+     try-expand-list
+     try-expand-list-all-buffers))
   (hippie-expand-verbose nil)
   :bind ("M-/" . hippie-expand))
 
@@ -595,7 +596,8 @@
 (use-package ibuffer-project
   :preface
   (defun ibuffer-project-setup ()
-    (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
+    (setq ibuffer-filter-groups
+          (ibuffer-project-generate-filter-groups))
     (unless (eq ibuffer-sorting-mode 'project-file-relative)
       (ibuffer-do-sort-by-project-file-relative)))
   :custom
@@ -624,7 +626,7 @@
         ("DEL" . isearch-del-char)
         ("C-M-d" . isearch-delete-char)
         ("C-g" . isearch-cancel)))
-  
+
 (use-package kkp
   :hook (after-init . global-kkp-mode))
 
@@ -672,7 +674,8 @@
     (when-let ((root (locate-dominating-file path ".project")))
       (cons 'transient (expand-file-name root))))
   :custom
-  (project-compilation-buffer-name-function 'project-prefixed-buffer-name)
+  (project-compilation-buffer-name-function
+   #'project-prefixed-buffer-name)
   :config
   (add-to-list 'project-find-functions #'project-try-override))
 
@@ -792,6 +795,12 @@
   (windmove-display-default-keybindings '([?\s-x]))
   (windmove-swap-states-default-keybindings '([ignore] super shift))
   (windmove-wrap-around t)
+  :bind
+  (:map windmove-mode-map
+        ("C-S-j" . windmove-down)
+        ("C-S-k" . windmove-up)
+        ("C-S-l" . windmove-right)
+        ("C-S-h" . windmove-left))
   :hook
   (after-init . windmove-mode)
   :config
@@ -811,17 +820,10 @@
                        (intern-soft (concat "windmove-display-" dir)))
            (define-key windmove-mode-map
                        (kbd (concat "s-" (capitalize key)))
-                       (intern-soft (concat "windmove-swap-states-" dir))))
-  :bind
-  (:map windmove-mode-map
-        ("C-S-j" . windmove-down)
-        ("C-S-k" . windmove-up)
-        ("C-S-l" . windmove-right)
-        ("C-S-h" . windmove-left)))
+                       (intern-soft (concat "windmove-swap-states-" dir)))))
 
 (use-package window
-  :custom
-  (switch-to-buffer-obey-display-actions t))
+  :custom (switch-to-buffer-obey-display-actions t))
 
 (use-package window-divider
   :custom
