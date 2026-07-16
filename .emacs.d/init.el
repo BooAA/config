@@ -102,8 +102,7 @@
 
 (use-package apropos
   :bind
-  ("C-h /" . apropos)
-  ("C-h u" . apropos-user-option))
+  ("C-h /" . apropos))
 
 (use-package autorevert
   :custom
