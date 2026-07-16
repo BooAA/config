@@ -114,8 +114,8 @@
   :hook (after-init . bash-completion-setup))
 
 (use-package battery
-  :autoload battery-format
-  :custom (battery-load-low 20))
+  :custom (battery-load-low 20)
+  :autoload (battery-format))
 
 (use-package bluetooth)
 
@@ -144,13 +144,16 @@
   :hook (after-init . global-clipetty-mode))
 
 (use-package comint
-  :init
+  :config
   (add-hook 'comint-output-filter-functions #'comint-osc-process-output))
 
 (use-package consult)
 
 (use-package consult-omni
-  :preface
+  :init
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/")
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/sources")
+
   (defun consult-omni-project ()
     (interactive)
     (unwind-protect
@@ -174,14 +177,11 @@
       (setopt consult-project-function
               #'consult--default-project-function)
       (vertico-mode -1)))
-  :init
-  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/")
-  (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/sources")
-  :commands
-  (consult-omni-multi)
   :custom
   (consult-omni-multi-sources '("ripgrep" "fd"))
   (consult-omni-highlight-matches-in-file nil)
+  :commands
+  (consult-omni-multi)
   :bind
   (:map search-map
         ("/" . consult-omni-default-directory)
@@ -238,9 +238,9 @@
   (ediff-split-window-function #'split-window-horizontally))
 
 (use-package ednc
-  :preface
+  :init
   (defun ednc-top-notification ()
-    (if-let ((notification (car (ednc-notifications))))
+    (if-let* ((notification (car (ednc-notifications))))
         (ednc-format-notification notification)
       "")))
 
@@ -295,7 +295,7 @@
   :init (setq evil-disable-insert-state-bindings t))
 
 (use-package exwm
-  :preface
+  :init
   (defun exwm-run-command-async (command)
     (interactive (list (read-shell-command "$ ")))
     (start-process-shell-command command nil command))
@@ -441,7 +441,7 @@
                   echo-bar-format)))
 
 (use-package exwm-randr
-  :preface
+  :init
   (defun exwm-change-screen-hook ()
     (let ((xrandr-output-regexp "\n\\([^ ]+\\) connected ")
           default-output)
@@ -492,7 +492,7 @@
   (gdb-restore-window-configuration-after-quit t))
 
 (use-package ghostel
-  :preface
+  :init
   (defmacro ghostel-num (num)
     (let ((fn-name (intern (format "ghostel-%d" num))))
       `(defun ,fn-name ()
@@ -566,7 +566,7 @@
   ("C-x C-b" . ibuffer))
 
 (use-package ibuffer-project
-  :preface
+  :init
   (defun ibuffer-project-setup ()
     (setq ibuffer-filter-groups
           (ibuffer-project-generate-filter-groups))
@@ -640,15 +640,16 @@
   :hook (after-init . pixel-scroll-precision-mode))
 
 (use-package project
-  :preface
+  :init
   (defun project-try-override (path)
     "Search for .project file as project root"
-    (when-let ((root (locate-dominating-file path ".project")))
+    (when-let* ((root (locate-dominating-file path ".project")))
       (cons 'transient (expand-file-name root))))
-  :autoload project-root
   :custom
   (project-compilation-buffer-name-function
    #'project-prefixed-buffer-name)
+  :autoload
+  (project-root)
   :config
   (add-to-list 'project-find-functions #'project-try-override))
 
