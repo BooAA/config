@@ -557,14 +557,14 @@
   :custom (grep-template "ugrep --color=always -0Iinr -e <R>"))
 
 (use-package helm
+  :defer 0.1
   :custom
   (helm-minibuffer-history-key nil)
   :bind
   (:map helm-map
         ("C-s" . nil)
         ("C-t" . nil)
-        ("C-|" . helm-toggle-resplit-window))
-  :defer 0.1)
+        ("C-|" . helm-toggle-resplit-window)))
 
 (use-package help
   :custom
@@ -585,13 +585,15 @@
      try-expand-list
      try-expand-list-all-buffers))
   (hippie-expand-verbose nil)
-  :bind ("M-/" . hippie-expand))
+  :bind
+  ("M-/" . hippie-expand))
 
 (use-package ibuffer
   :custom
   (ibuffer-default-sorting-mode 'major-mode)
   (ibuffer-show-empty-filter-groups nil)
-  :bind ("C-x C-b" . ibuffer))
+  :bind
+  ("C-x C-b" . ibuffer))
 
 (use-package ibuffer-project
   :preface
