@@ -84,7 +84,8 @@
   (long-line-threshold 1000)
   (mode-line-format '((vc-mode vc-mode) "  "
                       mode-line-buffer-identification "  "
-                      mode-line-position))
+                      mode-line-position "  "
+                      which-func-format))
   (read-buffer-completion-ignore-case t)
   (redisplay-skip-fontification-on-input t)
   (ring-bell-function #'ignore)
