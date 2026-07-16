@@ -531,6 +531,8 @@
 
   (dolist (i (number-sequence 1 9))
     (eval `(ghostel-num ,i)))
+  :custom
+  (ghostel-buffer-name-function nil)
   :bind
   (("C-M-1" . ghostel-1)
    ("C-M-2" . ghostel-2)
