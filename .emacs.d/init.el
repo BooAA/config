@@ -27,7 +27,6 @@
           enwc
           evil
           exwm
-          ggtags
           ghostel
           helm
           ibuffer-project
@@ -491,35 +490,6 @@
   :custom
   (gdb-many-windows t)
   (gdb-restore-window-configuration-after-quit t))
-
-(use-package ggtags
-  :custom
-  (ggtags-enable-navigation-key nil)
-  (ggtags-mode-prefix-key (kbd "C-c g"))
-  :bind
-  (:map ggtags-mode-map
-        ("C-M-." . nil)
-        ("M-." . nil)
-        ("M-]" . nil)
-   :map ggtags-mode-prefix-map
-        ("." . ggtags-find-tag-dwim)
-        ("/" . ggtags-view-search-history)
-        ("?" . ggtags-find-reference)
-        ("SPC" . ggtags-save-to-register)
-        ("a" . ggtags-find-tag-regexp)
-        ("b" . ggtags-browse-file-as-hypertext)
-        ("d" . ggtags-show-definition)
-        ("f" . ggtags-find-file)
-        ("g" . ggtags-grep)
-        ("h" . ggtags-view-tag-history)
-        ("i" . ggtags-idutils-query)
-        ("j" . ggtags-view-project-root)
-        ("k" . ggtags-kill-file-buffers)
-        ("n" . ggtags-next-mark)
-        ("o" . ggtags-find-other-symbol)
-        ("p" . ggtags-prev-mark))
-  :hook
-  (c-mode . ggtags-mode))
 
 (use-package ghostel
   :preface
