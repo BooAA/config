@@ -841,10 +841,6 @@
 (defalias 'pd  'package-delete)
 (defalias 'pa  'package-autoremove)
 
-(defalias 'ev-b 'eval-buffer)
-(defalias 'ev-r 'eval-region)
-(defalias 'ev-d 'eval-defun)
-
 (defalias 'cf 'copy-file)
 (defalias 'df 'delete-file)
 (defalias 'rf 'rename-file)
