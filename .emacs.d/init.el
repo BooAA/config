@@ -314,114 +314,85 @@
          ([?\C-e] . [end])
          ([?\C-v] . [next])
          ([?\M-v] . [prior])
-
          ([?\C-b] . [left])
          ([?\C-f] . [right])
          ([?\C-p] . [up])
          ([?\C-n] . [down])
-
          ([?\M-b] . [C-left])
          ([?\M-f] . [C-right])
          ([?\M-n] . [M-right])
          ([?\M-p] . [M-left])
-
          ;; Copy/Paste
          ([?\C-w] . [?\C-x])
          ([?\M-w] . [?\C-c])
          ([?\C-y] . [?\C-v])
          ([?\C-s] . [?\C-f])
          ([?\C-\/] . [?\C-z])
-
          ;; Other
          ([?\C-d] . [delete])
          ([?\M-d] . [C-delete])
          (,(kbd "M-DEL") . [C-backspace])
          ([?\C-k] . [S-end delete])
          ([?\C-g] . [escape])))))
+
+  (defun exwm-make-prefix-bindings (p)
+    (append
+     `((,(kbd (concat p "r")) . exwm-run-command-async)
+       (,(kbd (concat p "9")) . tab-last)
+       (,(kbd (concat p "<f1>")) .
+        pulseaudio-control-toggle-current-sink-mute)
+       (,(kbd (concat p "<f2>")) .
+        pulseaudio-control-decrease-sink-volume)
+       (,(kbd (concat p "<f3>")) .
+        pulseaudio-control-increase-sink-volume)
+       (,(kbd (concat p "S-<f1>")) .
+        pulseaudio-control-toggle-current-source-mute)
+       (,(kbd (concat p "S-<f2>")) .
+        pulseaudio-control-decrease-source-volume)
+       (,(kbd (concat p "S-<f3>")) .
+        pulseaudio-control-increase-source-volume)
+       (,(kbd (concat p "<f5>")) . exwm-reset)
+       (,(kbd (concat p "<print>")) . scrot))
+     (mapcar
+      (lambda (i)
+        `(,(kbd (format "%s%d" p i)) .
+          (lambda () (interactive) (tab-bar-select-tab ,i))))
+      (number-sequence 1 8))
+     (mapcan
+      (lambda (dir)
+        (list
+         `(,(kbd (format "%s<%s>" p dir)) .
+           ,(intern (concat "windmove-" dir)))
+         `(,(kbd (format "%sS-<%s>" p dir)) .
+           ,(intern (concat "windmove-swap-states-" dir)))
+         `(,(kbd (format "%sx <%s>" p dir)) .
+           ,(intern (concat "windmove-display-" dir)))
+         `(,(kbd (format "%sx S-<%s>" p dir)) .
+           ,(intern (concat "windmove-delete-" dir)))))
+      '("up" "down" "left" "right"))
+     (cl-mapcan
+      (lambda (key dir)
+        (list
+         `(,(kbd (concat p key)) .
+           ,(intern (concat "windmove-" dir)))
+         `(,(kbd (concat p (capitalize key))) .
+           ,(intern (concat "windmove-swap-states-" dir)))
+         `(,(kbd (concat p "x " key)) .
+           ,(intern (concat "windmove-display-" dir)))
+         `(,(kbd (concat p "x " (capitalize key))) .
+           ,(intern (concat "windmove-delete-" dir)))))
+      '("h" "j" "k" "l") '("left" "down" "up" "right"))))
+
   :custom
   (exwm-input-global-keys
-   `(;; hyper as prefix
-     ([?\H-r] . exwm-run-command-async)
-     ,@(mapcar (lambda (i)
-                 `(,(kbd (format "H-%d" i)) .
-                   (lambda ()
-                     (interactive)
-                     (tab-bar-select-tab ,i))))
-               (number-sequence 1 8))
-     ([?\H-9] . tab-last)
-     ([XF86AudioMute] . pulseaudio-control-toggle-current-sink-mute)
-     ([XF86AudioLowerVolume] . pulseaudio-control-decrease-sink-volume)
-     ([XF86AudioRaiseVolume] . pulseaudio-control-increase-sink-volume)
-     ([H-f1] . pulseaudio-control-toggle-current-sink-mute)
-     ([H-f2] . pulseaudio-control-decrease-sink-volume)
-     ([H-f3] . pulseaudio-control-increase-sink-volume)
-     ([H-S-f1] . pulseaudio-control-toggle-current-source-mute)
-     ([H-S-f2] . pulseaudio-control-decrease-source-volume)
-     ([H-S-f3] . pulseaudio-control-increase-source-volume)
-     ,@(mapcan
-        (lambda (dir)
-          (list `(,(kbd (format "H-<%s>" dir)) .
-                  ,(intern-soft (format "windmove-%s" dir)))
-                `(,(kbd (format "H-S-<%s>" dir)) .
-                  ,(intern-soft (format "windmove-swap-states-%s" dir)))
-                `(,(kbd (format "H-x <%s>" dir)) .
-                  ,(intern-soft (format "windmove-display-%s" dir)))
-                `(,(kbd (format "H-x S-<%s>" dir)) .
-                  ,(intern-soft (format "windmove-delete-%s" dir)))))
-        '("up" "down" "left" "right"))
-     ,@(cl-mapcan
-        (lambda (key dir)
-          (list `(,(kbd (concat "H-" key)) .
-                  ,(intern-soft (concat "windmove-" dir)))
-                `(,(kbd (concat "H-" (capitalize key))) .
-                  ,(intern-soft (concat "windmove-swap-states-" dir)))
-                `(,(kbd (concat "H-x " key)) .
-                  ,(intern-soft (concat "windmove-display-" dir)))
-                `(,(kbd (concat "H-x " (capitalize key))) .
-                  ,(intern-soft (concat "windmove-delete-" dir)))))
-        '("h" "j" "k" "l") '("left" "down" "up" "right"))
-     ([H-f5] . exwm-reset)
-     ([H-print] . scrot)
-
-     ;; super as prefix
-     ([?\s-r] . exwm-run-command-async)
-     ,@(mapcar (lambda (i)
-                 `(,(kbd (format "s-%d" i)) .
-                   (lambda ()
-                     (interactive)
-                     (tab-bar-select-tab ,i))))
-               (number-sequence 1 8))
-     ([?\s-9] . tab-last)
-     ([s-f1] . pulseaudio-control-toggle-current-sink-mute)
-     ([s-f2] . pulseaudio-control-decrease-sink-volume)
-     ([s-f3] . pulseaudio-control-increase-sink-volume)
-     ([s-S-f1] . pulseaudio-control-toggle-current-source-mute)
-     ([s-S-f2] . pulseaudio-control-decrease-source-volume)
-     ([s-S-f3] . pulseaudio-control-increase-source-volume)
-     ,@(mapcan
-        (lambda (dir)
-          (list `(,(kbd (format "s-<%s>" dir)) .
-                  ,(intern-soft (format "windmove-%s" dir)))
-                `(,(kbd (format "s-S-<%s>" dir)) .
-                  ,(intern-soft (format "windmove-swap-states-%s" dir)))
-                `(,(kbd (format "s-x <%s>" dir)) .
-                  ,(intern-soft (format "windmove-display-%s" dir)))
-                `(,(kbd (format "s-x S-<%s>" dir)) .
-                  ,(intern-soft (format "windmove-delete-%s" dir)))))
-        '("up" "down" "left" "right"))
-     ,@(cl-mapcan
-        (lambda (key dir)
-          (list `(,(kbd (concat "s-" key)) .
-                  ,(intern-soft (concat "windmove-" dir)))
-                `(,(kbd (concat "s-" (capitalize key))) .
-                  ,(intern-soft (concat "windmove-swap-states-" dir)))
-                `(,(kbd (concat "s-x " key)) .
-                  ,(intern-soft (concat "windmove-display-" dir)))
-                `(,(kbd (concat "s-x " (capitalize key))) .
-                  ,(intern-soft (concat "windmove-delete-" dir)))))
-        '("h" "j" "k" "l") '("left" "down" "up" "right"))
-     ([s-f5] . exwm-reset)
-     ([s-print] . scrot)))
+   `(([XF86AudioMute] .
+      pulseaudio-control-toggle-current-sink-mute)
+     ([XF86AudioLowerVolume] .
+      pulseaudio-control-decrease-sink-volume)
+     ([XF86AudioRaiseVolume] .
+      pulseaudio-control-increase-sink-volume)
+     ,@(exwm-make-prefix-bindings "H-")
+     ,@(exwm-make-prefix-bindings "s-")))
   :hook
   (exwm-update-title . exwm-rename-buffer-title)
   (exwm-manage-finish . exwm-chrome-set-simulation-key)
@@ -774,27 +745,29 @@
         ("C-S-j" . windmove-down)
         ("C-S-k" . windmove-up)
         ("C-S-l" . windmove-right)
-        ("C-S-h" . windmove-left))
+        ("C-S-h" . windmove-left)
+        ;; Move
+        ("s-h"   . windmove-left)
+        ("s-j"   . windmove-down)
+        ("s-k"   . windmove-up)
+        ("s-l"   . windmove-right)
+        ;; Swap
+        ("s-H"   . windmove-swap-states-left)
+        ("s-J"   . windmove-swap-states-down)
+        ("s-K"   . windmove-swap-states-up)
+        ("s-L"   . windmove-swap-states-right)
+        ;; Display
+        ("s-x h" . windmove-display-left)
+        ("s-x j" . windmove-display-down)
+        ("s-x k" . windmove-display-up)
+        ("s-x l" . windmove-display-right)
+        ;; Delete
+        ("s-x H" . windmove-delete-left)
+        ("s-x J" . windmove-delete-down)
+        ("s-x K" . windmove-delete-up)
+        ("s-x L" . windmove-delete-right))
   :hook
-  (after-init . windmove-mode)
-  :config
-  (cl-loop for (key . dir) in '(("h" . "left")
-                                ("j" . "down")
-                                ("k" . "up")
-                                ("l" . "right"))
-           do
-           (define-key windmove-mode-map
-                       (kbd (concat "s-" key))
-                       (intern-soft (concat "windmove-" dir)))
-           (define-key windmove-mode-map
-                       (kbd (concat "s-x " (capitalize key)))
-                       (intern-soft (concat "windmove-delete-" dir)))
-           (define-key windmove-mode-map
-                       (kbd (concat "s-x " key))
-                       (intern-soft (concat "windmove-display-" dir)))
-           (define-key windmove-mode-map
-                       (kbd (concat "s-" (capitalize key)))
-                       (intern-soft (concat "windmove-swap-states-" dir)))))
+  (after-init . windmove-mode))
 
 (use-package window
   :custom (switch-to-buffer-obey-display-actions t))
@@ -831,7 +804,7 @@
   :demand t
   :config (load-theme 'zenburn t))
 
-;;; aliases
+;;; Aliases
 
 (defalias 'ev  'emacs-version)
 (defalias 'eit 'emacs-init-time)
