@@ -154,29 +154,26 @@
   (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/")
   (add-to-list 'load-path "~/.emacs.d/site-lisp/consult-omni/sources")
 
+  (defmacro consult-omni-with-vertico (&rest body)
+    `(unwind-protect
+         (progn
+           (setopt consult-project-function nil)
+           (vertico-mode 1)
+           ,@body)
+       (setopt consult-project-function
+               #'consult--default-project-function)
+       (vertico-mode -1)))
+
   (defun consult-omni-project ()
     (interactive)
-    (unwind-protect
-        (progn
-          (setopt consult-project-function nil)
-          (vertico-mode 1)
-          (let ((default-directory (project-root (project-current t))))
-            (call-interactively #'consult-omni-multi)))
-      (setopt consult-project-function
-              #'consult--default-project-function)
-      (vertico-mode -1)))
+    (consult-omni-with-vertico
+     (let ((default-directory (project-root (project-current t))))
+       (call-interactively #'consult-omni-multi))))
 
   (defun consult-omni-default-directory ()
     (interactive)
-    (unwind-protect
-        (progn
-          (setopt consult-project-function nil)
-          (vertico-mode 1)
-          (let ((default-directory default-directory))
-            (call-interactively #'consult-omni-multi)))
-      (setopt consult-project-function
-              #'consult--default-project-function)
-      (vertico-mode -1)))
+    (consult-omni-with-vertico
+     (call-interactively #'consult-omni-multi)))
   :custom
   (consult-omni-multi-sources '("ripgrep" "fd"))
   (consult-omni-highlight-matches-in-file nil)

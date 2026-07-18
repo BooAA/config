@@ -172,9 +172,11 @@ alias ls='ls --color=auto'
 alias ll='ls -al'
 alias grep='grep --color=auto -i'
 if command -v fdfind &> /dev/null; then
-    alias fd='fdfind -i --hidden'
+    alias fd='fdfind --full-path --hidden'
+else
+    alias fd='fd --full-path --hidden'
 fi
-alias rg='rg -i --hidden'
+alias rg='rg --smart-case --hidden'
 
 alias vi='nvim'
 alias vim='nvim'
