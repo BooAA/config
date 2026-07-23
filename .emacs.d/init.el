@@ -718,6 +718,9 @@
         ("g" . urgrep)
         ("G" . urgrep-run-command)))
 
+(use-package vc-hooks
+  :custom (vc-follow-symlinks t))
+
 (use-package vertico
   :config (vertico-buffer-mode))
 
