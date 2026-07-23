@@ -76,6 +76,6 @@ class = { instance = "Alacritty", general = "Alacritty" }
 # decorations = "None"
 decorations_theme_variant = "None"
 dynamic_title = true
-opacity = 0.95
+# opacity = 0.95
 startup_mode = "Windowed"
 title = "Alacritty"
