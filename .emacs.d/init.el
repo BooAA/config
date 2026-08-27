@@ -80,8 +80,7 @@
   (long-line-threshold 1000)
   (mode-line-format '((vc-mode vc-mode) "  "
                       mode-line-buffer-identification "  "
-                      mode-line-position "  "
-                      which-func-format))
+                      mode-line-position "  "))
   (read-buffer-completion-ignore-case t)
   (redisplay-skip-fontification-on-input t)
   (ring-bell-function #'ignore)
@@ -470,6 +469,7 @@
   (dolist (i (number-sequence 1 9))
     (eval `(ghostel-num ,i)))
   :custom
+  (ghostel-buffer-identification-format nil)
   (ghostel-buffer-name-function nil)
   :bind
   ("C-M-1" . ghostel-1)
@@ -730,9 +730,6 @@
 (use-package warning
   :custom (warning-minimum-level :error))
 
-(use-package which-function
-  :hook (after-init . which-function-mode))
-
 (use-package windmove
   :custom
   (windmove-default-keybindings '([ignore] super))
@@ -780,6 +777,8 @@
   (after-init . window-divider-mode))
 
 (use-package winum
+  :custom
+  (winum-mode-line-position 0)
   :bind
   (:map winum-keymap
         ("M-1" . winum-select-window-1)
