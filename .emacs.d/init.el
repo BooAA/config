@@ -781,6 +781,7 @@
   (winum-mode-line-position 0)
   :bind
   (:map winum-keymap
+        ("M-0" . winum-select-window-0)
         ("M-1" . winum-select-window-1)
         ("M-2" . winum-select-window-2)
         ("M-3" . winum-select-window-3)
