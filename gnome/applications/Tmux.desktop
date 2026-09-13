@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+TryExec=alacritty
+Exec=alacritty  -T tmux --class Tmux --config-file /home/booaa/.config/alacritty/alacritty_tmux.toml -e tmux
+Icon=tmux
+Terminal=false
+Categories=System;TerminalEmulator;
+
+Name=Tmux
+Comment=Launch tmux inside alacritty
+StartupNotify=true
+StartupWMClass=Tmux
